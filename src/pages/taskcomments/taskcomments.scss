@@ -1,0 +1,178 @@
+page-taskcomments{
+    .toolbar-background-md{
+        border:none;
+        background-image: linear-gradient(to right, #6b78d1, #5d6ec0, #5064af, #435b9f, #37518e, #425491, #4c5895, #555b98, #766caf, #997ec5, #bc8fda, #e1a1ee) !important;
+    }
+    .toolbar-background-ios{
+        background-image: linear-gradient(to right, #6b78d1, #5d6ec0, #5064af, #435b9f, #37518e, #425491, #4c5895, #555b98, #766caf, #997ec5, #bc8fda, #e1a1ee) !important;
+    }
+    button.btn.btn-link {
+        color: #545454;
+        font-weight: bold;
+    }      
+    .add-on .input-group-btn > .btn {
+        border-left-width:0;left:-2px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    }
+      /* stop the glowing blue shadow */
+    .add-on .form-control:focus {
+       box-shadow:none;
+       -webkit-box-shadow:none; 
+       border-color:#cccccc; 
+    }
+    .form-control{width:20%}
+    .navbar-nav > li > a {
+        border-right: 1px solid #ddd;
+        padding-bottom: 15px;
+        padding-top: 15px;
+    }
+    .navbar-nav:last-child{ border-right:0}      
+    .sbut{      
+        background-color: #73bd43 !important;
+        color: #fff !important;
+        border-radius: 0px !important;      
+        height: 3.6rem;
+        font-size: 15px;
+    }
+    .txt-search{
+        height: 3.6rem;
+        font-size: 15px;
+    }
+    .thd{
+        line-height: 13px !important;
+        font-family: "Roboto", "Helvetica Neue", sans-serif !important;
+        font-size: 1.3rem !important;
+        color: #7d7d7d;
+        font-weight: 500;
+    }
+    .tbd{
+        font-weight: 500 !important;
+        color: #505050 !important;
+    }
+    .txth4{
+        color: #4c4c4c;
+        font-size: 1.7rem;
+    }
+    .card-bodynew {     
+        line-height: 34px !important;
+        font-family: "Roboto", "Helvetica Neue", sans-serif !important;
+    }
+    .card-body{
+        padding: 0px !important;
+    }
+    .card{
+        border: none !important;
+    }
+    .blc{
+
+        font-size: 1.25rem !important;
+        position: relative !important;    
+        bottom: 7px !important;
+        padding: 0px !important;
+    }
+
+    @media only screen and (max-width: 760px), (min-device-width: 768px) 
+        and (max-device-width: 1024px)  {      
+            /* Force table to not be like tables anymore */
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            /* Hide table headers (but not display: none;, for accessibility) */
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }      
+            tr {
+                margin: unset !important;
+            }
+            td {
+                /* Behave  like a "row" */
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+            }         
+            td:before {
+                /* Now like a table header */
+                position: absolute;
+                /* Top/left values mimic padding */
+                top: 0;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                height: 100%;
+                background-color: #add8e6 !important;
+            }
+            .blc{
+
+                font-size: 1.25rem !important;
+                position: relative !important;    
+                bottom: 0px !important;
+                padding: 0px !important;
+            }  
+            /*
+            Label the data
+            You could also use a data-* attribute and content for this. That way "bloats" the HTML, this way means you need to keep HTML and CSS in sync. Lea Verou has a clever way to handle with text-shadow.
+            */
+            td:nth-of-type(1):before { content: "Created User"; }
+            td:nth-of-type(2):before { content: "Created Date"; }
+            td:nth-of-type(3):before { content: "Comments"; }
+        }        
+        @media only screen and (max-width: 760px), (max-device-width: 1024px) and (min-device-width: 268px){
+            td:before{
+                background-color: #add8e6 !important;
+                padding-left: 1%;
+                margin-left: -6px;
+            }
+        }
+
+        @media only screen and (max-width: 760px){
+     
+            td {
+            //    border: 1px solid #e2e0e0 !important;
+               position: relative !important;
+               padding-left: 50% !important;
+               height: max-content!important;
+               min-height: 6vh !important;
+               line-height: 16px !important;
+               display: flex !important;
+               align-items: center !important;
+               font-size: 1.2rem !important;
+               overflow-x: scroll !important;
+           }
+       
+          td::before{
+               white-space: normal !important;
+               display: flex !important;
+               align-items: center !important;
+               background-color: #add8e6 !important;
+           }
+      
+           
+       }
+
+       .nav_title{
+        text-transform: capitalize;
+        text-align: center;
+       }
+
+       ion-searchbar{
+        .searchbar-input-container{
+            .searchbar-input{
+                background: #FFF !important;
+                border-radius: 30px !important;
+                height: 40px !important;
+                max-width: 400px;
+                font-size: 1.25em !important;
+                border: 1px solid transparent;
+            }
+        }
+    }
+
+    .label-ios {
+        margin: 0px 8px 11px 0 !important;
+    }
+}

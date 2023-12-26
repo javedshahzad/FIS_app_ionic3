@@ -1,0 +1,148 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title style="text-transform: capitalize;"> + Edit Task </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <form [formGroup]="createtaskForm" (submit)="updatetask()">
+      <ion-item>
+        <ion-label stacked>Task No</ion-label>
+        <ion-input readonly type="text" name="seq_number" value="{{this.taskdata[0].task_data_val[0].SEQ_TEXT}}"
+          [formControl]="createtaskForm.controls['seq_number']"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Title</ion-label>
+        <ion-input readonly type="text" name="title" value="{{this.taskdata[0].task_data_val[0].TITLE}}"
+          [formControl]="createtaskForm.controls['title']"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Description</ion-label>
+        <ion-input readonly type="text" name="description" value="{{this.taskdata[0].task_data_val[0].DESCRIPTION}}"
+          [formControl]="createtaskForm.controls['description']"></ion-input>
+
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Start Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" name="start_date" [(ngModel)]="startdatevalue"
+          [formControl]="createtaskForm.controls['start_date']" disabled></ion-datetime>
+      </ion-item>
+
+      <!-- <ion-item>
+        <ion-label stacked>Expected Completion Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" name="due_date" [(ngModel)]="duedatevalue"
+          [formControl]="createtaskForm.controls['due_date']"></ion-datetime>
+        <p *ngIf="createtaskForm.controls.due_date.errors && createtaskForm.controls.due_date.dirty" class='error'>
+          Enter the Expected Completion Date.</p>
+      </ion-item> -->
+      <ion-item>
+          <span>Expected Completion Date</span><br><br>
+          <span><span (click)="opencalendar()" >{{localDate}}</span><span><ion-icon name="clipboard" (click)="opencalendar()"  style="float: right; font-size: 31px;margin-right: 10px;"></ion-icon></span></span><br>
+          <span *ngIf="calendarshow === 1"><ion-calendar name="due_date" (onChange)="onChange($event)"  [options]="options" [type]="string" [format]="'YYYY-MM-DD'">
+          </ion-calendar></span>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label stacked>Next Action Date</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" name="next_action_date" [(ngModel)]="nextactiondatevalue"
+          [formControl]="createtaskForm.controls['next_action_date']" disabled></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Assigned User</ion-label>
+        <ion-input readonly type="text" name="assigned_user" value="{{this.taskdata[0].task_data_val[0].ASSIGNED_TO}}"
+          [formControl]="createtaskForm.controls['assigned_user']"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Status</ion-label>
+        <ion-input readonly type="text" name="STATUS_NAME" value="{{this.taskdata[0].task_data_val[0].STATUS_NAME}}"
+          [formControl]="createtaskForm.controls['STATUS_NAME']">
+        </ion-input>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label stacked>Comments</ion-label>
+        <ion-textarea name="COMMENTS" [formControl]="createtaskForm.controls['COMMENTS']">
+        </ion-textarea>
+        <p *ngIf="createtaskForm.controls.COMMENTS.errors && createtaskForm.controls.COMMENTS.dirty" class='error'>
+          Please enter comments.</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Add Referal User</ion-label>
+        <ionic-selectable item-content [formControl]="createtaskForm.controls['add_user_access']" [items]="userdetails"
+          itemValueField="USER_INFO_ID" itemTextField="USER_SURNAME" [canSearch]="true"
+          (onChange)="addUserAccess($event)" [isMultiple]="true" [shouldStoreItemValue]="true"></ionic-selectable>
+      </ion-item>
+      <ion-list class="agile-login" style="overflow: overlay">
+        <ion-item>
+          <ion-label>User access list</ion-label>
+          <button ion-button icon-start clear item-end class="dash_image" type="button" (click)="showusercontrol()">
+            <ion-icon name="arrow-down"></ion-icon>
+            View
+          </button>
+        </ion-item>
+        <div class="wrapper" [ngStyle]="{'display':showuseraccess}">
+          <ion-item *ngFor="let item of userarry; index as i;" data-parent="#accordionExample"
+            style="border: unset !important;">
+            <div *ngIf="item.INSERT_TYPE != 'Deleted'">
+              <div class="card-body card-bodynew" style="margin-top: 5px;">
+                <table role="table" class="casemanagement">
+                  <thead>
+                    <tr role="row">
+                      <th role="columnheader">User Name</th>
+                      <th role="columnheader">Access</th>
+                      <th role="columnheader">Action</th>
+                    </tr>
+                  </thead>
+                  <ion-card>
+                    <tbody>
+                      <tr role="row">
+                        <td role="cell">{{item.USER_SURNAME}}</td>
+                        <td role="cell">
+                          <ion-item>
+                            <ion-select style="padding-left: unset;" name="user_access" multiple="false"
+                              placeholder="Select access" (ionChange)="changeAccessControl($event, item.USER_INFO_ID)">
+                              <ion-option value="F">Full Control</ion-option>
+                              <ion-option value="V" selected>View Only</ion-option>
+                            </ion-select>
+                          </ion-item>
+                        </td>
+                        <td role="cell">
+                          <span>
+                            <button ion-button type="button" (click)="DeleteUser(i,item.USER_INFO_ID)" color="danger">
+                              <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </ion-card>
+                </table>
+              </div>
+            </div>
+          </ion-item>
+        </div>
+      </ion-list>
+
+
+      <div class="example-center">
+        <button ion-button type="submit" color="Primary">Confirm</button>
+        <button ion-button color="dark" (click)=clearvalues();>Cancel</button>
+      </div>
+
+    </form>
+  </ion-list>
+
+</ion-content>

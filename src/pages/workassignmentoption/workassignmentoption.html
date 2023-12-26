@@ -1,0 +1,166 @@
+
+   <ion-header>
+    <ion-navbar style="background-color:#525b6d">
+       <ion-buttons left>
+          <button (click)="goBack()" class="back-button disable-hover bar-button bar-button-md back-button-md bar-button-default bar-button-default-md show-back-button" ion-button="bar-button" ng-reflect-klass="back-button" ng-reflect-ng-class="back-button-md">
+             <span class="button-inner">
+                <ion-icon class="back-button-icon icon icon-md back-button-icon-md ion-md-arrow-back" role="img" ng-reflect-klass="back-button-icon" ng-reflect-ng-class="back-button-icon-md" aria-label="arrow back" ng-reflect-name="md-arrow-back"></ion-icon>
+                <span class="back-button-text back-button-text-md" ng-reflect-klass="back-button-text" ng-reflect-ng-class="back-button-text-md"></span>
+             </span>
+             <div class="button-effect"></div>
+          </button>
+       </ion-buttons>
+       <ion-title style="text-transform: capitalize;text-align: center" style="font-size: 1.7rem; text-align: center;">
+          Call Work Assignment
+       </ion-title>
+       <ion-buttons right>
+          <button ion-button icon-only style="color: #ffffff;">
+             <ion-icon name="notifications"></ion-icon>
+          </button>
+       </ion-buttons>
+       <ion-buttons right>
+          <button ion-button icon-only style="color: #ffffff;">
+             <ion-icon ios="ios-contact" md="md-contact" size="large" name="contact"></ion-icon>
+          </button>
+       </ion-buttons>
+    </ion-navbar>
+ </ion-header>
+ 
+ <ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+ background-size: cover; background-position: center;
+     background-attachment: fixed;"> 
+    <ion-grid>
+       <ion-row>
+          <ion-col col-12></ion-col>
+       </ion-row>
+       <ion-row class="logo-row" style="padding-bottom: 0px;">
+          <ion-col col-4 style="top: -40px !important;"></ion-col>
+          <ion-col col-4 style="top: -40px !important;">
+             <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+          </ion-col>
+          <ion-col col-4 style="top: -40px !important;"></ion-col>
+       </ion-row>
+    </ion-grid>
+
+    <div style="margin-top: -45px;">
+
+         <div class="row-fluid">
+             <div class="col-md-12" style="margin-bottom:3%;">
+                 <div class="navbar-form" role="search">
+                     <div class="input-group add-on">
+                         <!-- <input class="form-control input-lg txt-search" placeholder="Search value" name="search_txt"
+                             [(ngModel)]="searchData.search_value" type="text">
+                         <div class="input-group-btn">
+                             <button class="btn btn-default sbut" type="submit" (click)='SearchcallManagement()'><i
+                                     class="fa fa-search"></i></button>
+                         </div> -->
+                         <form action="." method="get" (submit)="SearchcallManagement()">
+                              <ion-searchbar placeholder="Search value" name="search_txt"
+                              [(ngModel)]="searchData.search_value">
+                              </ion-searchbar>
+                          </form>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     
+    <ion-grid>
+       <ion-row>
+          <ion-col>
+             <ion-card class="dash_image" text-center (click)="WORK_NOT_STARTED_btn()" style="background:linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                <ion-grid>
+                   <ion-row>
+                      <!-- <ion-col col-3>
+                         </ion-col> -->
+                      <ion-col col-12 style="margin-top: 5px;">
+                         <h2>
+                            <span style="float: left" style="margin-left: 42px;">      WORK NOT STARTED</span>
+                            <ion-badge style="float: right ; margin-right:46px">{{ WORK_NOT_STARTED}}</ion-badge>
+                            <i class="fa fa-chevron-circle-right faright" style="margin-top: 0px"></i> 
+                         </h2>
+                      </ion-col>
+                   </ion-row>
+                </ion-grid>
+             </ion-card>
+          </ion-col>
+       </ion-row>
+       <ion-row>
+          <ion-col>
+             <ion-card class="dash_image" text-center (click)="WORK_IN_PROGRESS_btn()" style="background:linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                <ion-grid>
+                   <ion-row>
+                      <!-- <ion-col col-3>
+                         </ion-col> -->
+                      <ion-col col-12 style="margin-top: 5px;">
+                         <h2>
+                            <span style="float: left" style="margin-left: 42px;">          WORK IN PROGRESS</span>
+                            <ion-badge style="float: right ; margin-right:46px">{{ WORK_IN_PROGRESS}}</ion-badge>
+                            <i class="fa fa-chevron-circle-right faright" style="margin-top: 0px"></i> 
+                         </h2>
+                      </ion-col>
+                   </ion-row>
+                </ion-grid>
+             </ion-card>
+          </ion-col>
+       </ion-row>
+       <ion-row>
+          <ion-col>
+             <ion-card class="dash_image" text-center (click)="PARTIALLY_ASSIGNED_btn()" style="background:linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                <ion-grid>
+                   <ion-row>
+                      <!-- <ion-col col-3>
+                         </ion-col> -->
+                      <ion-col col-12 style="margin-top: 5px;">
+                         <h2>
+                            <span style="float: left" style="margin-left: 42px;">  PARTIALLY ASSIGNED</span>
+                            <ion-badge style="float: right ; margin-right:46px">{{ PARTIALLY_ASSIGNED}}</ion-badge>
+                            <i class="fa fa-chevron-circle-right faright" style="margin-top: 0px"></i> 
+                         </h2>
+                      </ion-col>
+                   </ion-row>
+                </ion-grid>
+             </ion-card>
+          </ion-col>
+       </ion-row>
+       <ion-row>
+          <ion-col>
+             <ion-card class="dash_image" text-center (click)="WORK_WAITING_FOR_CLIENT_APPROVAL_btn()"style="background:linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+             <ion-grid>
+                <ion-row>
+                   <!-- <ion-col col-3>
+                      </ion-col> -->
+                   <ion-col col-12 style="margin-top: 5px;">
+                      <h2>
+                         <span style="float: left" style="margin-left: 42px;">  WORK WAITING FOR CLIENT <br> APPROVAL</span>
+                         <ion-badge style="float: right ; margin-right:46px;margin-top: -15px;">{{ WORK_WAITING_FOR_CLIENT_APPROVAL}}</ion-badge>
+                         <i class="fa fa-chevron-circle-right faright" style="margin-top: -15px;"></i> 
+                      </h2>
+                   </ion-col>
+                </ion-row>
+             </ion-grid>
+             </ion-card>
+          </ion-col>
+       </ion-row>
+    </ion-grid>
+ </ion-content>
+ <style>
+    .block {
+    text-align: center;
+    border-radius: 200px;
+    color: white;
+    font-weight: bold;
+    width: 34px;
+    }
+    .button-md {
+    font-size: 11px;
+    height: 2.6rem;
+    }
+    .card-md h2 {
+    margin: 2px 0;
+    font-size: 1.6rem;
+    font-weight: normal;
+    color: #222;
+    margin-left: -104px;
+    }
+ </style>

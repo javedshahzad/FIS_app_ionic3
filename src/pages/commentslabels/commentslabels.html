@@ -1,0 +1,173 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title style="text-transform: capitalize;text-align: center">Comments</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+<ion-grid>
+    <ion-row>
+        <ion-col col-12></ion-col>
+    </ion-row>
+    <ion-row class="logo-row" style="padding-bottom: 0px;">
+        <ion-col col-4 style="top: -40px !important;"></ion-col>
+        <ion-col col-4 style="top: -40px !important;">
+            <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+        </ion-col>
+        <ion-col col-4 style="top: -40px !important;"></ion-col>
+    </ion-row>
+</ion-grid>
+  <div class="col-md-12">
+
+  <ion-grid>
+      <ion-row>
+          <ion-col>
+              <ion-card class="dash_image" text-center (click)="setDisplaydata(type='My CallMgnt Comments')"  style=" background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                  <ion-grid>
+                      <ion-row>
+                          <ion-col col-2>
+                              <ion-icon name="call" item-start large style="font-size: 2.2rem;"></ion-icon>
+                          </ion-col>
+                          <ion-col col-10>
+                              <h2 class="h2design" style="margin-left:-35px;">
+                                  CM - Call Management
+                                  <ion-badge item-end style="margin-left: 18px;">{{ CmtData.CmtCM.LABEL_COUNT || '0' }}</ion-badge>
+                                  <i class="fa fa-chevron-circle-down faicons" style="float: right;margin-right: 25px;"></i>
+                              </h2>
+                          </ion-col>
+                      </ion-row>
+                  </ion-grid>
+              </ion-card>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <h3 [ngStyle]="{'display':CallMgnt_Comments_display}">Call Management</h3>
+    <div class="accordion" id="casecommentdiv" [ngStyle]="{'display':CallMgnt_Comments_display}">
+      <div class="card" *ngFor="let item of CmtCallMgntList.GetAllCallMgnt; index as i;"
+        data-parent="#accordionExample">
+        <div class="card-header" id="headingComment" style="background-color:white;">
+          <a (click)="showcallCommentUndoBtn(i,item.CALL_LOG_ID,label_type='CMT')" role="button">
+            {{1 + i}}. {{item.CALL_LOG_ID}} -{{ item.REQUESTOR_NAME}}
+          </a>
+          <span style="float: right;"><button ion-button (click)="openCallManagementModal(item.CALL_LOG_ID,item.STATUS_NAME)"
+              color="secondary"><i class="fa fa-comments" aria-hidden="true"></i></button>
+          </span>
+
+        </div>
+
+        <div [attr.id]="'undocallMgntCmtBtn'+i" *ngIf="showCallMgntCmtBtn===i" style="padding: 10px;">
+          <div class="card" *ngFor="let cmt of CallMgntcommentsdetailsall.MyComments; index as i;">
+            <div class="card-body card-bodynew">
+              <p role="row" style="text-align: left;background-color: #fdfdfd;">
+                {{1 + i}}. {{cmt.COMMENTS}}<br />
+                <span style="color: #FF0000;">{{cmt.USER_SURNAME}}</span> <span
+                  style="color: #FF0000;">{{cmt.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div><br>
+    </div>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="setDisplaydata(type='My LPO Comments')"  style=" background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-2>
+                                <ion-icon name="cart" item-start large style="font-size: 2.2rem;"></ion-icon>
+                            </ion-col>
+                            <ion-col col-10>
+                                <h2 class="h2design" style="margin-left:-35px;">
+                                    CM - LPO
+                                    <ion-badge item-end style="margin-left: 115px;">{{ CmtData.CmtLPO.LABEL_COUNT || '0' }}</ion-badge>
+                                    <i class="fa fa-chevron-circle-down faicons" style="float: right;margin-right: 25px;"></i>
+                                </h2>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+      </ion-grid>
+      
+    <h3 [ngStyle]="{'display':LPO_Comments_display}">LPO</h3>
+    <div class="accordion" id="casecommentdiv" [ngStyle]="{'display':LPO_Comments_display}">
+      <div class="card" *ngFor="let item of CmtlpoList.GetAllLPO; index as i;"
+        data-parent="#accordionExample">
+        <div class="card-header" id="headingComment" style="background-color:white;">
+          <a (click)="showlpoCommentUndoBtn(i,item.LPO_ID,label_type='CMT')" role="button">
+            {{1 + i}}. {{item.LPO_ID}} -{{ item.SUPPLIER_NAME}}
+          </a>
+          <span style="float: right;"><button ion-button (click)="openLPOModal(item.LPO_ID)"
+              color="secondary"><i class="fa fa-comments" aria-hidden="true"></i></button>
+          </span>
+
+        </div>
+
+        <div [attr.id]="'undoLPOCmtBtn'+i" *ngIf="showLPOCmtBtn===i" style="padding: 10px;">
+          <div class="card" *ngFor="let cmt of LPOcommentsdetailsall.MyComments; index as i;">
+            <div class="card-body card-bodynew">
+              <p role="row" style="text-align: left;background-color: #fdfdfd;">
+                {{1 + i}}. {{cmt.COMMENTS}}<br />
+                <span style="color: #FF0000;">{{cmt.USER_SURNAME}}</span> <span
+                  style="color: #FF0000;">{{cmt.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div><br>
+    </div>
+
+    <ion-grid>
+      <ion-row>
+          <ion-col>
+              <ion-card class="dash_image" text-center (click)="setDisplaydata(type='My INVENTORY Comments')"  style=" background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                  <ion-grid>
+                      <ion-row>
+                          <ion-col col-2>
+                              <ion-icon name="cube" item-start large style="font-size: 2.2rem;"></ion-icon>
+                          </ion-col>
+                          <ion-col col-10>
+                              <h2 class="h2design" style="margin-left:-24px;">
+                                  CM - INVENTORY
+                                  <ion-badge item-end style="margin-left: 60px;">{{ CmtData.CmtINVENTORY.LABEL_COUNT || '0' }}</ion-badge>
+                                  <i class="fa fa-chevron-circle-down faicons" style="float: right;margin-right: 25px;"></i>
+                              </h2>
+                          </ion-col>
+                      </ion-row>
+                  </ion-grid>
+              </ion-card>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <h3 [ngStyle]="{'display':INVENTORY_Comments_display}">INVENTORY</h3>
+    <div class="accordion" id="casecommentdiv" [ngStyle]="{'display':INVENTORY_Comments_display}">
+      <div class="card" *ngFor="let item of CmtinventoryList.GetAllinventory; index as i;"
+        data-parent="#accordionExample">
+        <div class="card-header" id="headingComment" style="background-color:white;">
+          <p>
+            {{1 + i}}. {{item.INVENTORY_IN_ID}} - {{ item.SUPPLIER_ID}} - {{item.USER_SURNAME}}
+          </p><br>
+          <p>
+            <ion-icon name="chatbubbles"></ion-icon> {{item.COMMENTS}}
+          </p>
+          <p style="float: right;">
+            <ion-icon name="calendar"></ion-icon>
+            <span style="color: #FF0000;"> {{ item.MODIFIED_ON |date:'dd-MMM-yyyy,HH:mm a'}}</span>
+          </p>
+          <!-- <a (click)="showlpoCommentUndoBtn(i,item.LPO_ID,label_type='CMT')" role="button">
+            {{1 + i}}. {{item.LPO_ID}} -{{ item.SUPPLIER_NAME}}
+          </a> -->
+        </div>
+      </div><br>
+    </div>
+
+  </div>
+</ion-content>

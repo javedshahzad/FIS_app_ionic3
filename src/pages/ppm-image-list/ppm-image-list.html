@@ -1,0 +1,179 @@
+<ion-header>
+  <ion-navbar>
+      <ion-title><h3 style="text-align:center !important">{{BUILDING_NAME}} - PPM </h3>
+      </ion-title>
+      <ion-buttons end>
+          <button ion-button (click)="closeModal()">Close</button>
+      </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+  background-attachment: fixed;">
+
+  <ion-card *ngIf="PageType =='CHECK_LIST'">
+    <ion-card-header>
+      {{page_title}}
+    </ion-card-header>
+      <ion-card-content>            
+        <ion-item>
+          <!-- <input type="checkbox" style="margin-left: 50%;width: 17px;height: 20px;" (change)="showcheckbox($event)"/> -->
+          <button item-end type="button" (click)="insertppm()" class="btn btn-primary">Close All CheckList</button>
+        </ion-item>
+        <div class="card">
+          <ion-item class="card-item"> Asset  : {{JOBSCHEDULE_DATA.ASSETDETAIL_NAME || '-'}} </ion-item>
+          <ion-item class="card-item"> Unit  : {{JOBSCHEDULE_DATA.UNIT || '-'}} </ion-item>
+          <ion-item class="card-item"> Area  : {{JOBSCHEDULE_DATA.AREA_CODE || '-'}} </ion-item>
+          <ion-item class="card-item"> Job Id  : {{JOBSCHEDULE_DATA.ASSET_DETAILS_PM_ID || '-'}} </ion-item>
+          <ion-item class="card-item"> Schedule Id  : {{JOBSCHEDULE_DATA.ASSET_SCHEDULE_DAILY_ID || '-'}} </ion-item>
+        </div>
+        
+          <div class="accordion" *ngFor="let item of JobScheduleCheckList; index as i;">
+            <div class="card">
+          <ion-item id="headingOne" class="btn btn-link blc collapsed" data-toggle="collapse" (click)=showUndoBtn(i)>
+            <p style="white-space: pre-line;"> Step {{item.STEP_SEQUENCE}} - {{item.STEP_ACTION}}</p>
+            <p [style.color]="item.MAINT_STATUS==0 ? '#31b0d5' : '#228B22'">Status {{getMaintanceStatus(item.MAINT_STATUS)}}</p>
+            <span> 
+              <span style="font-size: 1rem;" item-start>Comments :  <ion-item>
+                <ion-textarea rows="2" autocomplete="on" autocorrect="on" spellcheck="true" cols="20" [(ngModel)]="item.MAINT_REMARKS" placeholder="Enter Comments..." >
+                </ion-textarea>
+              </ion-item>
+            </span> 
+            
+              <button item-end type="button" style="float: right !important;"  class="btn btn-primary" (click)="statusFreqUpdate(item.CHECKLIST_STATUS,item.ASSET_MAINT_POLICY_ID,item.MAINT_REMARKS)"  [style.background-color]="(item.MAINT_STATUS==1 || item.CHECKLIST_STATUS==2 )? '#228b22' : (item.CHECKLIST_STATUS==1) ? '#bdb76b' : '#a9a9a9'" >update</button>
+              
+            </span>
+          </ion-item>
+          <div [attr.id]="'Btn'+i" *ngIf="showBtn===i">
+            <div class="card-body card-bodynew">
+            </div>
+          </div>
+        </div>
+        </div>
+          <ion-item class="modal-footer">
+            <button  type="button" item-end class="btn btn-danger" (click)="closeModal()">Close</button>
+            <button type="button" item-end class="btn btn-primary" (click)="insertppm()">Close All CheckList</button>
+        </ion-item>
+      </ion-card-content><!-- /.modal-content -->
+  </ion-card>
+
+  <ion-card *ngIf="PageType =='IMAGE'">
+    <ion-card-header>
+      {{page_title}}
+    </ion-card-header>   
+    <ion-item>
+      <ion-thumbnail item-start>
+        <img [src]="upload_src">
+      </ion-thumbnail>
+      <label>Select </label>   <ion-input type="file" accept="image/*" id="file" (change)="onSelectFile($event)" > </ion-input>
+    </ion-item> 
+    <ion-item>
+      <button type="submit" item-end class="btn btn-primary" (click)="savefile()">Upload</button>
+    </ion-item>
+     <ion-slides *ngIf="isImageCount > 0" class="slideroption" autoplay="2000" pager="true"   [loop]="isImageCount > 1" speed="1000">
+        <ion-slide *ngFor="let item of imagelist; index as i;"> 
+          <ion-item>  
+            <span item-start>
+             <p> {{item.FILE_NAME}}</p>
+             <p class="danger-clr" style="font-size: 1rem;">Upload on {{item.CREATED_ON | date:'dd-MMM-yyyy,HH:mm a'}}</p>
+            </span>    
+            <ion-fab  item-end edge style="position: static;">
+              <button ion-fab mini (click)="getfile(item.ROW_NO,item)"><ion-icon name="download"></ion-icon>
+              </button>
+            </ion-fab>   
+          </ion-item>
+          <img [src]="getImagelist(item.ROW_NO,item)"><br>
+      </ion-slide>
+    </ion-slides>
+    <ion-item>
+      <button type="button" item-end class="btn btn-danger" (click)="closeModal()">Close</button>
+    </ion-item>
+  </ion-card>
+
+  <ion-card *ngIf="PageType =='LABOUR'">
+    <ion-card-header>
+      {{page_title}}
+    </ion-card-header>
+      <ion-card-content>            
+        <ion-item>
+          <!-- <input type="checkbox" style="margin-left: 50%;width: 17px;height: 20px;" (change)="showcheckbox($event)"/> -->
+          <!-- <button item-end type="button"  class="btn btn-primary">Update</button> -->
+        </ion-item>
+        <div class="card">
+          <ion-item>
+            <ion-label>Employee</ion-label>
+            <ionic-selectable [(ngModel)]="selected_empId"  placeholder="Select Employee"
+          item-content
+          [formControl]="addLabourForm.controls['APPLICATIONUSER']"
+          itemValueField="APPUSERRESOURCEMASTER"
+          itemTextField="APPUSER"
+          [items]="ResourceList"
+          [canSearch]="true" (onChange)="resourseChange($event)">
+        </ionic-selectable>
+          </ion-item>
+          <ion-item>           
+          <ion-label>Start Date</ion-label>
+            <ion-datetime   name="start_date" [formControl]="addLabourForm.controls['START_DATE']" displayFormat="DD-MM-YYYY" pickerFormat="DD MM YYYY" ngDefaultControl [(ngModel)]="start_date">
+              <ion-icon name="clipboard" style="float: right;font-size: 30px;margin-right: 12px;"></ion-icon>{{start_date}}
+           
+            </ion-datetime ></ion-item> 
+            <!-- <p *ngIf="addLabourForm.controls.START_DATE.errors && addLabourForm.controls.START_DATE.dirty" class='error'>
+              Select the start date.</p> -->
+            <ion-item>
+              <ion-label>Start Time</ion-label>
+            <ion-datetime   name="start_time" [formControl]="addLabourForm.controls['START_TIME']" displayFormat="h:mm A" pickerFormat="h mm A"  ngDefaultControl [(ngModel)]="start_time">
+              <ion-icon name="clipboard" style="float: right;font-size: 30px;margin-right: 12px;"></ion-icon>{{start_time}}
+           
+            </ion-datetime >
+          </ion-item>          
+          <!-- <p *ngIf="addLabourForm.controls.START_TIME.errors && addLabourForm.controls.START_TIME.dirty" class='error'>
+            Select the start TIME.</p> -->
+          
+          <ion-item>
+            <ion-label>End Date</ion-label>
+            <ion-datetime    name="end_date" [formControl]="addLabourForm.controls['END_DATE']" displayFormat="DD-MM-YYYY" pickerFormat="DD MM YYYY" ngDefaultControl [(ngModel)]="end_date">
+              <ion-icon name="clipboard" style="float: right;font-size: 30px;margin-right: 12px;"></ion-icon>{{end_date}}
+          
+            </ion-datetime >
+          </ion-item> <p *ngIf="addLabourForm.controls.END_DATE.errors && addLabourForm.controls.END_DATE.dirty" class='error'>
+            Select the End date.</p>
+            <ion-item>
+              <ion-label>End Time</ion-label>
+            <ion-datetime   name="end_time" [formControl]="addLabourForm.controls['END_TIME']" displayFormat="h:mm A" pickerFormat="h mm A"  ngDefaultControl [(ngModel)]="end_time">
+              <ion-icon name="clipboard" style="float: right;font-size: 30px;margin-right: 12px;"></ion-icon>{{end_time}}
+            
+            </ion-datetime >
+          </ion-item>
+         
+            <p *ngIf="addLabourForm.controls.END_TIME.errors && addLabourForm.controls.END_TIME.dirty" class='error'>
+              Select the End date.</p>
+          <ion-item>
+            <button item-end type="button"  class="btn btn-primary" (click)="addLabour()" [disabled]="!addLabourForm.valid">Add</button>
+          </ion-item>
+        </div>
+        
+          <div class="accordion" *ngFor="let item of labourList; index as i;">
+            <div class="card">
+          <ion-item id="headingOne" class="btn btn-link blc collapsed" data-toggle="collapse" (click)=showUndoBtn(i)>
+            <span item-start>
+            <p style="white-space: pre-line;">{{i+1}}). EmpId {{item.APPLICATIONUSER}} - {{item.EMPNAME}}</p>
+            <p  [style.color]="'#31b0d5'">Start {{item.START_TIME | date:'dd-MMM-yyyy,HH:mm a'}}</p>
+            <p  [style.color]="'#228b22'">End {{item.END_TIME | date:'dd-MMM-yyyy,HH:mm a'}}</p>
+            <p [style.color]="'#f53d3d'">Total Hours : {{item.FINISHED_HOUR}}</p>
+          </span>
+            <span item-end>
+              <button  type="button" style="float: right !important;"  class="btn btn-danger" (click)="deleteLabour(item.RESOURCE_MANAGEMENT_ID)" >
+                <ion-icon name="trash"></ion-icon>
+              </button>
+            </span>
+          </ion-item>
+        </div>
+        </div>
+          <ion-item class="modal-footer">
+            <button  type="button" item-end class="btn btn-danger" (click)="closeModal()">Close</button>
+        </ion-item>
+      </ion-card-content><!-- /.modal-content -->
+  </ion-card>
+</ion-content>

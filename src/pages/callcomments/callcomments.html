@@ -1,0 +1,89 @@
+
+<ion-header  >
+    <ion-navbar>
+            <ion-buttons left> 
+                    <button ion-button (click)="closeModal()"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    </button>      
+        </ion-buttons>
+        <ion-title style="text-transform: capitalize;text-align: center" style="font-size: 1.7rem; text-align: center;">
+            Add Call Comments </ion-title>
+        <ion-buttons right>
+            <button ion-button icon-only style="color: #ffffff;">
+                <ion-icon name="notifications"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-buttons right>
+            <button ion-button icon-only style="color: #ffffff;">
+                <ion-icon ios="ios-contact" md="md-contact" size="large" name="contact"></ion-icon>
+            </button>
+        </ion-buttons>
+        
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-card class="agile-login">
+  <div class="agile-login">
+    <div class="wrapper">
+      <form [formGroup]="callcommentsForm" (submit)="insertCallComments()">
+        <div *ngFor="let calllog of call_statusdata">
+          <ion-input [(ngModel)]="CALL_LOG_ID" type="hidden" value="{{calllog?.CALL_LOG_ID}}" [formControl]="callcommentsForm.controls['CALL_LOG_ID']"></ion-input>
+          <ion-input [(ngModel)]="STATUS" type="hidden" value="{{calllog?.STATUS_NAME}}" [formControl]="callcommentsForm.controls['STATUS']"></ion-input>
+        </div>
+        <div class="w3ls-form">
+          <ion-label position="floating" style="color: black;">Add Comments :</ion-label>
+          <ion-item>
+            <ion-textarea  name="COMMENTS" placeholder="Enter any Comments here..." [formControl]="callcommentsForm.controls['COMMENTS']"></ion-textarea>
+            <p *ngIf="callcommentsForm.controls.COMMENTS.errors && callcommentsForm.controls.COMMENTS.dirty" class='error'>Enter Your Comments.</p>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Select Users</ion-label>
+            <ionic-selectable #searchComponent  placeholder="Select Users"
+              item-content
+              [(ngModel)]="selected"
+              [formControl]="callcommentsForm.controls['user']"
+              itemValueField="RESOURCE_ID"
+              itemTextField="EMPNAME"
+              [items]="userlist"
+              [isMultiple]="true"
+              [canSearch]="true">
+          </ionic-selectable>
+          </ion-item>
+
+          <div style="margin-top: 10px;">
+              <span style="padding-left: 30px;">
+                  <ion-checkbox name="SMS" [formControl]="callcommentsForm.controls['SMS']"></ion-checkbox>
+              </span><span>Sms</span>
+
+              <span style="padding-left: 60px;">
+                  <ion-checkbox name="EMAIL" [formControl]="callcommentsForm.controls['EMAIL']"></ion-checkbox>
+              </span><span>Email</span>
+          </div>
+        </div>
+        <button ion-button  type="submit" style="float: right;width: 100%" color="secondary" [disabled]="!callcommentsForm.valid" >Submit</button>
+      </form>
+    </div>
+  </div>
+</ion-card>
+
+  <ion-list class="agile-login">
+    <ion-list-header>
+        <h2>Comments List</h2>
+    </ion-list-header>
+    <div class="wrapper">
+      <div class="col-md-12 w3ls-form" style="padding-right: 0px; padding-left: 0px;">
+        <div class="accordion" id="accordionExample">
+          <ion-item *ngFor="let item of callcommentsdetails; index as i;" data-parent="#accordionExample" style="border: unset !important;background-color: transparent;">
+              <div  id="headingComment">
+                  <a role="button" style="font-size: 14px;white-space: normal;">
+                      {{i+1}}.{{ item.COMMENTS.toLowerCase( )}}              
+                  </a><br>
+                  <span style="color: red;font-size: 14px;">{{item.CREATED_NAME}}-{{item.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}</span>
+              </div>  
+            </ion-item><br>
+        </div>
+      </div>
+    </div>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,134 @@
+    
+    <ion-header  >
+        <ion-navbar>     
+            <ion-title>
+                    CEO escalated calls</ion-title>
+                    <ion-buttons end>
+                        <button ion-button (click)="closeModal()">Close</button>
+                    </ion-buttons>
+        </ion-navbar>
+    </ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+
+        <ion-grid>
+                <ion-row>
+                    <ion-col col-12></ion-col>
+                </ion-row>
+                <ion-row class="logo-row" style="padding-bottom: 0px;">
+                    <ion-col col-4 style="top: -40px !important;"></ion-col>
+                    <ion-col col-4 style="top: -40px !important;">
+                        <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+                    </ion-col>
+                    <ion-col col-4 style="top: -40px !important;"></ion-col>
+                </ion-row>
+            </ion-grid>
+        
+            <div style="margin-top: -45px;">
+        
+                <div class="row-fluid">
+                    <div class="col-md-12" style="margin-bottom:3%;">
+                        <div class="navbar-form" role="search">
+                            <div class="input-group add-on">
+                                <!-- <input class="form-control input-lg txt-search" placeholder="Search value" name="search_txt"
+                                    [(ngModel)]="searchData.search_value" type="text">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default sbut" type="submit" (click)='SearchcallManagement()'><i
+                                            class="fa fa-search"></i></button>
+                                </div> -->
+                                <ion-searchbar placeholder="Search value" name="search_txt" 
+                    [(ngModel)]="searchData.search_value" (ionInput)="SearchcallManagement()"></ion-searchbar>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    <div class="col-md-12">
+        <div class="accordion" id="accordionExample">
+            <div class="" *ngFor="let item of Callallactivevalue; index as i;">
+                    <ion-row>
+                        <ion-col>
+                            <ion-card class="dash_image" text-center (click)=showUndoBtn(i)  style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                                <ion-grid style="padding:0px;">
+                                    <div class="card-header" id="headingOne" style="background:linear-gradient(90deg,#ff7f80,#e03842) !important;" *ngIf="item.MGR_ESCLATED_COUNT > 0 || item.CEO_ESCLATED_COUNT > 0; else elsepart; ">
+                                        <a  style=" float: left;">
+                                           
+                                           <span style="float: left">{{i + 1}}.{{item.CALL_LOG_ID}} </span><br>
+                                            {{item.ASSIGNEDTO}} - {{item.UNIT}}  
+                                            
+                                        </a>
+                                        <i class="fa fa-chevron-circle-down faicons" role="button"></i>
+                                    </div>
+                                    <ng-template #elsepart>
+                                        <div class="card-header" id="headingOne" style="background:linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                                            <a  style=" float: left;">
+                                               
+                                               <span style="float: left"> {{i + 1}}.{{item.CALL_LOG_ID}} </span><br>
+                                                {{item.ASSIGNEDTO}} - {{item.UNIT}}  
+                                                
+                                            </a>
+                                            <i class="fa fa-chevron-circle-down faicons" role="button"></i>
+                                        </div>
+                                       
+                                    </ng-template>
+                                </ion-grid>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                <div [attr.id]="'undoBtn'+i" *ngIf="showBtn===i">
+                    <div class="card-body card-bodynew">
+                        <table role="table" class="searchinspection" style="background-color: white">
+                            <thead role="rowgroup">
+                                <tr role="row">
+                                    <th role="columnheader"> Call No </th>
+                                    <th role="columnheader">Requestor Name </th>
+                                    <th role="columnheader">Mobile No</th>
+                                    <th role="columnheader">Unit Code</th>
+                                    <th role="columnheader">Complain list</th>
+                                    <th role="columnheader"> Comments </th>
+                                    <th role="columnheader">Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody role="rowgroup">
+                                <tr role="row">
+                                    <td role="cell">{{item.CALL_NO}}</td>
+                                    <td role="cell">{{item.REQUESTOR_NAME}}</td>
+                                    <td role="cell">{{item.MOBILE_NO}}</td>
+                                    <td role="cell">{{item.UNIT}}</td>
+                                    <td role="cell">{{item.COMPLAINT_LIST}}</td>
+                                    <td role="cell">
+                                        <table>
+                                            <thead>
+                                                <th style="font-weight: 400;">CREATED_BY: &nbsp;&nbsp;{{item.COMMENTS_CREATED_BY}}</th>
+                                                <th style="font-weight: 400;">CREATED_DATE:</th>
+                                                <th style="font-weight: 400;">{{item.COMMENTS_CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}</th>
+                                                <th style="font-weight: 400;">Command:</th>
+                                                <th style="font-weight: 400;">{{item.COMMENTS}}</th>
+                                            </thead>
+                                        </table>
+                                    </td>
+                                    <td role="cell"><button ion-button (click)="openModal(item.CALL_LOG_ID,item.UNIT,item.REQUESTOR_NAME)"
+                                            color="secondary"><ion-icon ios="ios-chatbubbles" md="md-chatbubbles"></ion-icon></button>
+                                        </td>
+                                        <button ion-button color="secondary" (click)="createtask(item.CALL_LOG_ID,item.REQUESTOR_NAME,item.UNIT)">
+                                                <i class="fa fa-plus-circle" aria-hidden="true" style="font-size: 11px;">
+                                                      Create Task</i>
+                                                      </button>
+                                        <span *ngIf="item.TASK_COUNT > 0">
+                                            <button ion-button color="secondary" (click)="gettask(item.CALL_LOG_ID)">
+                                                <i class="fa fa-list" aria-hidden="true" style="font-size: 11px;">
+                                                        Task List &nbsp;&nbsp;({{item.TASK_COUNT}})</i></button>
+                                        </span>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>

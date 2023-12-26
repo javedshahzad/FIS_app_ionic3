@@ -1,0 +1,207 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button menuToggle style='width: 100%;margin: 0em;height: 4em'>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title text-center>{{today | date: 'dd-MM-yyyy'}} Task Management</ion-title>
+  </ion-navbar>
+  <ion-toolbar>
+    <form (submit)="SearchTaskDetail()">
+      <ion-searchbar placeholder="Search value" name="search_txt" [(ngModel)]="searchData.search_value">
+      </ion-searchbar>
+    </form>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides pager>
+    <ion-slide>
+      <ion-fab right bottom edge>
+        <button ion-fab mini (click)="createtask()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-fab>
+
+      <!--Activity task-->
+
+      <ion-grid style="padding-left: 10px; padding-right: 10px;">
+        <ion-row>
+        
+          <ion-col col-4>
+            <ion-card text-center padding class="card_btn" (click)="openModal(type = 'Activity')">
+              <h2 class="name_btn">
+                <ion-badge class="badge_task"
+                  style="float: left;z-index: 1;position: absolute;top: 0;right: 0;background-color: #10dc60; font-size: 13px;">
+                  {{ taskdetails.tasklistcount.ACTIVITY_TASK_COUNT || '0' }}</ion-badge>
+              </h2>
+              <img class="icon-btn" src="assets/imgs/activity.png" />
+            </ion-card>
+            <div>
+              <h6>Activity</h6>
+            </div>
+          </ion-col>
+
+          <ion-col col-4>
+            <ion-card class="card_btn" text-center padding (click)="openModal(type = 'Important')">
+              <h2 class="name_btn">
+                <ion-badge class="badge_task"
+                  style="float: left;z-index: 1;position: absolute;top: 0;right: 0;background-color: #10dc60; font-size: 13px;">
+                  {{ taskdetails.tasklistcount.IMPORTANT_TASK || '0' }}</ion-badge>
+              </h2>
+              <img src="assets/imgs/important.png" class="icon-btn" />
+            </ion-card>
+            <div>
+              <h6>Imp</h6>
+            </div>
+          </ion-col>
+
+          <ion-col col-4>
+            <ion-card class="card_btn" text-center padding (click)="openModal(type = 'Personal')">
+              <h2 class="name_btn">
+                <ion-badge class="badge_task"
+                  style="float: left;z-index: 1;position: absolute;top: 0;right: 0;background-color: #10dc60; font-size: 13px;">
+                  {{ taskdetails.tasklistcount.PERSONAL_TASK || '0' }}</ion-badge>
+              </h2>
+              <img src="assets/imgs/self.png" class="icon-btn" />
+            </ion-card>
+            <div>
+              <h6>Self</h6>
+            </div>
+          </ion-col>
+
+          <ion-col col-4>
+            <ion-card class="card_btn" text-center padding>
+              <h2 class="name_btn">
+                <ion-badge class="badge_task" (click)="openModal(type = 'ActiveAll')"
+                  style="float: left;z-index: 1;position: absolute;top: 0;left:0;background-color: #10dc60; font-size: 13px; margin-left: unset !important;">
+                  {{ taskdetails.tasklistcount.TASK_COUNT || '0' }}</ion-badge>
+                <ion-badge class="badge_task" (click)="openModal(type = 'Active')"
+                  style="float: left;z-index: 1;position: absolute;top: 0;right: 0;background-color: #10dc60; font-size: 13px;">
+                  {{ taskdetails.tasklistcount.ACTIVE_TASK || '0' }}</ion-badge>
+              </h2>
+              <img src="assets/imgs/active.png" class="icon-btn" />
+            </ion-card>
+            <div>
+              <h6>Active</h6>
+            </div>
+          </ion-col>
+
+          <ion-col col-4>
+            <ion-card class="card_btn" text-center padding>
+              <h2 class="name_btn">
+                <ion-badge class="badge_task" (click)="openModal(type = 'ActiveOverdue')"
+                  style="float: left;z-index: 1;position: absolute;top: 0;left:0;background-color: #ffa500; font-size: 13px; margin-left: unset !important;">
+                  {{ taskdetails.tasklistcount.USER_OVERDUE_TASK  || '0' }}</ion-badge>
+                <ion-badge class="badge_task" (click)="openModal(type = 'Overdue')"
+                  style="float: left;z-index: 1;position: absolute;top: 0;right: 0;background-color: #10dc60; font-size: 13px;">
+                  {{ taskdetails.tasklistcount.OVERDUE_TASK || '0' }}</ion-badge>
+              </h2>
+              <img src="assets/imgs/overdue.png" class="icon-btn" />
+            </ion-card>
+            <div>
+              <h6>OverDue</h6>
+            </div>
+          </ion-col>
+
+          <ion-col col-4>
+            <ion-card class="card_btn" text-center padding (click)="openModal(type = 'Referal')">
+              <h2 class="name_btn">
+                <ion-badge class="badge_task"
+                  style="float: left;z-index: 1;position: absolute;top: 0;right: 0;background-color: #10dc60; font-size: 13px;">
+                  {{ taskdetails.tasklistcount.REFERAL_TASK || '0' }}</ion-badge>
+              </h2>
+              <img src="assets/imgs/referral.png" class="icon-btn" />
+            </ion-card>
+            <div>
+              <h6>Referal</h6>
+            </div>
+          </ion-col>
+
+          <ion-col col-4>
+            <ion-card class="card_btn" text-center padding (click)="openModal(type = 'Completed')">
+              <h2 class="name_btn">
+                <ion-badge class="badge_task"
+                  style="float: left;z-index: 1;position: absolute;top: 0;right: 0;background-color: #10dc60; font-size: 13px;">
+                  {{ taskdetails.tasklistcount.COMPLETED_TASK || '0' }}</ion-badge>
+              </h2>
+              <img src="assets/imgs/completed.png" class="icon-btn" />
+            </ion-card>
+            <div>
+              <h6>Completed</h6>
+            </div>
+          </ion-col>
+
+          <ion-col col-4>
+            <ion-card class="card_btn" text-center padding (click)="openModal(type = 'All')">
+              <h2 class="name_btn">
+                <ion-badge class="badge_task"
+                  style="float: left;z-index: 1;position: absolute;top: 0;right: 0;background-color: #10dc60; font-size: 13px;">
+                  {{ taskdetails.tasklistcount.ALL_TASK || '0' }}</ion-badge>
+              </h2>
+              <img src="assets/imgs/all_tasks.png" class="icon-btn" />
+            </ion-card>
+            <div>
+              <h6>All Task</h6>
+            </div>
+          </ion-col>
+       
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+
+    <ion-slide style="display: block !important;overflow: auto !important;">
+      <ion-fab right bottom edge>
+        <button ion-fab mini (click)="createtask()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-fab>
+      
+      <ion-grid style="width: fit-content; padding-left: 10px; padding-right: 10px;">
+        <ion-row>
+          <div *ngFor="let item of taskdetails.assignedtaskList; index as i;">
+            <ion-col col-4>
+              <ion-card text-center padding class="card_btn">
+                <h2 class="name_btn">
+                  <ion-badge class="badge_task" color="primary"
+                    style="float: left;z-index: 1;position: absolute;top: 0;left: 0; font-size: 13px; margin-left: unset !important;"
+                    (click)="openUserTaskModal(type = 'USER',item.ASSIGNED_USER_INFO_ID,item.TASK_COUNT,item.ASSIGNED_TO)">
+                    {{ item.TASK_COUNT  || '0' }}</ion-badge>
+                </h2>
+                <h2 class="name_btn">
+                  <ion-badge class="badge_task"
+                    style="float: left;z-index: 1;position: absolute;top: 0;right: 0;background-color: orange; font-size: 13px; "
+                    (click)="openUserTaskModal(type = 'USEROVERDUE',item.ASSIGNED_USER_INFO_ID,item.TASK_COUNT,item.ASSIGNED_TO)">
+                    {{ item.OVERDUE_TASK  || '0' }}</ion-badge>
+                </h2>
+                <ion-avatar item-start>
+                  <ion-fab color="secondary" color="light" top left edge style="top: 66px !important;
+                    margin-left: 53px;">
+                    <button ion-fab mini style="width: 18px !important;
+                        height: 18px !important;background-color: currentColor;">
+                      <ion-icon></ion-icon>
+                    </button>
+                  </ion-fab>
+                  <span *ngIf="item.MYPROFILECOUNT > 0">
+                    <img style="width: 70px;" class="icon-btn" class="myprofile-picture"
+                      [src]="getImage(item.PROFILE_IMG_ID)">
+                  </span>
+                  <span *ngIf="item.MYPROFILECOUNT == 0">
+                    <img style="width: 70px;" class="icon-btn" class="myprofile-picture"
+                      src="assets/imgs/no-found-photo.png">
+                  </span>
+                </ion-avatar>
+              </ion-card>
+              <div>
+                <h6 style="font-size: 1.3rem !important;">
+                  {{ item.ASSIGNED_TO.length > 15 ? item.ASSIGNED_TO.substring(0,15)+"..." : item.ASSIGNED_TO }}</h6>
+              </div>
+            </ion-col>
+          </div>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+
+  </ion-slides>
+</ion-content>

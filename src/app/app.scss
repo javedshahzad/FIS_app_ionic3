@@ -1,0 +1,106 @@
+// http://ionicframework.com/docs/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+.bar-profile {
+    //background-color: #488aff;
+    background-image: linear-gradient(to right, #6b78d1, #5d6ec0, #5064af, #435b9f, #37518e, #425491, #4c5895, #555b98, #766caf, #997ec5, #bc8fda, #e1a1ee) !important;
+    height: 175px;
+}
+.normalToast { .toast-message { border-radius: 0.65rem !important; background: #f0f1f1;color: #2e2d2d } }
+
+.profile {
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    padding-top: 15px;
+    background-image: linear-gradient(to right, #6b78d1, #5d6ec0, #5064af, #435b9f, #37518e, #425491, #4c5895, #555b98, #766caf, #997ec5, #bc8fda, #e1a1ee) !important;
+}
+.profile .name {
+    color: #FFFFFF;
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+}
+.profile-picture {
+    border-radius: 50%;
+    background-color: #fff;
+    height: 93px;
+    width: 100px;
+}
+.menu .has-header{
+    top: 169px;
+}
+modal-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  
+  @media not all and (min-height: 600px) and (min-width: 768px) {
+    ion-modal ion-backdrop {
+      visibility: hidden;
+    }
+  }
+  
+  @media only screen and (min-height: 0px) and (min-width: 0px) {
+    .modal-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    @media only screen and (max-width: 420px){
+.profile-picture {
+    border-radius: 50%;
+    background-color: #fff;
+    height: 93px !important;
+    width: 100px !important;
+}
+}
+  .toolbar-background-md{
+    border:none;
+    background-image: linear-gradient(to right, #6b78d1, #5d6ec0, #5064af, #435b9f, #37518e, #425491, #4c5895, #555b98, #766caf, #997ec5, #bc8fda, #e1a1ee) !important;
+}
+.toolbar-background-ios{
+    background-image: linear-gradient(to right, #6b78d1, #5d6ec0, #5064af, #435b9f, #37518e, #425491, #4c5895, #555b98, #766caf, #997ec5, #bc8fda, #e1a1ee) !important;
+}
+@media only screen and (max-width: 420px){
+.profile {
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    position: relative;
+    background-color: #7c6fb3;
+}
+}
+
+ion-app.platform-ios12 ion-content { pointer-events: auto; /*fix scroll lock on ios12.2*/ }
+
+}

@@ -1,0 +1,83 @@
+
+<ion-header>
+    <ion-toolbar>
+            <ion-buttons left>
+                    <button ion-button icon-only menuToggle style="color: #ffffff;">
+                        <ion-icon slot="icon-only" name='menu'></ion-icon>
+                        </button>
+                </ion-buttons>
+        <ion-title style="text-transform: capitalize;text-align: center" style="font-size: 1.7rem; text-align: center;">
+             CALL  Notification List</ion-title>
+                <ion-buttons right> 
+                        <button ion-button (click)="closeModal()">Close
+                        </button>      
+                    </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="list-avatar-page">
+
+    <ion-list>
+        <ion-list-header>Today</ion-list-header>
+        <div *ngFor="let item of notificationall.TodayNotification; index as i;">
+            <a (click)="openModel(item.ID,item.LABEL_ID,item.LABEL_TYPE,item.CASE_REQUEST_ID,item.STATUS_NAME,item.LEASE_NO)" role="button">
+                <ion-item *ngIf="item.LABEL_TYPE == 'CM'">
+                    <ion-avatar item-start>
+                        <div>
+                            <img style="border-radius: 0% !important;overflow: hidden;width: 40px;height: 40px;background-color: black;"
+                            src="assets/imgs/call_manage.png">
+                        </div>
+                            
+                    </ion-avatar>
+                    <h2>{{item.LABEL_ID}}</h2>
+                    <h2>{{item.USERNAME}}</h2>
+                    <p>{{item.COMMENTS}}</p>
+                    <ion-note item-end>{{item.CREATED_ON |date:'HH:mm a'}}</ion-note>
+                </ion-item>
+            </a>
+        </div>
+    </ion-list>
+    <ion-list>
+
+        <ion-list-header>Yesterday</ion-list-header>
+        <div *ngFor="let item of notificationall.YesterdayNotification; index as i;">
+            <a (click)="openModel(item.ID,item.LABEL_ID,item.LABEL_TYPE,item.CASE_REQUEST_ID,item.STATUS_NAME,item.LEASE_NO)" role="button">
+                <ion-item *ngIf="item.LABEL_TYPE == 'CM'">
+                    <ion-avatar item-start>
+                            <div>
+                                    <img style="border-radius: 0% !important;overflow: hidden;width: 40px;height: 40px;background-color: black;"
+                                    src="assets/imgs/call_manage.png">
+                                </div>
+                    </ion-avatar>
+                    <h2>{{item.LABEL_ID}}</h2>
+                    <h2>{{item.USERNAME}}</h2>
+                    <p>{{item.COMMENTS}}</p>
+                    <ion-note item-end>{{item.CREATED_ON |date:'HH:mm a'}}</ion-note>
+                </ion-item>
+            </a>
+
+        </div>
+    </ion-list>
+
+    <!-- <ion-list>
+
+        <ion-list-header>Last Week</ion-list-header>
+        <div *ngFor="let item of notificationall.LastWeekNotification; index as i;">
+            <a (click)="openModel(item.LABEL_ID,item.LABEL_TYPE,item.CASE_REQUEST_ID,item.STATUS_NAME,item.LEASE_NO)" role="button">
+                <ion-item>
+                    <ion-avatar item-start>
+                            <div *ngIf="item.LABEL_TYPE == 'CM'">
+                                    <img style="border-radius: 0% !important;overflow: hidden;width: 40px;height: 40px;background-color: black;"
+                                    src="assets/imgs/call_manage.png">
+                                </div>
+                    </ion-avatar>
+                    <h2>{{item.LABEL_ID}}</h2>
+                    <h2>{{item.USERNAME}}</h2>
+                    <p>{{item.COMMENTS}}</p>
+                    <ion-note item-end>{{item.CREATED_ON |date:'HH:mm a'}}</ion-note>
+                </ion-item>
+            </a>
+        </div>
+    </ion-list> -->
+
+</ion-content>

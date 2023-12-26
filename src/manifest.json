@@ -1,0 +1,13 @@
+{
+  "name": "Flexion",
+  "short_name": "FHOP",
+  "start_url": "index.html",
+  "display": "standalone",
+  "icons": [{
+    "src": "assets/imgs/logo_new.png",
+    "sizes": "199x146",
+    "type": "image/png"
+  }],
+  "background_color": "#4e8ef7",
+  "theme_color": "#4e8ef7"
+}

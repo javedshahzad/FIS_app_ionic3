@@ -1,0 +1,161 @@
+<!--
+  Generated template for the ReceiptPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar style="background-color:#525b6d">
+    <ion-title>+ Create Call </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+<div class="agile-login">
+
+  <div class="wrapper">
+
+    <!-- <a href="" class="bst"> + Add Receipt Details</a> -->
+    <!-- <img src="./images/logo.png" style="margin-top:10%;"> -->
+    <form [formGroup]="createcallForm" (submit)="insertCallData()">
+        <div class="w3ls-form">
+
+          <label>Requestor Name</label>
+          <input type="text" name="requestor_name" placeholder="Requestor Name" [formControl]="createcallForm.controls['requestor_name']" /> 
+          <p *ngIf="createcallForm.controls.requestor_name.errors && createcallForm.controls.requestor_name.dirty" class='error'>Enter the  Requestor Name.</p>
+
+          <label>Mobile No</label>
+            <input type="number" name="code" placeholder="code" [(ngModel)]="code" [formControl]="createcallForm.controls['code']" style="width: 20%;"/>
+            <input type="number" (change)="moblie_no_Change($event)" name="mobile" placeholder="mobile" [(ngModel)]="mobile" [formControl]="createcallForm.controls['mobile']" style="width: 78%;" />
+            <p *ngIf="moblie_no_error != ''" class='error'>Please Enter the correct number</p>
+          
+
+
+          <label>Email </label>
+            <input type="text" (change)="email_Change($event)"  name="email" placeholder="email " [(ngModel)]="email" [formControl]="createcallForm.controls['email']"/>
+            <p *ngIf="createcallForm.controls.email.errors && createcallForm.controls.email.dirty && email_validation" class='error'>Enter the email</p>   
+
+            <ion-item>
+              <ion-label>Location</ion-label>
+              <ionic-selectable
+            item-content
+            [formControl]="createcallForm.controls['location']"
+            itemValueField="LOCATION_ID"
+            itemTextField="DESCRIPTION"
+            [items]="locationList"
+            [canSearch]="true"
+            (onChange)="LocationChange($event)">
+          </ionic-selectable>
+            </ion-item>
+
+          <!-- <ion-item>
+              <ion-label>Location</ion-label>
+              <ion-select class="select1"  interface="popover"  [(ngModel)]="location"  [formControl]="createcallForm.controls['location']" (ionChange)="setbuilding(location)" >
+                  <ion-option value="0">Select Building</ion-option>
+                  <ion-option value="{{location.LOCATION_ID}}" *ngFor = "let location of locationList" > {{location.DESCRIPTION}}</ion-option>
+              </ion-select>   
+              <p *ngIf="createcallForm.controls.location.errors && createcallForm.controls.location.dirty" class='error'>Select a Location.</p>
+          </ion-item> -->
+
+          <ion-item *ngIf="selectedBuilding">
+            <ion-label>Building</ion-label>
+            <ionic-selectable
+          item-content
+          [formControl]="createcallForm.controls['building']"
+          itemValueField="BUILDING_ID"
+          itemTextField="BUILDING_NAME"
+          [items]="selectedBuilding"
+          [canSearch]="true"
+          (onChange)="BuildingChange($event)">
+        </ionic-selectable>
+          </ion-item>
+
+          <!-- <ion-item *ngIf="selectedBuilding">
+            <ion-label>Building</ion-label>
+            <ion-select (ionChange)="setunit(building)"  interface="popover" [formControl]="createcallForm.controls['building']"  [(ngModel)]="building">
+                <ion-option value="0">Select Building</ion-option>
+                <ion-option value="{{building.BUILDING_ID}}" *ngFor="let building of selectedBuilding">{{building.BUILDING_NAME}}</ion-option>
+            </ion-select>
+            <p *ngIf="createcallForm.controls.building.errors && createcallForm.controls.building.dirty" class='error'>Select a Buliding.</p>
+          </ion-item> -->
+
+          <ion-item *ngIf="selectedUnit">
+            <ion-label>Unit</ion-label>
+            <ionic-selectable
+          item-content
+          [formControl]="createcallForm.controls['unit']"
+          itemValueField="UNIT_ID"
+          itemTextField="UNIT"
+          [items]="selectedUnit"
+          [canSearch]="true"
+          (onChange)="unitChange($event)">
+        </ionic-selectable>
+          </ion-item>
+
+          <!-- <ion-item *ngIf="selectedUnit"> 
+            <ion-label>Unit</ion-label>
+            <ion-select  [formControl]="createcallForm.controls['unit']" interface="popover" [(ngModel)]="unit">
+                <ion-option value="0">Select Unit</ion-option>
+                <ion-option value="{{unit.UNIT_ID}}" *ngFor="let unit of selectedUnit">{{unit.UNIT}}</ion-option>
+            </ion-select>
+            <p *ngIf="createcallForm.controls.unit.errors && createcallForm.controls.unit.dirty" class='error'>Select a Buliding.</p>
+          </ion-item> -->
+
+          <ion-item>
+            <ion-label>Complaint</ion-label>
+            <ionic-selectable
+          item-content
+          [formControl]="createcallForm.controls['complaint']"
+          itemValueField="COMPLAINT_ID"
+          itemTextField="COMPLAINT_DESCRIPTION"
+          [items]="complaintList"
+          [canSearch]="true"
+          [isMultiple]="true"
+          (onChange)="complaintChange($event)">
+        </ionic-selectable>
+          </ion-item>
+
+          <ion-item *ngIf="selecteduser">
+            <ion-label>Assigned to</ion-label>
+            <ionic-selectable 
+          item-content
+          [formControl]="createcallForm.controls['Assigned_to']"
+          itemValueField="RESORCE_ID"
+          itemTextField="RESOURCE_NAME"
+          [items]="selecteduser"
+          [canSearch]="true"
+          (onChange)="userChange($event)">
+        </ionic-selectable>
+          </ion-item>
+
+          <!-- <ion-item>
+            <ion-label>Complaint</ion-label>             
+            <ion-select multiple="true" class="select1"  [formControl]="createcallForm.controls['complaint']" >
+                <ion-option value="0">Select Complaint</ion-option>
+                <ion-option value="{{complaint.COMPLAINT_ID}}" *ngFor = "let complaint of complaintList" > {{complaint.COMPLAINT_DESCRIPTION}}</ion-option>
+            </ion-select>
+            <p *ngIf="createcallForm.controls.complaint.errors && createcallForm.controls.complaint.dirty" class='error'>Select a Unit.</p>
+          </ion-item> -->
+
+          <ion-item>
+            <label>Select</label>
+            <input type="file" id="file" multiple (change)="onSelectFile($event)" [formControl]="createcallForm.controls['file']"/>
+          </ion-item>
+            <label>Comments</label> 
+            <ion-textarea name="comments" placeholder="Comments" rows="4" cols="50" [(ngModel)]="comments" [formControl]="createcallForm.controls['comments']"></ion-textarea>
+            <p *ngIf="createcallForm.controls.comments.errors && createcallForm.controls.comments.dirty" class='error'>Enter the Comments</p>   
+
+      </div>
+      <div style="margin-top:3%;color: #fff !important;">
+          <button style="float: left; color: #fff;" class="bst2" (click)=resetForm();>Cancel</button>
+          <button type="submit" style="float: right; color: #fff !important;" [disabled]="!createcallForm.valid" class="bst1">Submit</button>
+      </div> 
+    </form>
+  </div>
+</div>
+</ion-content>

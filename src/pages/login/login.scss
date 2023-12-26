@@ -1,0 +1,41 @@
+page-login {
+    ion-content{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    }
+    
+    .normalToast { 
+      .toast-message { 
+        border-radius: 0.65rem !important; 
+        background: #06dc3f !important;
+      } 
+      .toast-ios-background{
+        border-radius: 0.65rem !important; 
+        background: #06dc3f !important;
+      }   
+
+    }
+    .toast-message {
+      white-space: pre-line;
+    }
+
+    .item.item-md .checkbox-md {
+        margin: 9px 10px 9px 4px !important;
+      }
+
+      .error-message{
+        color: red;
+      }
+
+      .passwordIcon {
+        font-size: 3rem !important;
+        position: relative !important;
+        top: 25px !important;
+        margin: 0 auto !important;
+        color: #488aff;
+    }
+}
+
+ 

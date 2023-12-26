@@ -1,0 +1,247 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons left>
+            <button ion-button (click)="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </button>
+        </ion-buttons>
+        <ion-title style="text-transform: capitalize;text-align: center">Update Task</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+    <ion-item style="border-bottom: 1px solid;">
+        <h2>Task ID: {{TASK_ID}}</h2>
+        <h2>{{TITLE}} - {{SEQ_TEXT}}</h2>
+        <p>{{CREATED_BY_NAME}}</p>
+        <p>{{ASSIGNED_TO}}</p>
+    </ion-item>
+
+    <div *ngIf="showsignature == 0" style="margin-top: 6px;">
+
+        <ion-list>
+            <ion-item>
+                <ion-label stacked style="font-size: 18px;">Enter Job Card</ion-label>
+                <ion-input type="text" [(ngModel)]="jobcardno" style="border-bottom: 1px solid;"></ion-input>
+            </ion-item>
+            <!-- <ion-item>
+                <ion-label stacked style="font-size: 18px;">Enter Job Description</ion-label>
+                <ion-textarea name="jobdescripton" [(ngModel)]="jobdescripton" style="border-bottom: 1px solid;">
+                </ion-textarea>
+            </ion-item> -->
+            <ion-item style="margin-top: 16px;">
+                <ion-card style="margin-left: 0px; width: auto;" *ngIf="base64Image">
+                    <img [src]="base64Image" style="height: 390px;" />
+                    <ion-row no-padding style="border: 0px !important; margin-left: 1px;">
+                        <ion-col style="border: 0px !important;">
+                            <button ion-button clear small color="danger" icon-start (click)="deletePhoto(id)">
+                                <ion-icon name='trash'></ion-icon>
+                                Delete
+                            </button>
+                        </ion-col>
+                        <ion-col text-center style="border: 0px !important;">
+                            <!-- <button ion-button clear small color="secondary" icon-start (click)="Uploadmyprofile(id)">
+                                <ion-icon name='done-all'></ion-icon>
+                                Upload
+                            </button> -->
+                        </ion-col>
+                    </ion-row>
+                </ion-card>
+                <ion-card (click)="openBrowser()" *ngIf="showScanBtn == 0"
+                    style="margin-left: 0px; border: dotted !important;height: 80px;background-color: #52f1bb;margin: 0px !important;width: auto;border-radius: 15px;">
+                    <ion-grid style="padding: 0px !important;">
+                        <ion-row style="border: 0px !important; margin-left: 1px;">
+                            <ion-col col-8 style="border: 0px !important;">
+                                <p style="font-size: 20px;margin-top: 16px;text-align: center;">Scan Job Card</p>
+                            </ion-col>
+                            <ion-col col-4 style="border: 0px !important;">
+                                <button type="button" style="background-color: #52f1bb;">
+                                    <ion-icon style="font-size: 52px;background-color: #52f1bb;margin-top: 5px;"
+                                        name="qr-scanner"></ion-icon>
+                                </button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+            </ion-item>
+
+            <ion-grid>
+                
+                <!-- <ion-row style="border: 0px !important;">
+                    <ion-col col-6 style="border: 0px !important;">
+                        <button type="button" ion-fab mini (click)="openBrowser()">
+                            <ion-icon name="camera"></ion-icon>
+                        </button>
+                    </ion-col>
+                    <ion-col col-6 style="border: 0px !important;">
+                        <span *ngIf="submitJobCardNo == 0">
+                            <button ion-button (click)="validateticketno()" color="secondary"
+                                style="float: right; text-transform: initial;" round>Submit</button>
+                        </span>
+                        <span *ngIf="submitJobCardNo == 1">
+                            <button ion-button color="medium"
+                                style="float: right; background-color: #b7b5b5;text-transform: initial;"
+                                round>Submit</button>
+                        </span>
+                    </ion-col>
+                </ion-row> -->
+
+                <ion-row>
+                    <ion-col col-12 style="border: 0px !important; text-align: center;">
+                        <span>
+                            <button ion-button (click)="completeWithoutFeedback()" color="secondary"
+                                style="height: 30px;text-transform: initial;font-size: 15px;"
+                                round>Submit Without feedback</button>
+                        </span>                                
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-list>
+
+    </div>
+
+    <div class="agile-login" *ngIf="showsignature == 0">
+        <ion-item style="margin-top: 12px;">
+            <ion-card style="margin-left: 0px; width: auto; margin: 0px !important;">
+                <ion-list>
+                    <button ion-item (click)="selecttype(5)"
+                        [ngStyle]="{'background-color': type5 == 1 ? '#fbe9d1' : '#fff'}">
+                        <ion-grid style="padding: 0px !important;">
+                            <ion-row style="border: 0px !important; margin-left: 1px;">
+                                <ion-col col-3 style="border: 0px !important;">
+                                    <img style="width: 75%;" src="assets/imgs/strong-satisfied.png" />
+                                </ion-col>
+                                <ion-col col-9 style="border: 0px !important;">
+                                    <p style="margin-top: 10px;font-size: 16px;">Strongly Satisfied</p>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </button>
+
+                    <button ion-item (click)="selecttype(4)"
+                        [ngStyle]="{'background-color': type4 == 1 ? '#fbe9d1' : '#fff'}">
+                        <ion-grid style="padding: 0px !important;">
+                            <ion-row style="border: 0px !important; margin-left: 1px;">
+                                <ion-col col-3 style="border: 0px !important;">
+                                    <img style="width: 75%;" src="assets/imgs/satisfied.png" />
+                                </ion-col>
+                                <ion-col col-9 style="border: 0px !important;">
+                                    <p style="margin-top: 10px;font-size: 16px;">Satisfied</p>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </button>
+
+                    <button ion-item (click)="selecttype(3)"
+                        [ngStyle]="{'background-color': type3 == 1 ? '#fbe9d1' : '#fff'}">
+                        <ion-grid style="padding: 0px !important;">
+                            <ion-row style="border: 0px !important; margin-left: 1px;">
+                                <ion-col col-3 style="border: 0px !important;">
+                                    <img style="width: 75%;" src="assets/imgs/fair.png" />
+                                </ion-col>
+                                <ion-col col-9 style="border: 0px !important;">
+                                    <p style="margin-top: 10px;font-size: 16px;">Fair</p>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </button>
+
+                    <button ion-item (click)="selecttype(2)"
+                        [ngStyle]="{'background-color': type2 == 1 ? '#fbe9d1' : '#fff'}">
+                        <ion-grid style="padding: 0px !important;">
+                            <ion-row style="border: 0px !important; margin-left: 1px;">
+                                <ion-col col-3 style="border: 0px !important;">
+                                    <img style="width: 75%;" src="assets/imgs/unsatisfied.png" />
+                                </ion-col>
+                                <ion-col col-9 style="border: 0px !important;">
+                                    <p style="margin-top: 10px;font-size: 16px;">Unsatisfied</p>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </button>
+
+                    <button ion-item (click)="selecttype(1)"
+                        [ngStyle]="{'background-color': type1 == 1 ? '#fbe9d1' : '#fff'}">
+                        <ion-grid style="padding: 0px !important;">
+                            <ion-row style="border: 0px !important; margin-left: 1px;">
+                                <ion-col col-3 style="border: 0px !important;">
+                                    <img style="width: 75%;" src="assets/imgs/strongly-unsatisfied.png" />
+                                </ion-col>
+                                <ion-col col-9 style="border: 0px !important;">
+                                    <p style="margin-top: 10px;font-size: 16px;">Strongly Unsatisfied</p>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </button>
+
+                </ion-list>
+                <ion-item style="margin-top: 6px;">
+                    <ion-textarea name="comments" placeholder="Enter comments..." [(ngModel)]="comments"
+                        style="border-bottom: 1px solid;">
+                    </ion-textarea>
+                </ion-item>
+                <ion-item>
+                    <!-- <p style="font-size: 18px;">Customer Signature</p> -->
+                    <ion-item style="background-color: #e9f5ff;" *ngIf="signatureImage">
+                        <div>
+                            <img [src]="signatureImage" />
+                        </div>
+                    </ion-item>
+                </ion-item>
+                <ion-item>
+                    <ion-grid>
+                        <ion-row style="border: 0px !important;">
+                            <ion-col col-6 style="border: 0px !important;">
+                                <span *ngIf="showsignaturebtn == 0">
+                                    <button ion-button (click)="openSignatureModel()" color="secondary"
+                                        style="float: right;height: 30px;text-transform: initial;font-size: 15px;"
+                                        round>
+                                        Signature
+                                    </button>
+
+                                </span>
+                                <span *ngIf="showsignaturebtn == 1">
+                                    <button ion-button
+                                        style="float: right;height: 30px;text-transform: initial;font-size: 15px; background-color: #b7b5b5"
+                                        round>
+                                        Signature
+                                    </button>
+                                </span>
+
+                            </ion-col>
+                            <ion-col col-6 style="border: 0px !important;">
+                                <span>
+                                    <button ion-button (click)="insertCustomerFeedback()" color="secondary"
+                                        style="height: 30px;text-transform: initial;font-size: 15px;"
+                                        round>Submit</button>
+                                </span>                                
+                            </ion-col>                            
+                        </ion-row>                        
+                    </ion-grid>
+
+                </ion-item>
+            </ion-card>
+        </ion-item>
+    </div>
+
+    <div *ngIf="showsignature == 1">
+        <signature-pad [options]="signaturePadOptions" id="signatureCanvas"></signature-pad>
+        <ion-grid>
+            <ion-row>
+                <ion-col col-4>
+                    <button ion-button full color="danger" (click)="drawCancel()">Cancel</button>
+                </ion-col>
+                <ion-col col-4>
+                    <button ion-button full color="light" (click)="drawClear()">Clear</button>
+                </ion-col>
+                <ion-col col-4>
+                    <button ion-button full color="secondary" (click)="drawComplete()">Done</button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+
+</ion-content>

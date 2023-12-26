@@ -1,0 +1,298 @@
+<!--
+  Generated template for the AssetpreventivemaintancePage page.
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+--> 
+<ion-header>  
+  <ion-navbar>
+      <ion-title>Asset Detail Preventive Maintance</ion-title>
+      <ion-buttons end>
+          <button ion-button (click)="closeModal()">Close</button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="preventiveMaintanceTab" color="light" background='primary_1'>
+      <ion-segment-button value="asset">
+          Asset Detail
+      </ion-segment-button>
+      <ion-segment-button value="sub">
+          Sub Detail
+      </ion-segment-button>
+      <ion-segment-button value="service">
+          Service Detail
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <div  [ngSwitch]="preventiveMaintanceTab" >
+    <div  *ngSwitchCase="'asset'">
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="col-md-12 mtb-5vh"> 
+          <label>Barcode No. 
+            <span class="bar-span">{{assetDetailsPrevMaintance.AssetDetailPrevMain[0].BARCODE_NO}}</span>
+          </label> 
+          <label>Category</label>  	
+          <input type="text" disabled class="form-control input-lg bgi" name="category" placeholder="Category" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].ASSET_CATEGORY" />  			
+          <!-- <select class="select1">
+            <option value="option1">Telephonr1</option>
+            <option value="option2">Telephonr2</option>
+            <option value="option3">Telephonr3</option>
+            <option value="option4">Telephonr4</option>
+          </select> -->
+          <label>Quantity</label> 
+          <input type="text" disabled class="form-control input-lg bgi" name="Recived" placeholder="Quantity" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].QUANTITY" />
+          <label>Asset Name</label> 
+          <input type="text" disabled class="form-control input-lg bgi" name="AssetName" placeholder="Asset Name" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].ASSET_NAME" />
+          <!-- <select class="select1">
+            <option value="option1">Telephonr-Avaya1</option>
+            <option value="option2">Telephonr-Avaya2</option>
+            <option value="option3">Telephonr-Avaya3</option>
+            <option value="option4">Telephonr-Avaya4</option>
+          </select> -->
+          <label>Location</label> 
+          <input type="text" disabled class="form-control input-lg bgi" name="Location" placeholder="Location" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].LOCATION_NAME" />
+          <!-- <select class="select1">
+            <option value="option1">Telephonr-Avaya1</option>
+            <option value="option2">Telephonr-Avaya2</option>
+            <option value="option3">Telephonr-Avaya3</option>
+            <option value="option4">Telephonr-Avaya4</option>
+          </select> -->
+          <label>Building</label> 
+          <input type="text" disabled class="form-control input-lg bgi" name="Building" placeholder="Building" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].BUILDING_NAME" />      	
+          <!-- <select class="select1">
+            <option value="option1">Business Bay1</option>
+            <option value="option2">Business Bay2</option>
+            <option value="option3">Business Bay3</option>
+            <option value="option4">Business Bay4</option>
+          </select> -->
+          <label>Floor Unit</label> 
+          <input type="text" disabled class="form-control input-lg bgi" name="FloorUnit" placeholder="Floor Unit" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].FLOOR" />
+          <!-- <select class="select1">
+            <option value="option1">Business Bay1</option>
+            <option value="option2">Business Bay2</option>
+            <option value="option3">Business Bay3</option>
+            <option value="option4">Business Bay4</option>
+          </select> -->
+          <label>Specific Area</label> 
+          <input type="text" disabled class="form-control input-lg bgi" name="SpecificArea" placeholder="Specific Area" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].SPECIFIC_AREA" />
+          <!-- <select class="select1">
+            <option value="option1">Business Bay1</option>
+            <option value="option2">Business Bay2</option>
+            <option value="option3">Business Bay3</option>
+            <option value="option4">Business Bay4</option>
+          </select> -->
+          <label>Make And Model</label> 
+          <input type="text" disabled class="form-control input-lg bgi select1" name="MakeAndModel" placeholder="Make And Model" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].MAKE_AND_MODEL" />
+          <label>Purchase Date</label> 
+          <ion-datetime disabled displayFormat="DD/MM/YYYY" class="form-control input-lg bgi select1" name="PurchaseDate" placeholder="Purchase Date" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].PURCHASE_DATE"></ion-datetime>    
+          <label>Life</label> 
+          <input type="number" disabled class="form-control input-lg bgi" class="select1" name="Life" placeholder="Life" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].LIFE" />    
+          <label>Warranty Expiry Date</label> 
+          <ion-datetime disabled displayFormat="DD/MM/YYYY" class="form-control input-lg bgi select1" name="WarrantyExpiryDate" placeholder="Warranty Expiry Date" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].WARRANTY_EXP_DATE"></ion-datetime>
+          <label>Division</label> 
+          <input type="text" disabled class="form-control input-lg bgi" name="Division" placeholder="Division" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].DIVISION_CODE" />
+          <!-- <select class="select1">
+            <option value="option1">FP1</option>
+            <option value="option2">FP2</option>
+            <option value="option3">FP3</option>
+            <option value="option4">FP4</option>
+          </select> -->
+          <label>Department</label> 
+          <input type="text" disabled class="form-control input-lg bgi" name="Department" placeholder="Department" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].DEPARTMENT_CODE" />
+          <!-- <select class="select1">
+            <option value="option1">IT-FP1</option>
+            <option value="option2">IT-FP2</option>
+            <option value="option3">IT-FP3</option>
+            <option value="option4">IT-FP4</option>
+          </select> -->
+          <label>Is Active?</label> 
+          <input type="checkbox" disabled name="IsActive" value="" [(ngModel)]="assetDetailsPrevMaintance.AssetDetailPrevMain[0].IS_ACTIVE" > Is Active?
+          </div>
+          <hr>
+          <div class="col-md-12" style="margin-bottom:3%;">   
+            <div class="page-header">
+              <h3 class="text-center">Image List</h3>  
+              <ion-card *ngIf = isImageMessageShow >                  
+                <ion-card-content color=danger>
+                  No Image found
+                </ion-card-content>
+              </ion-card>
+              <ion-card *ngFor="let item of assetDetailsPrevMaintance.AssetDetailFiles; index as i;">
+                <img [src]="getImage(item.ROW_NO)">
+                <ion-card-content>
+                  <ion-card-title>
+                    {{item.FILE_NAME}}
+                  </ion-card-title>
+                  <p>
+                    {{item.FILE_TYPE}}
+                  </p>
+                </ion-card-content>
+              </ion-card>   
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngSwitchCase="'sub'">
+      <div class="container-fluid">
+        <!-- <div class="row-fluid accordion" style="margin-top: 1rem;" id="accordionSub">
+          <div class="card" >
+            <div class="card-header" id="headingOne" style="background-color:white;">
+              <h6 class="mb-0">               
+                Asset Sub Detail
+                <button class="btn btn-link collapsed" style="float:right;" type="button" data-toggle="collapse" data-target="subDetail"
+                aria-expanded="false" aria-controls="subDetail" >             
+                  <i class="fa fa-chevron-down"></i>
+                </button>
+              </h6>
+            </div>
+            <div class="col-sm-12" style="margin-bottom:3%;" id="subDetail" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSub">   
+              <div class="card-body">
+                  <form [formGroup]="subAssetForm" (submit)="validSubAsset()">
+                <label>Item Name</label> 
+                <input type="text" class="form-control input-lg bgi" name="item" placeholder="Item Name" [formControl]="subAssetForm.controls['item']" />  
+                <p *ngIf="receiptForm.controls.item.errors && receiptForm.controls.item.dirty" class='error'>Enter the Item</p>
+                <label>Specification</label> 
+                <textarea  type="text" class="form-control input-lg bgi" name="specification" placeholder="Specification" [formControl]="subAssetForm.controls['specification']"> </textarea> 
+                <p *ngIf="receiptForm.controls.buidling.errors && receiptForm.controls.buidling.dirty" class='error'>Enter the Specification.</p>
+                <label>Picture</label> 
+                <input type="file" class="form-control input-lg bgi" name="subFile"  [formControl]="subAssetForm.controls['subFile']" />
+                <p *ngIf="receiptForm.controls.subFile.errors && receiptForm.controls.subFile.dirty" class='error'>Select a Picture.</p>
+                <label>Quantity</label> 
+                <input type="text" class="form-control input-lg bgi" name="quantity" placeholder="Quantity" [formControl]="subAssetForm.controls['quantity']" />  
+                <p *ngIf="receiptForm.controls.quantity.errors && receiptForm.controls.quantity.dirty" class='error'>Enter the Quantity.</p>
+                <label>Comments</label> 
+                <textarea  type="text" class="form-control input-lg bgi" name="comments" placeholder="Comments" [formControl]="subAssetForm.controls['comments']"> </textarea>
+                <p *ngIf="receiptForm.controls.comments.errors && receiptForm.controls.comments.dirty" class='error'>Enter the Comments.</p>
+                <button class="btn btn-success col-sm-12 "><strong>ADD ITEM</strong></button>
+                </form>
+              </div>
+            </div>
+          </div>              
+        </div>
+        <hr> -->
+        <div class="row-fluid">                              
+          <div class="col-sm-12 mtb-5vh">
+            <div class="page-header">
+              <h3 class="text-center"> Asset Sub Detail List</h3>                              
+            </div>  
+            <div id="no-more-tables">
+              <ion-card *ngIf = isSubMessageShow >                  
+                <ion-card-content color=danger >
+                  No data found
+                </ion-card-content>
+              </ion-card>  
+              <table class="table-striped table-condensed cf">
+                <thead class="cf">
+                  <tr>
+                    <th>SL.No</th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Specification</th>
+                    <th>Comments</th>
+                    <th>File Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of assetDetailsPrevMaintance.SubAssetDetail; index as i;">
+                    <td data-title="SL.No">{{i + 1}}</td>
+                    <td data-title="Item Name	">{{item.ITEM_NAME}}</td>
+                    <td data-title="Quantity">{{item.QUANTITY}}</td>
+                    <td data-title="Specification">{{item.SPECIFICATIONS}}</td>
+                    <td data-title="Comments">{{item.COMMENTS}}</td>
+                    <td data-title="File Name ">{{item.FILE_NAME}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngSwitchCase="'service'"> 
+      <div class="container-fluid">
+        <!-- <div class="row-fluid accordion" style="margin-top: 1rem;" id="accordionService">
+          <div class="card" >
+            <div class="card-header" id="headingOne" style="background-color:white;">
+              <h6 class="mb-0">               
+                Asset Service Detail
+                <button class="btn btn-link collapsed" style="float:right;" type="button" data-toggle="collapse" data-target= "serviceDetail"
+                aria-expanded="false" aria-controls="serviceDetail" >             
+                  <i class="fa fa-chevron-down"></i>
+                </button>
+              </h6>
+            </div>
+            <div class="col-sm-12" style="margin-bottom:3%;" id="serviceDetail" class="collapse" aria-labelledby="headingOne" data-parent="#accordionService">
+              <div class="card-body">
+                <label>Service Date</label> 
+                <input id="datepicker" class="form-control input-lg bgi"/>
+                <label for="last_service">Last Serviced By</label>
+                <select class="form-control input-lg bgi" id="last_servicea">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+                <label>Service Due</label> 
+                <input id="datepicker1" class="form-control input-lg bgi"/>    
+                <label>Picture</label> 
+                <input type="file" class="form-control input-lg bgi"   placeholder="Picture"  />                    
+                <label>Comments</label> 
+                <textarea  type="text" class="form-control input-lg bgi" name="unit" placeholder="Comments"> </textarea>
+                <button class="btn btn-success col-sm-12 "><strong>ADD SERVICE</strong></button>
+              </div>
+            </div>
+          </div>
+        </div>  
+        <hr> -->
+        <div class="row-fluid">    
+          <div class="col-sm-12 mtb-5vh">
+            <div class="page-header">
+              <h3 class="text-center">Asset Service Detail List</h3>                 
+            </div>   
+            <div id="no-more-tables">
+              <ion-card *ngIf = isServiceMessageShow >                  
+                <ion-card-content color=danger>
+                  No data found
+                </ion-card-content>
+              </ion-card>
+              <table class="table-striped table-condensed cf">
+                <thead class="cf">
+                  <tr>
+                    <th>SL.No</th>
+                    <!-- <th>Edit</th> -->
+                    <th>Service Date</th>
+                    <th>Comments</th>
+                    <th>File Name</th>
+                    <th>Due date</th>
+                    <th>Serviced by</th>
+                    <!-- <th>Action</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of assetDetailsPrevMaintance.ServiceAssetDetail; index as i;">
+                    <td data-title="SL.No">{{i + 1}}</td>
+                    <!-- <td data-title="Edit"><i class="fa fa-edit"></i></td> -->
+                    <td data-title="Service Date">{{item.LAST_SERVICE | date:'dd-MM-yyyy' }}</td>
+                    <td data-title="Comments">{{item.LAST_SEVICE_COMMENT}}</td>
+                    <td data-title="File Name">{{item.FILE_NAME}}</td>
+                    <td data-title="Due Date">{{item.NEXT_SERVICE_DUE_DATE | date:'dd-MM-yyyy' }}</td>
+                    <td data-title="Serviced by">{{item.LAST_SERVICED_BY_NAME}}</td>
+                    <!-- <td data-title="Action">
+                      <i class="fa fa-download" ></i><i class="fa fa-trash"></i>
+                    </td>    -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

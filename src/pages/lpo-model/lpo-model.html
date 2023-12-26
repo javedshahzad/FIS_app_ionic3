@@ -1,0 +1,57 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add Lpo Comments </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="agile-login">
+    <div class="agile-login">
+      <div class="wrapper">
+        <form [formGroup]="lpocommentsForm" (submit)="insertlpoComments()">
+          <div *ngFor="let lop of lpodata">
+            <ion-input [(ngModel)]="LPO_ID" type="hidden" value="{{lop?.LPO_ID}}"
+              [formControl]="lpocommentsForm.controls['LPO_ID']"></ion-input>
+          </div>
+          <div class="w3ls-form">
+            <ion-label position="floating" style="margin-left:15px;color: black;">Add Comments :</ion-label>
+            <ion-item>
+              <ion-textarea name="COMMENTS" placeholder="Enter any Comments here..."
+                [formControl]="lpocommentsForm.controls['COMMENTS']"></ion-textarea>
+              <p *ngIf="lpocommentsForm.controls.COMMENTS.errors && lpocommentsForm.controls.COMMENTS.dirty"
+                class='error'>Enter Your Comments.</p>
+            </ion-item>
+          </div>
+          <button ion-button type="submit" style="float: right;width: 100%" color="secondary" [disabled]="!lpocommentsForm.valid" >Submit</button>
+        </form>
+      </div>
+    </div>
+  </ion-card>
+
+  <ion-list class="agile-login">
+    <ion-list-header>
+      <h2>Comments List</h2>
+    </ion-list-header>
+    <div class="wrapper">
+      <div class="col-md-12 w3ls-form" style="padding-right: 0px; padding-left: 0px;">
+        <div class="accordion" id="accordionExample">
+          <ion-item *ngFor="let item of lpocommentsdetails; index as i;" data-parent="#accordionExample"
+            style="border: unset !important;background-color: transparent;">
+            <div id="headingComment">
+              {{1 + i}}.  <a role="button" style="font-size: 14px;white-space: normal;">
+                <span [innerHTML]="item.COMMENTS.toLowerCase()" style='white-space: pre-line;font-size: 1.3rem;'></span><br>
+              </a>
+              <span class="danger-clr" style="text-align:right;color:#f53d3d;font-size: 1.1rem;">by {{item.USER_SURNAME}} on {{item.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}</span>
+            </div>
+          </ion-item>
+        </div>
+      </div>
+    </div>
+  </ion-list>
+</ion-content>

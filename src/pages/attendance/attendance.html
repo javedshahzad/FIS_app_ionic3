@@ -1,0 +1,165 @@
+<ion-header>
+    <ion-navbar>        
+        <ion-title class="navbar_title">Attendance</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
+    <!-- <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="pet" (ionChange)="segmentChanged($event)">
+            <ion-segment-button value="markattendance" style="font-size: 13px; color:#fff;">
+                Mark Attendance
+            </ion-segment-button>
+            <ion-segment-button value="myattendance" [ngStyle]="{'display': showMyAttendance === 1 ? 'block' : 'none' }"
+                style="font-size: 13px; color:#fff;">
+                My Attendance
+            </ion-segment-button>
+            <ion-segment-button value="userattendance" style="font-size: 13px; color:#fff;">
+                User Attendance
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar> -->
+</ion-header>
+
+<ion-content padding>
+
+    <div class="dshbord">
+        <h5 class="dsbdhd" style="font-size: 3em !important; text-align: center;">WELCOME </h5>
+        <h4 id="loc" class="subdshbrd" style="text-align: center;">{{userlocation}}</h4>
+        <p style="text-align: center;">Latitude: {{geoLatitude}}</p>
+        <p style="text-align: center;">Longitude: {{geoLongitude}}</p>
+        <p id="time" style="text-align: center;">{{currentDate}}</p>
+
+        <!-- <a class="buttonblue" style="background-color: #ddd" id="checkin" *ngIf="showCheckIn == 0">Check in</a> -->
+        <a class="buttonblue" id="checkin" *ngIf="showCheckIn == 1" (click)="checkIn('CHECKIN')">Check in</a>
+
+        <a class="buttonblue" id="checkin" *ngIf="showstartbreak == 1"(click)="startbreak('BREAK','START')">Start break</a>        
+        <a class="buttonblue" id="checkin" *ngIf="showstopbreak == 1" (click)="startbreak('BREAK','END')">End break</a>
+        
+        <a class="buttonblue" id="checkin" *ngIf="showstartlunch == 1" (click)="startbreak('LUNCH','START')">Start Lunch</a>        
+        <a class="buttonblue" id="checkin" *ngIf="showstoplunch == 1" (click)="startbreak('LUNCH','END')">End Lunch</a>
+
+        <a class="buttonblue" *ngIf="showCheckOut == 1 && showCheckOutformfn == 1" id="checkout" (click)="checkOut('CHECKOUT')">Check out</a>
+
+        <p class="pcheck" *ngIf="showbtn ==0">Click on check-in button to mark attendance</p>
+        <p class="pcheck" *ngIf="showbtn ==1">Click on check-out button to mark attendance</p>
+        <br />
+        <ion-item>
+            <ion-textarea autocomplete="on" autocorrect="on" spellcheck="true" [(ngModel)]="COMMENTS"
+                name="COMMENTS" placeholder="Enter any Comments here...">
+            </ion-textarea>
+        </ion-item>
+    </div>
+
+    <!-- <div [ngSwitch]="pet">
+
+        <ion-list *ngSwitchCase="'markattendance'">
+
+            <div class="dshbord">
+                <h5 class="dsbdhd" style="font-size: 3em !important; text-align: center;">WELCOME </h5>
+                <h4 id="loc" class="subdshbrd" style="text-align: center;">{{userlocation}}</h4>
+                <p style="text-align: center;">Latitude: {{geoLatitude}}</p>
+                <p style="text-align: center;">Longitude: {{geoLongitude}}</p>
+                <p id="time" style="text-align: center;">{{currentDate}}</p>
+                <a class="buttonblue" style="background-color: #ddd" id="checkin" *ngIf="showCheckIn == 0">Check in</a>
+                <a class="buttonblue" id="checkin" *ngIf="showCheckIn == 1" (click)="checkIn()">Check in</a>
+                <a class="buttonblue" *ngIf="showCheckOut == 1" id="checkout" (click)="checkOut()">Check out</a>
+                <p class="pcheck" *ngIf="showbtn ==0">Click on check-in button to mark attendance</p>
+                <p class="pcheck" *ngIf="showbtn ==1">Click on check-out button to mark attendance</p>
+                <br />
+                <ion-item>
+                    <ion-textarea autocomplete="on" autocorrect="on" spellcheck="true" [(ngModel)]="COMMENTS"
+                        name="COMMENTS" placeholder="Enter any Comments here...">
+                    </ion-textarea>
+                </ion-item>
+            </div>
+
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'myattendance'">
+
+            <ion-card>
+                <ion-item>
+                    <img class="icon-btn" src="assets/imgs/attendance-label.png"
+                        style="width: 40px; float: left; padding-right: 4px;" />
+                    <h2 style="white-space: pre-line;">Daily Attendance</h2>
+                </ion-item>
+
+                <ion-item>
+                    <button ion-button icon-start clear item-end class="dash_image" (click)="attendanceReport('Daily')">
+                        <ion-icon name="navigate"></ion-icon>
+                        View
+                    </button>
+                </ion-item>
+            </ion-card>
+
+            <ion-card>
+                <ion-item>
+                    <img class="icon-btn" src="assets/imgs/attendance-label.png"
+                        style="width: 40px; float: left; padding-right: 4px;" />
+                    <h2 style="white-space: pre-line;">Monthly Attendance</h2>
+                </ion-item>
+
+                <ion-item>
+                    <button ion-button icon-start clear item-end class="dash_image"
+                        (click)="attendanceReport('Monthly')">
+                        <ion-icon name="navigate"></ion-icon>
+                        View
+                    </button>
+                </ion-item>
+            </ion-card>
+
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'userattendance'">
+            <ion-card>
+                <ion-item>
+                    <img class="icon-btn" src="assets/imgs/attendance-label.png"
+                        style="width: 40px; float: left; padding-right: 4px;" />
+                    <h2 style="white-space: pre-line;">Daily Attendance</h2>
+                </ion-item>
+
+                <ion-item>
+                    <button ion-button icon-start clear item-end class="dash_image"
+                        (click)="attendanceReport('Daily all')">
+                        <ion-icon name="navigate"></ion-icon>
+                        View
+                    </button>
+                </ion-item>
+            </ion-card>
+
+            <ion-card>
+                <ion-item>
+                    <img class="icon-btn" src="assets/imgs/attendance-label.png"
+                        style="width: 40px; float: left; padding-right: 4px;" />
+                    <h2 style="white-space: pre-line;">Monthly Attendance</h2>
+                </ion-item>
+
+                <ion-item>
+                    <button ion-button icon-start clear item-end class="dash_image"
+                        (click)="attendanceReport('Monthly all')">
+                        <ion-icon name="navigate"></ion-icon>
+                        View
+                    </button>
+                </ion-item>
+            </ion-card>
+
+
+            <ion-list *ngFor="let item of reportingUsers"
+                (click)="UserattendanceReport(item.USER_INFO_ID, item.USER_SURNAME)" style="margin:0px !important">
+                <ion-item *ngIf="item.USER_INFO_ID != login_user">
+                    <ion-avatar item-start>
+                        <img style="width: 55px; height: 55px;" src="{{item.FILE_PATH}}"
+                            alt="assets/imgs/chat_image.png">
+                    </ion-avatar>
+                    <ion-label>
+                        <h2>{{item.USER_SURNAME}}</h2>
+                    </ion-label>
+                </ion-item>
+            </ion-list>
+
+        </ion-list>
+
+    </div> -->
+
+</ion-content>

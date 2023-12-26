@@ -1,0 +1,76 @@
+<!--
+  Generated template for the ModalPage page.
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar>
+      <ion-title>+ Add Attachments </ion-title>
+      <ion-buttons end>
+        <button ion-button (click)="closeModal()">Close</button>
+      </ion-buttons>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content padding>
+    <ion-card>
+    <div class="agile-login">
+      <div class="wrapper">
+        <form [formGroup]="hotoattachmentForm" enctype="multipart/form-data" (submit)="insertAttachments()">
+          <div>
+            <div class="w3ls-form">
+                <ion-item>
+                    <ion-label>select DocumentType</ion-label>
+                      <ion-select class="select1" interface="popover" name="DocumentType" placeholder="Select One" [formControl]="hotoattachmentForm.controls['DocumentType']">
+                        <ion-option value="{{ddList.DOCUMENT_TYPE_ID}}"
+                            *ngFor="let ddList of documentddList"> {{ddList.DESCRIPTION}}
+                        </ion-option>
+                    </ion-select>
+                  </ion-item>
+
+                <ion-item>
+                    <ion-label position="floating" style="color: black;">Add File :</ion-label>
+                        <ion-input type="file" (change)="onSelectFile($event)"></ion-input>
+                    <p *ngIf="hotoattachmentForm.controls.attachmentfile.errors && hotoattachmentForm.controls.attachmentfile.dirty" class='error'>Select the FIle.</p>
+                </ion-item>
+                <button ion-button  type="submit" style="float: right;" color="secondary" >Submit</button>
+            </div>
+          </div>                  
+        </form> 
+      </div>
+    </div>
+  </ion-card>
+  <div class="agile-login" style="margin-top: inherit;">
+      <div class="wrapper">
+        <div class="col-md-12 w3ls-form">
+          <div class="accordion" id="accordionExample">
+            <div class="card" *ngFor="let item of hotoattachmentlist; index as i;" data-parent="#accordionExample">
+              <div class="card-header" id="headingComment" style="background-color:white;">
+                <a (click)=showUndoBtn(i) role="button">
+                  {{1 + i}}. {{item.LDA_FILE_NAME}}
+                </a>
+                <span style="float: right; padding-left: 20px;">
+                  <ion-icon color="secondary" style="display: inline-block;font-size: 2.5em;" ios="ios-download"
+                    md="md-download" (click)="getfile(item.ROW_NO,item)">
+                  </ion-icon>
+                </span>
+              </div>
+              <div [attr.id]="'undoBtn'+i" *ngIf="showBtn===i">
+                <div class="card-body card-bodynew">
+                  <p role="row" style="text-align: left;background-color: #fdfdfd;">
+                    Created User: {{item.CREATED_BY_NAME}}
+                  </p>
+                  <p role="row" style="text-align: left;background-color: #fdfdfd;">
+                    Created Date: {{item.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}
+                  </p>
+                </div>
+              </div>
+            </div><br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>

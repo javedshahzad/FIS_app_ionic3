@@ -1,0 +1,83 @@
+page-dashboard {
+    .toolbar-background-md{
+        border:none;
+        background-image: linear-gradient(to right, #6b78d1, #5d6ec0, #5064af, #435b9f, #37518e, #425491, #4c5895, #555b98, #766caf, #997ec5, #bc8fda, #e1a1ee) !important;
+    }
+    .toolbar-background-ios{
+        background-image: linear-gradient(to right, #6b78d1, #5d6ec0, #5064af, #435b9f, #37518e, #425491, #4c5895, #555b98, #766caf, #997ec5, #bc8fda, #e1a1ee) !important;
+    }
+    #notifications-badge {
+        background-color: red;
+        position: absolute;
+        top: -3px;
+        right: -3px;
+        border-radius: 100%;
+    }
+    .myprofile {
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 0;
+        overflow: hidden;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        position: relative;
+        background-color: #e8e8e8;
+    }
+    .myprofile .name {
+        color: #FFFFFF;
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+    }
+    .myprofile-picture {
+        border-radius: 50%;
+        background-color: #fff;
+        height: 37px;
+        width: 40px;
+    }
+    .badge-md {
+        border-radius: 4px;
+        color: #000000;
+        background-color: #ffffff;
+    }
+    .rowborder{
+        border: 1px solid #4357BF80;
+        box-shadow: 0px 6px 8px 0px #6F9CD673;
+        border-radius: 10px;
+        margin-top: 10px;
+        background: #fff;
+    }
+    .p-8{
+        padding: 8px;
+    }
+    .heading-style{
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 20px;
+        letter-spacing: 0.01em;
+        text-align: left;
+        color: #334D6E;
+    }
+    .title-style{
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 20px;
+        letter-spacing: 0.01em;
+        text-align: left;
+        color: #334D6E;
+    }
+    .btn-style{
+        width: 100px;
+    }
+    .flex{
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+
+

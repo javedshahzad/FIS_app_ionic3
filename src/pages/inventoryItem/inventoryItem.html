@@ -1,0 +1,117 @@
+<!--
+  Generated template for the InventoryitemPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Inventory Item</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+  <div class="container-fluid" style="padding-top: 15px;">
+    <div class="row">    
+      <div class="col-md-12 col-12 col-sm-12 col-md-offset-3">          
+        <div class="card" *ngIf="imagecount != 0">
+            <ion-slides *ngIf="imagelist && imagelist.length" class="slideroption" autoplay="400" pager="true"   [loop]="imagecount > 1" speed="400">
+              <ion-slide *ngFor="let image of imagelist; index as i;">
+                <img [src]="getImage(image.MATERIAL_CATEGORY_IMAGE_ID)"><br>
+              </ion-slide>
+            </ion-slides>
+            <ion-fab top right edge style="position: static;margin-left: 80%;">
+                <button ion-fab mini (click)="openBrowser()"><ion-icon name="camera"></ion-icon>
+                </button>
+            </ion-fab>
+        </div>
+
+        <div class="card" *ngIf="imagecount === 0">
+          <ion-slides  class="slideroption" >
+            <ion-slide>
+                <img style="margin-top:1.5rem;" class="myprofile-picture"src="assets/imgs/no-found-photo.png" *ngIf="isImage"><br>
+                <img class="myprofile-picture"src="assets/imgs/loading.gif" *ngIf="!isImage"><br>
+            </ion-slide>
+          </ion-slides>
+          <ion-fab top right edge style="position: static;margin-left: 80%;">
+              <button ion-fab mini (click)="openBrowser()"><ion-icon name="camera"></ion-icon>
+              </button>
+          </ion-fab>
+        </div>
+
+        <ion-item>
+        <ion-col col-6 *ngFor="let photo of photos; let id = index">
+            <div class="block">
+              <img [src]="photo" *ngIf="photo" />
+            </div>
+            <button ion-button color="secondary" type="button" (click)="deletePhoto(id)"><ion-icon name="trash" class="deleteIcon"></ion-icon></button>
+              <button ion-button color="secondary" type="button" (click)="Uploadimage(id)"><ion-icon name="done-all"></ion-icon></button>
+          </ion-col>
+        </ion-item>
+
+        <div class="card">
+            <div class="card-body card-bodynew">
+              <div *ngFor="let itemdata of sourcedata; index as i;">
+                  
+                <h6 style="color: #6b6b6b;">Item Code - Name : {{itemdata.CATEGORY_ID}} - {{itemdata.CATEGORY_NAME}}</h6>
+                <h6 style="color: #6b6b6b;">Item Category : {{itemdata.CATEGORY_CODE}}</h6>
+                <h6 style="color: #6b6b6b;">Major Category : {{itemdata.DESCRIPTION}}</h6>
+                <h6 style="color: #6b6b6b;">Sub Category : {{itemdata.CODE}}</h6>
+              </div>
+            </div>
+          </div>
+        
+        <div class="card">
+          <div class="card-body card-bodynew">
+            <div class="table-responsive">          
+              <table role="table" class="text-left">
+                <thead role="rowgroup">
+                  <tr role="row ">
+                    <th role="columnheader" class="thd">#</th>
+                    <th role="columnheader" class="thd">Stores</th>
+                    <th role="columnheader" class="thd">Quantity</th>                        
+                  </tr>
+                </thead>
+                <tbody role="rowgroup">                      
+                  <tr role="row" class="tbd" *ngFor="let item of storesdata; index as i;">
+                    <td role="cell">{{i+1}}</td> 
+                    <td role="cell">{{item.STORE_NAME}}</td>
+                    <td role="cell">{{item.QTY}}</td>                        
+                  </tr>                      
+                </tbody>
+              </table>
+              <hr>
+              <!-- <table role="table" class="text-left">
+                <thead role="rowgroup">
+                  <tr role="row ">
+                    <th role="columnheader" class="thd">#</th>
+                    <th role="columnheader" class="thd">Store</th>
+                    <th role="columnheader" class="thd">Major</th>
+                    <th role="columnheader" class="thd">Sub</th>
+                    <th role="columnheader" class="thd">Available</th>                        
+                  </tr>
+                </thead>
+                <tbody role="rowgroup">                      
+                  <tr role="row" class="tbd" *ngFor="let item of StoreList; index as i;">
+                    <td role="cell">{{i+1}}</td> 
+                    <td role="cell" style="font-size: x-small;">{{item.STORE_NAME}}</td>
+                    <td role="cell" style="font-size: x-small;">{{item.MAJOR}}</td>
+                    <td role="cell" style="font-size: smaller;">{{item.SUB}}</td>
+                    <td role="cell" style="text-align: center;">{{item.QTY}}</td>                        
+                  </tr>                      
+                </tbody>
+              </table> -->
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body text-center">
+              <ion-icon name="arrow-dropdown-circle" (click)="OpenModel('IN',itemDetails.ITEM_ID)" style="font-size: 3.2em;"></ion-icon>&nbsp;&nbsp;&nbsp;&nbsp;
+              <ion-icon name="arrow-dropup-circle" (click)="OpenModel('OUT',itemDetails.ITEM_ID)" style="font-size: 3.2em;"></ion-icon>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

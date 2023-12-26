@@ -1,0 +1,200 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{today | date: 'dd-MM-yyyy'}} + Add Comments </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-card class="agile-login">
+    <div class="wrapper">
+      <form [formGroup]="taskcommentsForm" (submit)="inserttaskComments()" >
+        <div class="w3ls-form">
+          <h3 style="padding-left: 26PX; padding-top: 10px;padding-bottom: 10px;    font-size: 15px;
+                font-weight: 500;">{{taskdata[0].task_data_val[0].SEQ_TEXT}} - {{taskdata[0].task_data_val[0].TITLE}}
+          </h3>
+          <h3 style="padding-left: 26PX; padding-top: 10px; padding-bottom: 10px;">Add Comments</h3>
+                     
+          <ion-item>
+            <ion-textarea autocomplete="on" autocorrect="on" spellcheck="true" name="COMMENTS" placeholder="Enter any Comments here..."
+              [formControl]="taskcommentsForm.controls['COMMENTS']"></ion-textarea>
+            <p *ngIf="taskcommentsForm.controls.COMMENTS.errors && taskcommentsForm.controls.COMMENTS.dirty"
+              class='error'>Enter Your Comments.</p>
+          </ion-item>
+          
+          <span float-right ion-button icon-left clear  class="font-size-12" style="width: 60px; height: 50px;" (click)="uploadAudioNewComment()" >                        
+            <ion-icon name="mic" style="font-size: 40px; color: #1968f3;"></ion-icon>
+          </span>
+
+          <ion-item>
+            <ion-label id="profile_image" color="primary" stacked>Select</ion-label>
+            <ion-input type="file" multiple (change)="onSelectFile($event)"></ion-input>
+          </ion-item>
+          <div style="margin-top: 15px;">
+            <span style="padding-left: 30px;">
+              <ion-checkbox checked="false" (click)="SendSms($event)" name="SMS"
+                [formControl]="taskcommentsForm.controls['SMS']"></ion-checkbox>
+            </span><span>Sms</span>
+
+            <span style="padding-left: 60px;">
+              <ion-checkbox name="EMAIL" (click)="SendEmail($event)" [formControl]="taskcommentsForm.controls['EMAIL']">
+              </ion-checkbox>
+            </span><span>Email</span>
+
+            <span style="padding-left: 35px;"><i class="fa fa-envelope" *ngIf="emailiconshow === 1"
+                (click)="SendMultipleEmail($event)" aria-hidden="true" style="font-size: 20px;"></i></span>
+          </div>
+
+          <ion-item *ngIf="emailboxshow === 1" style="margin-top: 10px;">
+            <ion-input type="text" value="" name="EMAILTEXTBOX" placeholder="Enter the Email..."
+              [formControl]="taskcommentsForm.controls['EMAILTEXTBOX']"></ion-input>
+          </ion-item>
+          <button ion-button block type="submit" style=" margin-top: 10px;" color="primary">Submit</button>
+        </div>
+        <ion-input type="hidden" value="{{taskdata[0].TASK_ID}}" [formControl]="taskcommentsForm.controls['TASK_ID']">
+        </ion-input>
+        <ion-input type="hidden" value="{{taskdata[0].task_data_val[0].COMMENTS}}"
+          [formControl]="taskcommentsForm.controls['PREV_COMMENTS']"></ion-input>
+        <ion-input type="hidden" value="{{taskdata[0].task_data_val[0].ASSIGNED_USER_INFO_ID}}"
+          [formControl]="taskcommentsForm.controls['assigned_user_id']"></ion-input>
+        <ion-input type="hidden" value="{{taskdata[0].task_data_val[0].CREATED_BY}}"
+          [formControl]="taskcommentsForm.controls['created_user_id']"></ion-input>
+          
+      </form>
+    </div>
+  </ion-card>
+  <ion-segment [(ngModel)]="AvailabilityTab" (ionChange)="segmentChanged($event)" style="padding: 15px;">
+    <ion-segment-button value="comments">
+      <ion-label>Comments</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="enemies" (click)="getFileList()">
+      <ion-label>Files</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Recording">
+      <ion-label>Voice Recording</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div [ngSwitch]="AvailabilityTab">
+    <div *ngSwitchCase="'comments'">
+      <ion-list class="agile-login">
+        <ion-list-header>
+          <h2>Comments List</h2>
+        </ion-list-header>
+        <div class="wrapper">
+          <div class="col-md-12 w3ls-form">
+            <div class="accordion" id="accordionExample">
+              <ion-item *ngFor="let item of taskcommentsdetails; index as i;" data-parent="#accordionExample"
+                style="border: unset !important;">
+                <div id="headingComment" style="background-color:white;">
+                  <a role="button" style="white-space: normal;">
+                    {{1 + i}}. <span><span *ngIf="item.futuredate ==1">
+                      <span *ngFor="let textitem of item.newmessage">
+                        <span *ngIf="textitem.linkid == -1"  [innerHTML]="textitem.text" style='white-space: pre-line;'></span>
+                        <span *ngIf="textitem.linkid == 1"  [innerHTML]="textitem.linktext" style='white-space: pre-line;' (click)="opentaskremainder()" style="color: #53befd;"></span>  
+                      </span>  
+                    </span> 
+                    <span *ngIf="item.futuredate ==0"  [innerHTML]="item.MESSAGE" style='white-space: pre-line;'></span><br>
+                     <span class="danger-clr" style="float: right;">{{item.USER_SURNAME}}
+                      {{item.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}</span></span><br>
+                    <span><button ion-button (click)="callmobileNumber(item.USER_MOBILE)" color="success">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                      </button> {{item.USER_MOBILE}}</span>                      
+                  </a>
+                  <span float-right ion-button icon-left clear  class="font-size-12" style="width: 60px; height: 50px;" (click)="uploadAudio(i,item)" *ngIf="item.AUDIO_COUNT == 0">                        
+                    <!-- <img src="assets/imgs/audio-recording.png" class="icon-btn" style="max-width: 75% !important" /> -->
+                    <ion-icon name="mic" style="font-size: 40px; color: #1968f3;"></ion-icon>
+                  </span>
+
+                  <span float-right ion-button icon-left clear  class="font-size-12" style="width: 60px; height: 50px;" (click)="uploadAudio(i,item)" *ngIf="item.AUDIO_COUNT > 0">                        
+                    <!-- <img src="assets/imgs/audio-recording.png" class="icon-btn" style="max-width: 75% !important" /> -->
+                    <ion-icon name="mic" style="font-size: 40px; color: red;"></ion-icon>
+                  </span>
+
+                </div>
+              </ion-item><br>
+            </div>
+          </div>
+        </div>
+      </ion-list>
+    </div>
+
+    <div *ngSwitchCase="'enemies'">
+      <div class="agile-login" style="margin-top: inherit;">
+        <div class="wrapper">
+          <div class="col-md-12 w3ls-form">
+            <div class="accordion" id="accordionExample">
+              <div class="card" *ngFor="let item of taskuploadsdetails; index as i;" data-parent="#accordionExample">
+                <div class="card-header" id="headingComment" style="background-color:white;">
+                  <a (click)=showUndoBtn(i) role="button">
+                    {{1 + i}}. {{item.FILE_NAME}} ({{bytesToSize(item.FILE_SIZE)}})
+                  </a>
+                  <span style="float: right; padding-left: 20px;">
+                    <ion-icon color="secondary" style="display: inline-block;font-size: 2.5em;" ios="ios-download"
+                      md="md-download" (click)="getfile(item.ROW_NO,item)">
+                    </ion-icon>
+                  </span>
+                </div>
+                <div [attr.id]="'undoBtn'+i" *ngIf="showBtn===i">
+                  <div class="card-body card-bodynew">
+                    <p role="row" style="text-align: left;background-color: #fdfdfd;">
+                      Created User: {{item.CREATED_BY_NAME}}
+                    </p>
+                    <p role="row" style="text-align: left;background-color: #fdfdfd;">
+                      Created Date: {{item.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}
+                    </p>
+                  </div>
+                </div>
+              </div><br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'Recording'">
+      <div class="accordion" id="accordionExample">
+        <ion-item style="border: unset !important; height: 126px;" *ngFor="let audio of taskaudioList; index as i;"
+          data-parent="#accordionExample">
+          <div id="headingComment" style="background-color:white;">
+            <ion-card *ngIf="audio.IS_DELETED ==0">
+              <ion-card-header *ngIf="audio.REP_FILE_NAME != null">
+                <p>{{audio.REP_FILE_NAME}}</p>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col col-10>
+                      <span (click)="playAudio(audio.FILE_NAME,audio.FILE_PATH, i)">
+                        <p style="white-space: normal;">{{audio.FILE_NAME}}  <span style="font-size: 16px; color:green; float: right;">{{audio.AUDIO_DURATION}}</span></p>
+                        <p style="color:red">{{audio.RECORDED_BY}}, {{audio.MODIFIED_ON | date:'dd-MM-yyyy hh:mm a'}}
+                        </p>
+                      </span>
+                    </ion-col>
+                    <ion-col col-2 style="text-align: end;">
+                      <ion-icon name="undo" style="font-size: 30px;" *ngIf="audio.CREATED_BY != login_user_id"
+                        (click)="uploadRecordingTabReplyAudio(i,audio,audio.ID)">
+                      </ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+
+            <ion-card *ngIf="audio.IS_DELETED ==1">
+              <ion-card-content>
+                <p>This audio is deleted</p>
+                <p style="color:red">{{audio.MODIFIED_BY}}, {{audio.MODIFIED_ON | date:'dd-MM-yyyy hh:mm
+                  a'}}</p>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </ion-item>
+      </div>
+    </div>
+
+  </div>
+</ion-content>

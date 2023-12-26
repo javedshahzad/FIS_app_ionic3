@@ -1,0 +1,68 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Approve Appointment </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-card class="agile-login">
+    <div class="wrapper">
+      <ion-input [(ngModel)]="LEASE_NUMBER" *ngFor="let payment of payment_req_data;" type="hidden"
+        value="{{payment.LEASE_NUMBER}}">
+      </ion-input>
+
+      <div class="w3ls-form">     
+
+        <h3 style="padding-left: 26PX; padding-top: 10px;
+                  padding-bottom: 10px;">Comments</h3>
+        <ion-item>
+          <ion-textarea [(ngModel)]="PAYMENT_COMMENTS" name="PAYMENT_COMMENTS" placeholder="Enter any Comments here...">
+          </ion-textarea>
+        </ion-item>
+      </div>
+
+      <div class="modal-footer">
+     
+        <span>
+          <button type="button" (click)="ApproveHotoStatusUpdate()" style="font-size: 1.25rem !important;"
+            class="btn btn-primary" color="primary"> {{btnTxtYes}} </button>
+        </span>
+    
+        <span>
+          <button type="button" class="btn btn-danger" style="font-size: 1.25rem !important;"
+            style="background-color: #373737;color: #fcfcfc;" (click)="closeModal()">Cancel</button>
+        </span>
+
+      </div>
+    </div>
+  </ion-card>
+
+  <ion-list class="agile-login">
+    <ion-list-header>
+      <h2>Comments List</h2>
+    </ion-list-header>
+    <div class="wrapper">
+      <div class="col-md-12 w3ls-form">
+        <div class="accordion" id="accordionExample">
+          <ion-item class="" *ngFor="let item of paymentcommentsdetails; index as i;" data-parent="#accordionExample">
+            <div class="" id="headingComment" style="background-color:white;">
+              <a (click)=showUndoBtn(i) role="button">
+                <span [innerHTML]="item.NOTES" style='white-space: pre-line;'></span>
+                <br>
+                <span style="float: right; color:red" class="danger-clr">{{item.USERNAME}} -
+                  {{item.DDATE |date:'dd-MMM-yyyy,HH:mm a'}}</span><br>
+
+              </a>
+            </div>
+
+          </ion-item>
+        </div>
+      </div>
+    </div>
+  </ion-list>
+</ion-content>

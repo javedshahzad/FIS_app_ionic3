@@ -1,0 +1,176 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons left>
+            <button ion-button (click)="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </button>
+        </ion-buttons>
+        <ion-title style="text-transform: capitalize;text-align: center">Parking</ion-title>
+    </ion-toolbar>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="pet" (ionChange)="segmentChanged($event)">
+            <ion-segment-button value="validate" style="font-size: 13px; color:#fff;">
+                Validate
+            </ion-segment-button>
+            <ion-segment-button value="reports" [ngStyle]="{'display': enableParkingReports === 1 ? 'block' : 'none' }" style="font-size: 13px; color:#fff;">
+                Reports
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+    <div [ngSwitch]="pet">
+
+        <ion-list *ngSwitchCase="'validate'">
+
+            <ion-list style="margin:0px !important; background-color: transparent;">
+                <ion-grid style="padding: 16px;">
+                    <ion-row>
+                        <ion-col col-6 style="border-bottom: 0px; border-right: 0px; border: 0px;">
+                            <ion-card
+                                style="width: 150px !important;height: 100px !important; border-radius: 21px; background-color: #cfe5f9;">
+                                <ion-card-content>
+                                    <p style="font-family: calibri; color: #045858;"> Hours Available</p>
+                                    <h2>
+                                        <sub
+                                            style="font-size: 25px; color: #27e23e; font-family: calibri;">{{available_hr}}</sub>
+                                    </h2>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
+                        <ion-col col-6 style="border-bottom: 0px; border-right: 0px; border: 0px;">
+
+                            <ion-card
+                                style="width: 150px !important;height: 100px !important; border-radius: 21px; background-color: #cfe5f9;">
+                                <ion-card-content>
+                                    <p style="font-family: calibri; color: #045858;">Hours Utilized</p>
+                                    <h2>
+                                        <sub style="font-size: 25px; color: #cc590c;font-family: calibri;">{{utilized_hr}}
+                                        </sub>
+                                    </h2>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-list>
+            <ion-list>                
+                <ion-item>
+                    <ion-label stacked>Enter the ticket no here..</ion-label>
+                    <ion-input type="text" [(ngModel)]="ticketno"></ion-input>
+                </ion-item>
+                
+                <span >
+                    <button ion-button color="secondary" (click)="scanbarcode()" style="float: right; width: 33%;"
+                    round><ion-icon name="barcode" style="font-size: 35px;"></ion-icon></button>
+                </span>
+                <span  *ngIf="enableParkingReception == 1">
+                    <button ion-button (click)="validateticketno()" color="secondary" style="float: right; text-transform: initial;"
+                    round>Validate</button>
+                </span>
+                <span  *ngIf="enableParkingReception == 0">
+                    <button ion-button  color="medium" style="float: right; background-color: #b7b5b5; text-transform: initial;"
+                    round>Validate</button>
+                </span>
+                
+
+            </ion-list>
+            <ion-list style="margin-top: 53px;">
+                <h3 style="margin-left: 18px;">Pending Check Out Tokens</h3>
+                <div class="col-md-12">
+                    <div class="accordion" id="accordionExample">
+                        <div class="" *ngFor="let item of parkingAll; index as i;">
+                            <ion-list style="margin: -6px 0 0px;">
+                                <ion-item-sliding>
+                                    <ion-item id="headingOne">
+                                        <div>
+                                            <h2>{{1 + i}}. Ticket ID:
+                                                {{item.CAR_PARKING_DETAILS_ID}} </h2>
+                                            <p>Check In Date & Time:
+                                                {{item.CHECKIN_DATE | date:'dd-MM-yyyy hh:mm a'}}</p>
+                                            <p>Hours: {{item.DISPLAY_HOURS}} </p>
+
+                                        </div>
+                                    </ion-item>
+                                </ion-item-sliding>
+                            </ion-list>
+                        </div>
+                    </div>
+                </div>
+            </ion-list>
+
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'reports'">
+            <div>
+                <ion-item>
+                    <span>Check Out From</span><br><br>
+                    <span>
+                        <span (click)="opencalendarheldon()">{{heldOn}}</span>
+                        <span>
+                            <ion-icon name="clipboard" (click)="opencalendarheldon()"
+                                style="float: right;font-size: 31px;margin-right: 10px;">
+                            </ion-icon>
+                        </span>
+                    </span><br>
+                    <span *ngIf="calendarshowheldon === 1">
+                        <ion-calendar name="date_of_meeting" (onChange)="heldOnChange($event)" [type]="string"
+                            [options]="options" [format]="'YYYY-MM-DD'">
+                        </ion-calendar>
+                    </span>
+                </ion-item>
+
+                <ion-item>
+                    <span>Check Out To</span><br><br>
+                    <span>
+                        <span (click)="opencalendarnextmeetingshow()">{{nextmeeting}}</span>
+                        <span>
+                            <ion-icon name="clipboard" (click)="opencalendarnextmeetingshow()"
+                                style="float: right;font-size: 31px;margin-right: 10px;">
+                            </ion-icon>
+                        </span>
+                    </span><br>
+                    <span *ngIf="calendarshownextmeeting === 1">
+                        <ion-calendar name="next_of_meeting" (onChange)="nextmeetingonChange($event)"
+                            [options]="options" [type]="string" [format]="'YYYY-MM-DD'">
+                        </ion-calendar>
+                    </span>
+                </ion-item>
+
+                <ion-item>
+                    <span>
+                        <button ion-button color="secondary" style="height: 35px; float: right; width: 18%;"
+                            (click)="openAttendanceReport()">PDF</button>
+                    </span>
+                    <span><button ion-button color="secondary" style="height: 35px; float: right;"
+                            (click)="generateReport()">Submit</button></span>
+                </ion-item>
+
+            </div>
+
+            <div class="col-md-12">
+                <div class="accordion" id="accordionExample">
+                    <div class="" *ngFor="let item of parkingReportDetails; index as i;">
+                        <ion-list style="margin: -6px 0 0px;">
+                            <ion-item-sliding>
+                                <ion-item id="headingOne">
+                                    <div>
+                                        <p style="font-size: 15px;">{{1 + i}}.) Ticket Id: {{item.CAR_PARKING_DETAILS_IDS}} </p>
+                                        <p style="font-size: 15px;">Check In Date & Time: {{item.CHECKIN_DATE_1 | date:'dd-MMM-yyyy,HH:mm a'}}</p>
+                                        <p style="font-size: 15px;">Check Out Date & Time: {{item.CHECKOUT_DATE_1 | date:'dd-MMM-yyyy,HH:mm a'}}</p>
+                                        <p style="font-size: 15px;">Hours: {{item.TOTAL_HOURS}}</p>
+                                    </div>
+                                </ion-item>
+                            </ion-item-sliding>
+                        </ion-list>
+                    </div>
+                </div>
+            </div>
+
+        </ion-list>
+
+
+    </div>
+
+</ion-content>

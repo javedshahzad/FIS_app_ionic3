@@ -1,0 +1,114 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>
+            <h3 style="text-align:center !important">{{Scheduledata.BUILDING_NAME}} - PPM </h3>
+            <h6 style="text-align:center !important">Job Schedule {{Scheduledata.ScheduleNo}} Options</h6>    
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+    <ion-grid>
+        <ion-row class="logo-row" style="padding-bottom: 0px;">
+            <ion-col col-4 ></ion-col>
+            <ion-col col-4 >
+                <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+            </ion-col>
+            <ion-col col-4 ></ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid style="margin-top: -20px">
+         <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="search_btn()" style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-1>
+                               
+                            </ion-col>
+                            <ion-col col-9 style="margin-top: 5px;">
+                                <h2>Advance Search</h2>
+                            </ion-col>
+                           
+                            <ion-col col-2 style="margin-top: 5px;">
+                                <ion-icon name="search" ></ion-icon>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="options_btn(0)" style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-8 style="margin-top: 5px;">
+                                <h2>Pending</h2>
+                            </ion-col>
+                            <ion-col col-2>
+                                <ion-badge item-end>{{ Pending_length?.length || '0'}}</ion-badge>
+                            </ion-col>
+                            <ion-col col-2 style="margin-top: 5px;">
+                                <ion-icon name="arrow-dropright" ></ion-icon>
+                                <!-- <i class="fa fa-chevron-circle-right" ></i> -->
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="options_btn(-1)" style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-8 style="margin-top: 5px;">
+                                <h2>
+                                    Processsing</h2>
+                            </ion-col>
+                            <ion-col col-2>
+                                <ion-badge item-end>{{Processsing_length?.length || '0' }}</ion-badge>
+                            </ion-col>
+                            <ion-col col-2 style="margin-top: 5px;">
+                                <ion-icon name="arrow-dropright" ></ion-icon> 
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="options_btn(1)" style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-8 style="margin-top: 5px;">
+                                <h2>
+                                    Finished</h2>
+                            </ion-col>
+                            <ion-col col-2>
+                                <ion-badge item-end>{{ Finished_length?.length || '0' }}</ion-badge>
+                            </ion-col>
+                            <ion-col col-2 style="margin-top: 5px;">
+                                <ion-icon name="arrow-dropright" ></ion-icon>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+<style>
+    .row {
+        margin-left: 0px !important;
+        margin-right: -2px !important;
+    }
+</style>

@@ -1,0 +1,359 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>{{title}}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+    <div class="col-md-12">
+        <div class="accordion" id="accordionExample">
+
+                <ion-grid>
+                    <ion-row class="header"style="border-bottom: 1px solid #e9ecef;background-color: #3ddcc8;">
+                        <ion-col>
+                            CREATED BY
+                        </ion-col>
+                        <ion-col>
+                            CREATED ON
+                        </ion-col>
+                    </ion-row>
+                    <ion-row style="border-bottom: 1px solid #e9ecef;">
+                        <ion-col>
+                            {{call_create_details.CREATED_BY_NAME}}
+                        </ion-col>
+                        <ion-col>
+                            {{call_create_details.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="header"style="border-bottom: 1px solid #e9ecef;background-color: #3ddcc8;">
+                        <ion-col>
+                            S.no
+                        </ion-col>
+                        <ion-col>
+                            Compliant
+                        </ion-col>
+                    </ion-row>
+                    <ion-row *ngFor="let item of callcomplientsdetails; index as i;" style="border-bottom: 1px solid #e9ecef;">
+                        <ion-col>
+                            {{i+1}}.
+                        </ion-col>
+                        <ion-col>
+                            {{item.COMPLAINT_DESCRIPTION}}
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+
+            <div *ngIf="callinspectionlabour && estimationdata.INTERM_STATUS_ID != 281">
+                <div class="case" *ngIf="estimationdata.INTERM_STATUS_ID != 281;">
+                        <div class="case" *ngIf="this.callestimationdetails[0].type === 1;">
+                            <button ion-button color="secondary" [disabled]="true">Profit : ({{total_profit}} %)</button>
+                            <button ion-button color="secondary" style="float: right;">Total : {{total_amount}}</button>
+                        </div>
+                        <div class="case" *ngIf="this.callestimationdetails[0].type === 0;">
+                                <button ion-button color="secondary" (click)="openprofitmodel(final_data)">Profit : ({{total_profit}} %)</button>
+                                <button ion-button color="secondary" style="float: right;">Total : {{total_amount}}</button> 
+                        </div>
+                </div> 
+                <h6 style="margin-top: 10px;">Labour Details</h6>
+                <table role="table" class="callinspectionlabour" style="background-color: white"
+                    *ngFor="let item of callinspectionlabour; index as i;">
+                    <thead role="rowgroup">
+                        <tr role="row">
+                            <th role="columnheader">DESIGNATION</th>
+                            <th role="columnheader">LABOUR COUNT</th>
+                            <th role="columnheader">RATE</th>
+                            <th role="columnheader">LABOUR TIME</th>
+                            <th role="columnheader">TOTAL</th>
+                            <th role="columnheader">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody role="rowgroup">
+                        <tr role="row">
+                            <td role="cell">{{i+1}}</td>
+                            <td role="cell">{{item.DESIGNATION}}</td>
+                            <td role="cell">{{item.LABOUR_COUNT}}</td>
+                            <td role="cell">{{item.RATE}}</td>
+                            <td role="cell">{{item.LABOUR_TIME}}</td>
+                            <td role="cell">{{item.RATE * item.CONTIGUOUS /100 + item.RATE}}</td>
+                            <td role="cell">
+                                <div class="case" *ngIf="estimationdata.INTERM_STATUS_ID != 281;">
+                                    <div class="case" *ngIf="this.callestimationdetails[0].type === 1">
+                                            <button ion-button color="secondary" [disabled]="true"><ion-icon name="open"></ion-icon>
+                                        </button>
+                                    </div>
+                                    <div class="case" *ngIf="this.callestimationdetails[0].type === 0">
+                                            <button ion-button color="secondary"
+                                            (click)="removedesignation(item.DESIGNATION,item.DESIGNATION_ID,item.LABOUR_COUNT,item.RATE,item.LABOUR_TIME,item.TOTAL,item.CALL_ESTIMATION_LABOUR_ID,item.CALL_ESTIMATION_DETAILS_ID,item.CALL_LOG_ID,item.CONTIGUOUS,item.COMPLAINT_ID)">
+                                            <ion-icon name="open"></ion-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="meterial_in === 1">
+                <h6 style="margin-top: 10px;">Material Details</h6>
+                <table role="table" class="callinspectionmaterial" style="background-color: white"
+                    *ngFor="let item of callinspectionmaterial; index as i;">
+                    <thead role="rowgroup">
+                        <tr role="row">
+                            <th role="columnheader">Compliant</th>
+                            <th role="columnheader">Material</th>
+                            <th role="columnheader">Material Specification</th>
+                            <th role="columnheader">Quantity</th>
+                            <th role="columnheader">Rate</th>
+                            <th role="columnheader">Contiguous %</th>
+                            <th role="columnheader">Total</th>
+                            <th role="columnheader">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody role="rowgroup">
+                        <tr role="row">
+                            <td role="cell">{{i+1}}</td>
+                            <td role="cell">{{item.CATEGORY_NAME}}</td>
+                            <td role="cell">{{item.CATEGORY_CODE}}</td>
+                            <td role="cell">{{item.QUANTITY}}</td>
+                            <td role="cell">{{item.RATE}}</td>
+                            <td role="cell">{{item.CONTIGUOUS}}</td>
+                            <td role="cell">{{item.TOTAL}}</td>
+                            <td role="cell">
+                                <div class="case" *ngIf="estimationdata.INTERM_STATUS_ID === 281;">
+                                        <div class="case" *ngIf="this.callestimationdetails[0].type === 1">
+                                                <button ion-button color="secondary" [disabled]="true"><ion-icon name="open"></ion-icon>
+                                            </button>
+                                        </div>
+                                        <div class="case" *ngIf="this.callestimationdetails[0].type === 0">
+                                                <button ion-button color="secondary"
+                                                (click)="updatematerial(item.M_SPECIFICATION,item.QUANTITY,item.RATE,item.CONTIGUOUS,item.CALL_ESTIMATION_ITEMS_ID)">
+                                                <ion-icon name="open"></ion-icon>
+                                            </button>
+                                        </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="meterial_in === 0">
+                <span style="color: red;">No data Found</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="backdrop" [ngStyle]="{'display':updatemodeldesignation}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':updatemodeldesignation}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>LABOUR EDIT</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseHandledlabour()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="updatedesignationForm" (submit)="updatedesignation()">
+
+                    <ion-input [(ngModel)]="CALL_ESTIMATION_LABOUR_ID" type="hidden"
+                        value="{{CALL_ESTIMATION_LABOUR_IDdata}}" [readonly]="true"
+                        [formControl]="updatedesignationForm.controls['CALL_ESTIMATION_LABOUR_ID']"></ion-input>
+
+                    <ion-input [(ngModel)]="CALL_ESTIMATION_DETAILS_ID" type="hidden"
+                        value="{{CALL_ESTIMATION_DETAILS_IDdata}}" [readonly]="true"
+                        [formControl]="updatedesignationForm.controls['CALL_ESTIMATION_DETAILS_ID']"></ion-input>
+
+                    <ion-input [(ngModel)]="CALL_LOG_ID" type="hidden" value="{{CALL_LOG_IDdata}}" [readonly]="true"
+                        [formControl]="updatedesignationForm.controls['CALL_LOG_ID']"></ion-input>
+                    <div class="modal-body">
+                        <div class="w3ls-form">
+                            <ion-item>
+                                <ion-label position="floating" style="color: black;">DESIGNATION :</ion-label>
+                                <ion-input [(ngModel)]="DESIGNATION" type="text" value="{{DESIGNATIONdata}}"
+                                    [readonly]="true" [formControl]="updatedesignationForm.controls['DESIGNATION']">
+                                </ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating" style="color: black;">LABOUR COUNT :</ion-label>
+                                <ion-input [(ngModel)]="LABOUR_COUNT" type="text" value="{{LABOUR_COUNTdata}}"
+                                    [formControl]="updatedesignationForm.controls['LABOUR_COUNT']"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating" style="color: black;">RATE :</ion-label>
+                                <ion-input [(ngModel)]="RATE" type="number" value="{{RATEdata}}"
+                                    [formControl]="updatedesignationForm.controls['RATE']"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating" style="color: black;">LABOUR TIME :</ion-label>
+                                <ion-input [(ngModel)]="LABOUR_TIME" type="text" value="{{LABOUR_TIMEdata}}"
+                                    [formControl]="updatedesignationForm.controls['LABOUR_TIME']"></ion-input>
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label position="floating" style="color: black;">CONTIGUOUS :</ion-label>
+                                <ion-input [(ngModel)]="CONTIGUOUSvalue" type="number"
+                                    [formControl]="updatedesignationForm.controls['CONTIGUOUS']"></ion-input>
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label position="floating" style="color: black;">TOTAL:</ion-label>
+                                <ion-input [(ngModel)]="TOTAL" type="text" value="{{TOTALdata}}" [readonly]="true"
+                                    [formControl]="updatedesignationForm.controls['TOTAL']"></ion-input>
+                            </ion-item>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onCloseHandledlabour()">Cancel</button>
+                        <button type="button" type="submit" class="btn btn-primary" color="primary">Save</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+
+    <div class="backdrop" [ngStyle]="{'display':updatemodelreason}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':updatemodelreason}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseMaterial()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="updatereasonForm" (submit)="updatereason()">
+
+                    <ion-input [(ngModel)]="CALL_INSPECTION_DETAILS_ID" type="hidden"
+                        value="{{CALL_INSPECTION_DETAILS_IDdata}}" [readonly]="true"
+                        [formControl]="updatereasonForm.controls['CALL_INSPECTION_DETAILS_ID']"></ion-input>
+
+                    <div class="modal-body">
+                        <div class="w3ls-form">
+
+                            <ion-item>
+                                <ion-label style="color: black;">REASION1 :</ion-label>
+                                <ion-textarea value="{{REASION1data}}" [(ngModel)]="REASION1"
+                                    [formControl]="updatereasonForm.controls['REASION1']">
+                                </ion-textarea>
+                            </ion-item>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onCloseMaterial()">Cancel</button>
+                        <button type="button" type="submit" class="btn btn-primary" color="primary">Save</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+
+
+    <div class="backdrop" [ngStyle]="{'display':updatematerialstyle}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':updatematerialstyle}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                        <h4>MATERIAL EDIT</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseMaterialdetails()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="updatematerialForm" (submit)="updatematerialdata()">
+
+                    <ion-input [(ngModel)]="CALL_ESTIMATION_ITEMS_ID" type="hidden"
+                        value="{{CALL_ESTIMATION_ITEMS_IDmaterial}}" [readonly]="true"
+                        [formControl]="updatematerialForm.controls['CALL_ESTIMATION_ITEMS_ID']"></ion-input>
+
+                    <div class="modal-body">
+                        <div class="w3ls-form">
+
+                            <ion-item>
+                                <ion-label style="color: black;">MATERIAL :</ion-label>
+                                <ion-input type="text" readonly="true" value="{{M_SPECIFICATIONmaterial}}" placeholder="M_SPECIFICATION"
+                                [formControl]="updatematerialForm.controls['M_SPECIFICATION']"></ion-input>
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label style="color: black;">QUANTITY :</ion-label>
+                                <ion-input value="{{QUANTITYmaterial}}" [(ngModel)]="QUANTITY" type="number" placeholder="QUANTITY"
+                                [formControl]="updatematerialForm.controls['QUANTITY']"></ion-input>
+                                
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label style="color: black;">RATE :</ion-label>
+                                <ion-input type="number" value="{{RATEmaterial}}" [(ngModel)]="RATE"
+                                [formControl]="updatematerialForm.controls['RATE']"></ion-input>
+                              
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label style="color: black;">CONTIGUOUS :</ion-label>
+                                <ion-input type="number" [(ngModel)]="CONTIGUOUSvalue"
+                                [formControl]="updatematerialForm.controls['CONTIGUOUS']"></ion-input>
+
+                            </ion-item>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onCloseMaterialdetails()">Cancel</button>
+                        <button type="button" type="submit" class="btn btn-primary" color="primary">Save</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+
+    <div class="backdrop" [ngStyle]="{'display':openprofitmodelstyle}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':openprofitmodelstyle}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Profit</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseopenprofitmodel()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="openprofitForm" (submit)="openprofitdata()">
+
+                        <ion-input type="hidden" value="{{holetotaldata}}"
+                        [formControl]="openprofitForm.controls['totaldata']"></ion-input>
+
+                    <div class="modal-body">
+                        
+                            <ion-item>
+                                    <ion-label>Type</ion-label>
+                                    <ion-select class="select1"  interface="popover"  [formControl]="openprofitForm.controls['Type']">
+                                            <ion-option value="{{user.id}}" *ngFor = "let user of users" > {{user.name}}</ion-option>
+                                        </ion-select>  
+                                  </ion-item>
+                                  <ion-item>
+                                        <ion-label>Enter value</ion-label>
+                                        <ion-input type="text" name="value" [formControl]="openprofitForm.controls['value']"></ion-input> 
+                                        <p *ngIf="openprofitForm.controls.value.errors && openprofitForm.controls.value.dirty" class='error'>Enter the  Requestor Name.</p>
+                          
+                                  </ion-item>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onCloseopenprofitmodel()">Cancel</button>
+                        <button type="button" type="submit" class="btn btn-primary" color="primary">Save</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+</ion-content>
+<style>
+    .row {
+        margin-left: 0px !important;
+        margin-right: -2px !important;
+    }
+</style>

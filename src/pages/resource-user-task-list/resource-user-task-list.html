@@ -1,0 +1,273 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title style="text-align: center;">{{modaltype[2]}} {{today | date: 'dd-MM-yyyy'}}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar>
+        <ion-searchbar style="padding-bottom: 10px;" [(ngModel)]="searchData.search_value"
+            (ionInput)="SearchTaskDetail()">
+        </ion-searchbar>
+        <!-- <ion-title style="text-align: center; margin-top: 10px; font-size: 14px;">Productivity Percentage : {{productivity_percentage}}%</ion-title> -->
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+
+    <ion-fab right bottom edge>
+        <button ion-fab mini (click)="createtask()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+
+    <div class="col-md-12" *ngIf="modaltype">
+        <div class="accordion" id="service_and_demand_modal">
+            <div *ngFor="let item of tasksearchdetails.assignedtaskList; index as i;">
+                <ion-list style="margin: -6px 0 0px;">
+                    <ion-item-sliding>
+                        <ion-item id="headingOne" class="btn btn-link blc collapsed" data-toggle="collapse"
+                            [attr.data-target]="'#' + i" aria-expanded="true/false" [attr.aria-controls]="i">
+
+                            <div *ngIf="item.STATUS == 4">
+                                <h2 style="color:#7ed670">{{ item.TITLE}} - {{item.SEQ_TEXT}}</h2>
+                                <p style="color:#7ed670">{{item.STATUS_NAME}} </p>
+                                <p *ngIf="item.TRANS_TYPE=='CALOG' && item.TRANS_ID > 0"> Call Log ID: {{item.TRANS_ID}}</p>
+                                <p > Start Date: {{item.TASK_START_TIME |date:'dd-MMM-yyyy hh:mm:ss a'}}</p>
+                                <p > End Date: {{item.TASK_END_TIME | date:'dd-MMM-yyyy hh:mm:ss a'}}</p>
+                                <p > Task Time: {{item.TOTAL_TASK_TIME}}</p>
+                                <p > Break: {{item.TOTAL_BREAK_TIME}}</p>
+                                <p > Lunch: {{item.TOTAL_LUNCH_TIME}}</p>
+                                <p > Pause: {{item.TOTAL_PAUSE_TIME}}</p>
+                                <p style="white-space: normal;"> Partners: {{item.PARTNER_NAME}}</p>
+                                <p style="white-space: normal;"> Units: {{item.UNIT_DESCRIPTION}}</p>
+                                
+                            </div>
+
+                            <div *ngIf="item.STATUS == 6">
+                                <h2 style="color:#e46161">{{ item.TITLE}} - {{item.SEQ_TEXT}}</h2>
+                                <p style="color:#e46161">{{item.STATUS_NAME}} - {{item.TASK_TIME ? item.TASK_TIME : ''}}</p>
+                                <p *ngIf="item.TRANS_TYPE=='CALOG' && item.TRANS_ID > 0"> Call Log ID: {{item.TRANS_ID}}</p>
+                                <p style="white-space: normal;"> Partners: {{item.PARTNER_NAME}}</p>
+                                <p style="white-space: normal;">Units: {{item.UNIT_DESCRIPTION}}</p>
+                            </div>
+
+                            <div *ngIf="item.STATUS != 4 && item.OVERDUE_TASK_COUNT == 0 && item.STATUS != 6">
+                                <h2>{{ item.TITLE}} - {{item.SEQ_TEXT}}</h2>
+                                <p>{{item.STATUS_NAME}}</p>
+                                <p *ngIf="item.TRANS_TYPE =='CALOG' && item.TRANS_ID > 0"> Call Log ID:
+                                    {{item.TRANS_ID}}</p>
+                                <p style="white-space: normal;">Partners: {{item.PARTNER_NAME}}</p>
+                                <p style="white-space: normal;">Units: {{item.UNIT_DESCRIPTION}}</p>
+                            </div>
+
+                            <div *ngIf="item.OVERDUE_TASK_COUNT == 1">
+                                <h2 style="color:#ffa500">{{ item.TITLE}} - {{item.SEQ_TEXT}}</h2>
+                                <p style="color:#ffa500">{{item.CREATED_BY_NAME}}</p>
+                                <p style="color:#ffa500">{{item.STATUS_NAME}} </p>
+                                <p  *ngIf="item.TRANS_TYPE =='CALOG' && item.TRANS_ID > 0"> Call Log ID: {{item.TRANS_ID}}</p>
+                                <p style="white-space: normal;"> Partners: {{item.PARTNER_NAME}}</p>
+                                <p style="white-space: normal;">Units: {{item.UNIT_DESCRIPTION}}</p>
+                            </div>
+
+                            <button ion-button clear item-end class="btn btn-link blc collapsed" data-toggle="collapse"
+                                [attr.data-target]="'#' + i" aria-expanded="true/false" [attr.aria-controls]="i">
+                                <ion-icon style="font-size: x-large;" name="arrow-dropdown"></ion-icon>
+                            </button>
+                        </ion-item>
+
+                        <ion-item-options side="left">
+                            <div *ngIf="item.TASK_TO_PIN == 0">
+                                <button ion-button style="font-size: 12px;"
+                                    (click)="pintotask(item.TASK_ID,item.TASK_TO_PIN)"><img src="assets/imgs/pin.png"
+                                        class="icon-btn" /> Pin</button>
+                            </div>
+                            <div *ngIf="item.TASK_TO_PIN > 0">
+                                <button ion-button style="font-size: 12px;"
+                                    (click)="pintotask(item.TASK_ID,item.TASK_TO_PIN)"><img src="assets/imgs/unpin.png"
+                                        class="icon-btn" /> Unpin</button>
+                            </div>
+                        </ion-item-options>
+                    </ion-item-sliding>
+                </ion-list>
+
+                <div [attr.id]="i" class="collapse" aria-labelledby="headingOne" data-parent="#alltaskmodal">
+                    <div class="card-body card-bodynew">
+                        <table role="table" class="alltaskmodal">
+                            <thead role="rowgroup">
+                                <tr role="row">
+
+                                    <th role="columnheader">Title</th>
+                                    <th role="columnheader">Assignee </th>
+                                    <th role="columnheader">Unit </th>
+                                    <th role="columnheader">Start Date</th>
+                                    <th role="columnheader">End Date</th>
+                                    <th role="columnheader">Task Time</th>
+                                    <th role="columnheader">Complaint</th>
+                                    <th role="columnheader">Created Date</th>
+                                    <th role="columnheader">Status</th>
+                                    <th role="columnheader">Comments</th>
+
+                                </tr>
+                            </thead>
+                            <tbody role="rowgroup">
+                                <tr role="row">
+
+                                    <td role="cell">{{item.TITLE}}</td>
+                                    <td role="cell">{{item.ASSIGNED_TO}}</td>
+                                    <td role="cell">{{item.UNIT_DESCRIPTION}}</td>
+                                    <td role="cell">{{item.TASK_START_TIME |date:'dd-MMM-yyyy hh:mm:ss a'}}</td>
+                                    <td role="cell">{{item.TASK_END_TIME |date:'dd-MMM-yyyy hh:mm:ss a'}}</td>
+                                    <td role="cell">{{item.TOTAL_TASK_TIME}}</td>
+                                    <td role="cell">{{item.COMPLAINT_DESCRIPTION}}</td>
+                                    <td role="cell">{{item.CREATED_ON | date:'dd-MMM-yyyy hh:mm:ss a'}}</td>
+                                    <td role="cell">{{item.STATUS_NAME}}</td>
+                                    <td role="cell">
+                                        <span>
+                                            <span [innerHTML]="item.COMMENTS" style='white-space: pre-line;'></span><br>
+                                            <span style="float: right; color: red">{{item.CMT_CREATED_BY}}
+                                                {{item.CMT_CREATED_ON | date:'dd-MMM-yyyy hh:mm:ss a'}}</span>
+                                        </span>
+                                    </td>
+                                    <td role="cell" style="padding-left: 0% !important;">
+                                        <!-- <span>
+                                              <button ion-button (click)="subtaskcreate(item.TASK_ID,item.TITLE)" color="success">
+                                                  <i class="fa fa-plus-circle" aria-hidden="true" style="font-size: 11px;">
+                                                  SUB TASK</i>
+                                              </button>
+                                          </span> -->
+
+                                          <span
+                                            *ngIf="(item.ASSIGNED_USER_INFO_ID == user.UserInfoId) && (item.STATUS <=2)">
+                                            <button ion-button (click)="update_task(item.TASK_ID,type='start')"
+                                                color="primary"><i class="fa fa-play" aria-hidden="true"
+                                                    style="font-size: 11px;"> Start</i></button>
+                                        </span>
+                                        <span *ngIf="(item.ASSIGNED_USER_INFO_ID == 0) && (item.STATUS <=2)">
+                                            <button ion-button (click)="update_task(item.TASK_ID,type='start')"
+                                                color="primary"><i class="fa fa-play" aria-hidden="true"
+                                                    style="font-size: 11px;"> Start</i></button>
+                                        </span>
+
+                                        <span *ngIf="(item.STATUS ==3) && (item.REFTASK == 0)">
+                                            <button ion-button
+                                                (click)="update_task(item.TASK_ID,type='pause')"
+                                                color="success">
+                                                <i class="fa fa-pause" aria-hidden="true"
+                                                    style="font-size: 11px;">
+                                                    Pause</i>
+                                            </button>
+                                        </span>
+
+                                        <span *ngIf="item.STATUS ==3">
+                                            <button ion-button (click)="update_task(item.TASK_ID,type='complete')"
+                                                color="success">
+                                                <i class="fa fa-check" aria-hidden="true" style="font-size: 11px;">
+                                                    Completed</i>
+                                            </button>
+                                        </span>
+
+                                        
+                                        <span>
+                                            <button ion-button
+                                                [color]="(item.TASK_FILE_COUNT > 0) ? 'secondary' : 'disableed'"
+                                                (click)="Getallimagelist(item.TASK_ID,item.TASK_FILE_COUNT)">
+                                                <ion-icon ios="ios-photos" md="md-photos"></ion-icon>
+                                            </button>
+                                        </span>
+
+                                        <span *ngIf="item.TASK_FILE_COUNT == 0">
+                                            <button ion-button (click)="openModalTaskUpload(item.TASK_ID)"
+                                                color="secondary">
+                                                <i class="fa fa-paperclip" aria-hidden="true" style="font-size: 11px;">
+                                                    Attach</i>
+                                            </button>
+                                        </span>
+                                        <span *ngIf="item.TASK_FILE_COUNT > 0">
+                                            <button ion-button (click)="openModalTaskUpload(item.TASK_ID)"
+                                                color="success">
+                                                <span style="margin-right: 15px; font-size: 11px;">
+                                                    <img src="assets/imgs/attach.png" class="icon-btn"
+                                                        style="max-width: 45% !important" /> Attach
+                                                </span>
+                                            </button>
+                                        </span>
+                                        <span>
+                                            <button ion-button (click)="openModal(item.TASK_ID)" color="secondary">
+                                                <i class="fa fa-comments" aria-hidden="true" style="font-size: 11px;">
+                                                    Comments</i>
+                                            </button>
+                                        </span>
+                                        
+                                        <!-- <span *ngIf="item.STATUS ==4">
+                                            <button ion-button (click)="update_task(item.TASK_ID, type='reopen')"
+                                                color="secondary"><i class="fa fa-undo" aria-hidden="true"
+                                                    style="font-size: 11px;"> Reopen</i>
+                                            </button>
+                                        </span> -->
+
+                                        <!-- <span *ngIf="(item.CREATED_BY == user.UserInfoId) && (item.STATUS ==4)">
+                                          <button ion-button (click)="update_task(item.TASK_ID,type='close')"
+                                              color="warning"><i class="fa fa-times" aria-hidden="true"
+                                                  style="font-size: 11px;"> Close</i></button>
+                                      </span> -->
+
+                                        <!-- <span>
+                                          <button ion-button (click)="openModalUpdateTask(item.TASK_ID)"
+                                              color="secondary">
+                                              <i class="fa fa-pencil-square-o" aria-hidden="true"
+                                                  style="font-size: 11px;"> Edit</i>
+                                          </button>
+                                      </span> -->
+                                        <!-- <span>
+                                          <button ion-button (click)="openModalTaskReminder(item.TASK_ID)"
+                                              color="secondary">
+                                              <i class="fa fa-bell-o" aria-hidden="true" style="font-size: 11px;">
+                                                  Reminder</i>
+                                          </button>
+                                      </span> -->
+                                        <span
+                                            *ngIf="(item.ASSIGNED_USER_INFO_ID != user.UserInfoId) && (item.STATUS <=2)">
+                                            <button ion-button (click)="delete_task(item.TASK_ID)" color="danger">
+                                                <i class="fa fa-trash" aria-hidden="true" style="font-size: 11px;">
+                                                    Delete</i>
+                                            </button>
+                                        </span>
+                                        <span *ngIf="item.FLAG_COUNT == 0">
+                                            <button ion-button (click)="UpdateimportantTask(item.TASK_ID,1)"
+                                                color="secondary">
+                                                <ion-icon name="flag"></ion-icon>
+                                            </button>
+                                        </span>
+                                        <span *ngIf="item.FLAG_COUNT == 1">
+                                            <button ion-button (click)="UpdateimportantTask(item.TASK_ID,0)"
+                                                color="danger">
+                                                <ion-icon name="flag"></ion-icon>
+                                            </button>
+                                        </span>
+                                        <span
+                                            *ngIf="item.THUBMSUP != 1 && (item.CREATED_BY == user.UserInfoId || item.REFERAL_USER_ID == 1)">
+                                            <button ion-button
+                                                (click)="UpdatethubmsTask(item.TASK_ID,1,item.ASSIGNED_USER_INFO_ID,item.CREATED_BY)"
+                                                color="secondary">
+                                                <ion-icon name="thumbs-up"></ion-icon>
+                                            </button>
+                                        </span>
+                                        <span *ngIf="item.REFTASK == 1">
+                                            <button ion-button (click)="openModalRemoveTask(item.TASK_ID)"
+                                                color="secondary">
+                                                <i class="fa fa-minus-circle" aria-hidden="true"
+                                                    style="font-size: 11px;"> Remove Referal</i>
+                                            </button>
+                                        </span>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ion-content>

@@ -1,0 +1,77 @@
+<!--
+  Generated template for the ModalPage page.
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+        <ion-navbar>
+          <ion-title>+ Add Hoto Comments </ion-title>
+          <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+          </ion-buttons>
+        </ion-navbar>
+      </ion-header>
+      
+      <ion-content>
+        <ion-card class="agile-login">
+          <div class="wrapper">
+            <form [formGroup]="hotocommentsForm" (submit)="inserthotoComments()">
+              <div>
+                <div class="w3ls-form">
+                    <h3 style="padding-left: 26PX; padding-top: 10px;
+                    padding-bottom: 10px;">Add Comments</h3>
+                    <ion-item>
+                        <ion-textarea  name="COMMENTS" placeholder="Enter any Comments here..." [formControl]="hotocommentsForm.controls['COMMENTS']"></ion-textarea>
+                        <p *ngIf="hotocommentsForm.controls.COMMENTS.errors && hotocommentsForm.controls.COMMENTS.dirty" class='error'>Enter Your Comments.</p>
+                    </ion-item>
+                    <button ion-button block type="submit" style=" margin-top: 35px;" color="primary" >Submit</button>
+                </div>
+                <ion-input [(ngModel)]="LEASE_NUMBER" *ngFor="let hoto of hotodata;"  type="hidden" value="{{hoto.LEASE_NUM}}" [formControl]="hotocommentsForm.controls['LEASE_NUMBER']"></ion-input>
+                <ion-input [(ngModel)]="HOTO_ID" *ngFor="let hoto of hotodata;"  type="hidden" value="{{hoto.HOTO_ID}}" [formControl]="hotocommentsForm.controls['HOTO_ID']"></ion-input>
+              </div>                  
+            </form> 
+          </div>
+        </ion-card>
+
+        <ion-list class="agile-login">
+            <ion-list-header>
+                <h2>Comments List</h2>
+            </ion-list-header>
+            <div class="wrapper">
+              <div class="col-md-12 w3ls-form">
+                <div class="accordion" id="accordionExample">
+                  <ion-item  *ngFor="let item of hotocommentsdetails; index as i;" data-parent="#accordionExample">
+                      <div  id="headingComment" style="background-color:white;">
+                          <a  (click)=showUndoBtn(i) role="button">
+                              <p style="float: right; color: cornflowerblue;">{{item.DDATE |date:'dd-MMM-yyyy,HH:mm a'}}</p><br>
+                              <h2>{{ item.NOTES.length > 15 ? item.NOTES.substring(0,15)+"..." : item.NOTES }}<ion-icon style="float: right;" name="arrow-dropdown"></ion-icon></h2>
+                          </a>
+                      </div>  
+                      <div [attr.id]="'undoBtn'+i" *ngIf="showBtn===i" >
+                        <div class="card-body card-bodynew" style="margin-top: 20px;">
+                            <table role="table" class="casemanagement">
+                                <thead role="rowgroup">
+                                <tr role="row">
+                                    <th role="columnheader">Created User</th>
+                                    <th role="columnheader">Created Date</th>
+                                    <th role="columnheader">Comments</th>
+                                </tr>
+                                </thead>
+                                <ion-card>
+                                <tbody role="rowgroup">                
+                                <tr role="row">
+                                    <td role="cell">{{item.USERNAME}}</td>
+                                    <td role="cell">{{item.DDATE |date:'dd-MMM-yyyy,HH:mm a'}}</td>
+                                    <td role="cell" style="white-space: initial;">{{item.NOTES}}</td>
+                                </tr>                
+                                </tbody>
+                              </ion-card>
+                            </table>
+                        </div>
+                      </div>
+                  </ion-item>
+                </div>
+              </div>
+            </div>
+          </ion-list>
+      </ion-content>

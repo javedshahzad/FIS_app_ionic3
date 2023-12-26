@@ -1,0 +1,66 @@
+<!--
+  Generated template for the ModalPage page.
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{today | date: 'dd-MM-yyyy'}} + File Uploads </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="agile-login">
+    <div class="wrapper">
+      
+      <div class="accordion" id="accordionExample">
+        <div class="card" data-parent="#accordionExample" >
+          <div class="card-body" id="headingComment" >
+            <h5 class="card-title">{{taskdata[0].task_data_val[0].SEQ_TEXT}} - {{taskdata[0].task_data_val[0].TITLE}}</h5>
+       <ion-fab top right style="margin-top: -13px;">
+          <button ion-fab mini (click)="openBrowser()"><ion-icon name="camera"></ion-icon>
+          </button>
+      </ion-fab>  
+        <ion-item *ngFor="let photo of photos; let id = index">
+          <ion-thumbnail item-start >
+            <div class="block">
+              <img [src]="photo" *ngIf="photo" />
+            </div>
+          </ion-thumbnail>
+            <button item-end ion-button color="danger" type="button" (click)="deletePhoto(id)"><ion-icon name="trash" class="deleteIcon"></ion-icon></button>
+            <button item-end ion-button color="secondary"  type="button" (click)="insertTaskFileUpload(id)"><ion-icon style="transform: rotate(180deg);" name="download"></ion-icon></button>
+        
+        </ion-item>
+        </div>
+      </div>
+    <br />
+        <div class="card"  data-parent="#accordionExample" style="border:none" >
+          <div class="card-header" id="headingComment" style="background-color:white;border:none;">
+            <h5 class="card-title">
+              Task Attachments
+            </h5>
+            <ion-item style="border:none" *ngFor="let item of taskuploadsdetails; index as i;">
+            <a role="button" style="white-space: normal;">
+              <span>{{1 + i}}. 
+              <span [innerHTML]="item.FILE_NAME" style='white-space: pre-line;font-size: 1.3rem;'></span> 
+              <span [innerHTML]="bytesToSize(item.FILE_SIZE)" style='white-space: pre-line;font-size: 1.3rem;'></span><br>
+               <span class="danger-clr" style="text-align:right;color:#f53d3d;font-size: 1.1rem;">by {{item.CREATED_BY_NAME}}
+                on {{item.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}</span>
+              </span>
+             
+            </a>
+            <span item-end style="float: right; padding-left: 10px;">
+              <ion-icon color="secondary" style="display: inline-block;font-size: 2.5em;" ios="ios-download"
+                md="md-download" (click)="getfile(item.ROW_NO,item)">
+              </ion-icon>
+            </span>
+          </ion-item>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

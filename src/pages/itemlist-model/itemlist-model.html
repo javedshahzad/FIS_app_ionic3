@@ -1,0 +1,119 @@
+<!--
+  Generated template for the ItemlistModelPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<style>
+  .dot {
+    height: 15px;
+    width: 15px;
+    color: #fff;
+    padding: 2px 5px;
+    background-color: #488aff;
+    border-radius: 50%;
+}
+  </style>
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons end>
+          <button ion-button (click) = "closeModel()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <div class="col-md-12" *ngIf="inHideMe">
+    <div class="accordion" id="accordionExample">
+      <div class="card" *ngFor="let item of itemList; index as i;" >
+        <div class="card-header" id="headingOne" style="background-color:white;">
+            <a  (click)=showUndoBtn(i) role="button">
+                {{1 + i}}.  {{item.ITEM_NAME}} <span class="dot" style="margin-left: 40%;"> {{item.QUANTITY}}
+                  <i class="fa fa-caret-down" style=" float: right;top: 3px;color: black; position: relative;font-size: 19px;"></i>
+                </span>
+            </a>       
+        </div>  
+        <div [attr.id]="'undoBtn'+i" *ngIf="showBtn===i" >
+          <div class="card-body">
+            <table role="table" class="initemtable">
+                <thead role="rowgroup">
+                  <tr role="row">
+                    <th role="columnheader">Purchase Date</th>                    
+                    <th role="columnheader">Supplier</th>
+                    <th role="columnheader">Item Name</th>
+                    <th role="columnheader">Total Quantity</th>
+                    <th role="columnheader">Unit Price</th>
+                    <th role="columnheader">Total</th>
+                    <th role="columnheader">Description	</th>
+                  </tr>
+                </thead>
+                <tbody role="rowgroup">                
+                  <tr role="row">
+                    <td role="cell">{{item.PURCHASE_DATE | date:'dd/MM/yyyy' }}&nbsp;</td>
+                    <td role="cell">{{item.SUPPLIER_ID}}&nbsp;</td>
+                    <td role="cell">{{item.ITEM_NAME}}&nbsp;</td>
+                    <td role="cell">{{item.QUANTITY}}&nbsp;</td>
+                    <td role="cell">{{item.UNIT_PRICE}}&nbsp;</td>
+                    <td role="cell">{{item.TOTAL}}&nbsp;</td>
+                    <td role="cell" >{{item.DESCRIPTION}}&nbsp;</td>
+                  </tr>                
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+
+  <div class="col-md-12" *ngIf="outHideMe">
+    <div class="accordion" id="accordionExample">
+      <div class="card" *ngFor="let item of itemList; index as i;" >
+        <div class="card-header" id="headingOne" style="background-color:white;">
+         
+            <a  (click)=showUndoBtn(i) role="button">
+                {{1 + i}}.  {{item.ITEM_NAME}} <span class="dot" style="margin-left: 40%;">{{item.QUANTITY}}
+                  <i class="fa fa-caret-down" style=" float: right;top: 3px;color: black; position: relative;font-size: 19px;"></i>
+                </span>
+            </a>            
+        </div>  
+        <div [attr.id]="'undoBtn'+i" *ngIf="showBtn===i" >
+          <div class="card-body">
+            <table role="table" class="outitemtable">
+                <thead role="rowgroup">
+                  <tr role="row">
+                    <th role="columnheader">Call No</th>
+                    <th role="columnheader">Issue Date</th>
+                    <th role="columnheader">Ordered By name</th> 
+                    <th role="columnheader">Approved By name</th>
+                    <th role="columnheader">Location Name</th>
+                    <th role="columnheader">Building Name</th>
+                    <th role="columnheader">Unit Name</th>
+                    <th role="columnheader">Quantity</th>
+                    <th role="columnheader">Remark</th>
+                  </tr>
+                </thead>
+                <tbody role="rowgroup">                
+                  <tr role="row">
+                    <td role="cell">{{item.WORK_ORDER_NO}}&nbsp;</td>
+                    <td role="cell">{{item.ISSUE_DATE | date:'dd/MM/yyyy' }}&nbsp;</td>
+                    <td role="cell">{{item.ORDERED_BY_NAME}}&nbsp;</td>
+                    <td role="cell">{{item.APPROVED_BY_NAME}}&nbsp;</td>
+                    <td role="cell">{{item.LOCATION_NAME}}&nbsp;</td>
+                    <td role="cell">{{item.BUILDING_NAME}}&nbsp;</td>
+                    <td role="cell">{{item.UNIT_NAME}}&nbsp;</td>
+                    <td role="cell">{{item.QUANTITY}}&nbsp;</td>
+                    <td role="cell">{{item.REMARKS}}&nbsp;</td>
+                  </tr>                
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+
+</ion-content>

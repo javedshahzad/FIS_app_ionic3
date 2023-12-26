@@ -1,0 +1,40 @@
+<ion-header >
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Home</ion-title>
+</ion-header>
+
+<ion-content padding>
+  <h3>Preventive Maintance</h3>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="preventiveMaintance" color="secondary">
+      <ion-segment-button value="asset">
+          Asset Detail
+      </ion-segment-button>
+      <ion-segment-button value="sub">
+          Sub Detail
+      </ion-segment-button>
+      <ion-segment-button value="service">
+          Service Detail
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <div  [ngSwitch]="preventiveMaintance" >
+    <div  *ngSwitchCase="'asset'"> 
+        <p>
+        1  If you get lost, the <a href="#">docs</a> will show you the way.
+        </p>
+    </div>
+    <div *ngSwitchCase="'sub'"> 
+        <p>
+        2  If you get lost, the <a href="#">docs</a> will show you the way.
+        </p>
+    </div>
+    <div *ngSwitchCase="'service'"> 
+        <p>
+        3  If you get lost, the <a href="#">docs</a> will show you the way.
+        </p>
+    </div>
+  </div>
+</ion-content>

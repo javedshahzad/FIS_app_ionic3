@@ -1,0 +1,382 @@
+<ion-header>
+    <ion-navbar>
+        <ion-buttons left>
+            <button ion-button (click)="closeModal()"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </button>
+        </ion-buttons>
+        <ion-title style="text-transform: capitalize;text-align: center" style="font-size: 1.7rem; text-align: center;">
+            Call Estimation</ion-title>
+        <ion-buttons right>
+            <button ion-button icon-only style="color: #ffffff;">
+                <ion-icon name="notifications"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-buttons right>
+            <button ion-button icon-only style="color: #ffffff;">
+                <ion-icon ios="ios-contact" md="md-contact" size="large" name="contact"></ion-icon>
+            </button>
+        </ion-buttons>
+
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+
+    <div class="accordion" id="accordionExample">
+        <ion-grid>
+            <ion-row>
+                <ion-col col-12></ion-col>
+            </ion-row>
+            <ion-row class="logo-row" style="padding-bottom: 0px;">
+                <ion-col col-4 style="top: -40px !important;"></ion-col>
+                <ion-col col-4 style="top: -40px !important;">
+                    <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+                </ion-col>
+                <ion-col col-4 style="top: -40px !important;"></ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <div style="margin-top: -45px;">
+
+            <div class="row-fluid">
+                <div class="col-md-12" style="margin-bottom:3%;">
+                    <div class="navbar-form" role="search">
+                        <div class="input-group add-on">
+                            <!-- <input class="form-control input-lg txt-search" placeholder="Search value" name="search_txt"
+                                    [(ngModel)]="searchData.search_value" type="text">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default sbut" type="submit" (click)='SearchcallManagement()'><i
+                                            class="fa fa-search"></i></button>
+                                </div> -->
+                            <ion-searchbar placeholder="Search value" name="search_txt"
+                                [(ngModel)]="searchData.search_value" (ionInput)="SearchcallManagement()">
+                            </ion-searchbar>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="" *ngFor="let item of Callestimationvalue; index as i;">
+                <ion-row>
+                    <ion-col>
+                        <ion-card class="dash_image" text-center (click)=showUndoBtn(i)
+                            style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                            <ion-grid style="padding:0px;">
+                                <div class="card-header" id="headingOne"
+                                    style="background:linear-gradient(90deg,#ff7f80,#e03842) !important;"
+                                    *ngIf="item.MGR_ESCLATED_COUNT > 0 || item.CEO_ESCLATED_COUNT > 0; else elsepart; ">
+                                    <a style=" float: left;">
+
+                                        <span style="float: left">{{i + 1}}.{{item.CALL_LOG_ID}} </span><br>
+                                        {{item.ASSIGNEDTO}} - {{item.UNIT}}
+
+                                    </a>
+                                    <i class="fa fa-chevron-circle-down faicons" role="button"></i>
+                                </div>
+                                <ng-template #elsepart>
+                                    <div class="card-header" id="headingOne"
+                                        style="background:linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                                        <a style=" float: left;">
+
+                                            <span style="float: left"> {{i + 1}}.{{item.CALL_LOG_ID}} </span><br>
+                                            {{item.ASSIGNEDTO}} - {{item.UNIT}}
+
+                                        </a>
+                                        <i class="fa fa-chevron-circle-down faicons" role="button"></i>
+                                    </div>
+
+                                </ng-template>
+                            </ion-grid>
+                        </ion-card>
+                    </ion-col>
+                </ion-row>
+                <div [attr.id]="'undoBtn'+i" *ngIf="showBtn===i">
+                    <div class="card-body card-bodynew">
+                        <table role="table" class="searchinspection" style="background-color: white">
+                            <thead role="rowgroup">
+                                <tr role="row">
+                                    <th role="columnheader"> Call No </th>
+                                    <th role="columnheader">Requestor Name </th>
+                                    <th role="columnheader">Mobile No</th>
+                                    <th role="columnheader">Unit Code</th>
+                                    <th role="columnheader">Complain list</th>
+                                    <th role="columnheader">Previous Comments</th>
+                                    <th role="columnheader">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody role="rowgroup">
+                                <tr role="row">
+                                    <td role="cell">{{item.CALL_NO}}</td>
+                                    <td role="cell">{{item.REQUESTOR_NAME}}</td>
+                                    <td role="cell">{{item.MOBILE_NO}}</td>
+                                    <td role="cell">{{item.UNIT}}</td>
+                                    <td role="cell">{{item.COMPLAINT_LIST}}</td>
+                                    <td role="cell">
+                                        <table>
+                                            <thead>
+                                                <th style="font-weight: 400;">CREATED_BY:
+                                                    &nbsp;&nbsp;{{item.COMMENTS_CREATED_BY}}</th>
+                                                <th style="font-weight: 400;">CREATED_DATE:</th>
+                                                <th style="font-weight: 400;">
+                                                    {{item.COMMENTS_CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}</th>
+                                                <th style="font-weight: 400;">Command:</th>
+                                                <th style="font-weight: 400;">{{item.COMMENTS}}</th>
+                                            </thead>
+                                        </table>
+                                    </td>
+                                    <td role="cell">
+
+                                        <div class="case" *ngIf="item.INTERM_STATUS_ID == 246 || item.INTERM_STATUS_ID == 248; else elsepart; ">
+                                            <button ion-button
+                                                (click)="openModalinspection(item.CALL_INSPECTION_ID,item.CALL_LOG_ID,item.STATUS_ID,item.ASSIGNEDID,0)"
+                                                color="secondary">
+                                                <ion-icon ios="ios-open" md="md-open"></ion-icon>
+                                            </button>
+                                        </div>
+                                        <ng-template #elsepart>
+                                            <button ion-button color="secondary" [disabled]="true">
+                                                <ion-icon ios="ios-open" md="md-open"></ion-icon>
+                                            </button>
+                                        </ng-template>
+                                    </td>
+                                    <td role="cell">
+                                        <span *ngIf="item.INTERM_STATUS_ID == 246">
+                                            <button ion-button
+                                                (click)="confirmupdate(item.CALL_LOG_ID,item.STATUS_NAME,item.CALL_ESTIMATION_ID)"
+                                                color="secondary">
+                                                <ion-icon name="checkmark-circle-outline"></ion-icon>
+                                            </button>
+                                        </span>
+                                        <span *ngIf="item.INTERM_STATUS_ID == 247">
+                                            <button ion-button style="font-size: 10px;"
+                                                (click)="Assign_Approver(item.CALL_LOG_ID,item.STATUS_NAME,item.CALL_ESTIMATION_ID)"
+                                                color="secondary">Assign Approver</button>
+                                        </span>
+                                        <span *ngIf="item.INTERM_STATUS_ID == 248">
+                                            <button ion-button style="font-size: 10px;"
+                                                (click)="Approve_the_Estimation(item.CALL_LOG_ID,item.STATUS_NAME,item.CALL_ESTIMATION_ID)"
+                                                color="secondary">Approve the Estimation</button>
+
+                                            <button ion-button style="font-size: 10px;"
+                                                *ngIf="ResourseList.TYPE_USER == 'Manager'"
+                                                (click)="Reschedule_the_Estimation(item.CALL_LOG_ID,item.STATUS_NAME,item.CALL_ESTIMATION_ID)"
+                                                color="secondary">Re Schedule</button>
+
+                                        </span>
+
+                                        <span *ngIf="item.INTERM_STATUS_ID == 249">
+                                            <button ion-button style="font-size: 10px;"
+                                                (click)="Approve_the_client(item.COMPLAINTCOUNT,item.CALL_LOG_ID,item.CALL_ESTIMATION_ID)"
+                                                color="secondary">Approve Client</button>
+                                        </span>
+                                    </td>
+                                    <td role="cell">
+                                        <button ion-button
+                                            (click)="openModal(item.CALL_LOG_ID,item.STATUS_ID,item.REQUESTOR_NAME)"
+                                            color="secondary">
+                                            <ion-icon ios="ios-chatbubbles" md="md-chatbubbles"></ion-icon>
+                                        </button>
+                                        <button ion-button (click)="openModalLpo(item.CALL_LOG_ID)" color="secondary">
+                                            <ion-icon name="cash"></ion-icon>
+                                        </button>
+                                    </td>
+                                    <td role="cell">
+                                        <button ion-button [ngStyle]="{'display':edit_show}"
+                                            (click)="openModalinspection(item.CALL_INSPECTION_ID,item.CALL_LOG_ID,item.STATUS_ID,item.ASSIGNEDID,1)"
+                                            color="secondary"> Details</button>
+                                    </td>
+                                    <button ion-button color="secondary"
+                                        (click)="createtask(item.CALL_LOG_ID,item.REQUESTOR_NAME,item.UNIT)">
+                                        <i class="fa fa-plus-circle" aria-hidden="true" style="font-size: 11px;">
+                                            Create Task</i>
+                                    </button>
+                                    <span *ngIf="item.TASK_COUNT > 0">
+                                        <button ion-button color="secondary" (click)="gettask(item.CALL_LOG_ID)">
+                                            <i class="fa fa-list" aria-hidden="true" style="font-size: 11px;">
+                                                Task List &nbsp;&nbsp;({{item.TASK_COUNT}})</i></button>
+                                    </span>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="backdrop" [ngStyle]="{'display':image_dout_liststyle}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':image_dout_liststyle}" data-backdrop="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>ASSIGNED TO APPROVE</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseimage_dout_list()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="createcallForm" (submit)="insertCallData()">
+                    <div class="modal-body">
+                        <ion-input name="Call_No" type="hidden" value="{{CALL_LOG_ID_data}}"
+                            [formControl]="createcallForm.controls['Call_No']"></ion-input>
+                        <ion-input name="CALL_ESTIMATION_ID" type="hidden" value="{{CALL_ESTIMATION_ID_data}}"
+                            [formControl]="createcallForm.controls['CALL_ESTIMATION_ID']"></ion-input>
+                        <ion-input name="STATUS_NAME" type="hidden" value="{{STATUS_NAME_data}}"
+                            [formControl]="createcallForm.controls['STATUS_NAME']"></ion-input>
+                        <ion-item>
+                            <ion-label>Assigned to</ion-label>
+                            <ion-select class="select1" interface="popover" name="Assigned_to"
+                                [formControl]="createcallForm.controls['Assigned_to']">
+                                <ion-option value="0">--Select--</ion-option>
+                                <ion-option value="{{ASSIGNED.RESOURCE_ID}}"
+                                    *ngFor="let ASSIGNED of Assign_Approverdata"> {{ASSIGNED.EMPNAME}}
+                                </ion-option>
+                            </ion-select>
+                            <p *ngIf="createcallForm.controls.Assigned_to.errors && createcallForm.controls.Assigned_to.dirty"
+                                class='danger'>Select a Assigned_to.</p>
+                        </ion-item>
+
+                        <ion-row style="padding: 20px;">
+                            <ion-textarea name="comments" placeholder="comments " style="border: 1px solid;"
+                                [formControl]="createcallForm.controls['comments']"></ion-textarea>
+
+                        </ion-row>
+                        <p *ngIf="createcallForm.controls.comments.errors && createcallForm.controls.comments.dirty"
+                            class='danger'>Enter the comments</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onCloseimage_dout_list()">Cancel</button>
+                        <button type="submit" style="float: right; color: #fff !important;" class="btn btn-primary"
+                            [disabled]="!createcallForm.valid">Submit</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+
+    <div class="backdrop" [ngStyle]="{'display':image_dout_liststyle1}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':image_dout_liststyle1}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>APPROVE THE ESTIMATION</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseimage_dout_list1()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="createcallForm1" (submit)="insertCallData1()">
+                    <div class="modal-body">
+                        <ion-input name="Call_No" type="hidden" value="{{CALL_LOG_ID_data}}"
+                            [formControl]="createcallForm1.controls['Call_No']"></ion-input>
+                        <ion-input name="CALL_ESTIMATION_ID" type="hidden" value="{{CALL_ESTIMATION_ID_data}}"
+                            [formControl]="createcallForm1.controls['CALL_ESTIMATION_ID']"></ion-input>
+                        <ion-input name="STATUS_NAME" type="hidden" value="{{STATUS_NAME_data}}"
+                            [formControl]="createcallForm1.controls['STATUS_NAME']"></ion-input>
+
+                        <ion-row style="padding: 20px;">
+                            <ion-textarea name="comments" placeholder="comments " style="border: 1px solid;"
+                                [formControl]="createcallForm1.controls['comments']"></ion-textarea>
+                        </ion-row>
+
+                        <p *ngIf="createcallForm1.controls.comments.errors && createcallForm1.controls.comments.dirty"
+                            class='danger'>Enter the comments</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onCloseimage_dout_list1()">Cancel</button>
+                        <button type="submit" style="float: right; color: #fff !important;" class="btn btn-primary"
+                            [disabled]="!createcallForm1.valid">Submit</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+
+    <div class="backdrop" [ngStyle]="{'display':image_dout_liststyle2}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':image_dout_liststyle2}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>APPROVE CLIENT</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseimage_dout_list2()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="createcallForm2" (submit)="insertCallData2()">
+                    <div class="modal-body">
+                        <ion-input name="Call_No" type="hidden" value="{{CALL_LOG_ID_data}}"
+                            [formControl]="createcallForm2.controls['Call_No']"></ion-input>
+                        <ion-input name="CALL_ESTIMATION_ID" type="hidden" value="{{CALL_ESTIMATION_ID_data}}"
+                            [formControl]="createcallForm2.controls['CALL_ESTIMATION_ID']"></ion-input>
+
+                        <ion-input name="Oracle_Ivoice_No" type="text" placeholder="Oracle Ivoice No"
+                            [formControl]="createcallForm2.controls['Oracle_Ivoice_No']"></ion-input>
+                        <ion-item style="padding: 20px;">
+                            <ion-textarea name="comments" placeholder="comments " style="border: 1px solid;"
+                                [formControl]="createcallForm2.controls['comments']"></ion-textarea>
+
+                        </ion-item>
+                        <p *ngIf="createcallForm2.controls.comments.errors && createcallForm2.controls.comments.dirty"
+                            class='danger'>Enter the comments</p>
+
+                        <!-- <ion-item>
+                            <label>Select</label>
+                            <input type="file" (change)="onSelectFile($event)">
+                        </ion-item> -->
+                        <ion-item>
+                            <ion-label id="profile_image" color="primary" stacked>Select</ion-label>
+                            <ion-input type="file" (change)="onSelectFile($event)"></ion-input>
+                        </ion-item>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onCloseimage_dout_list2()">Cancel</button>
+                        <button type="submit" style="float: right; color: #fff !important;" class="btn btn-primary"
+                            [disabled]="!createcallForm2.valid">Submit</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+
+    <div class="backdrop" [ngStyle]="{'display':reschedule_divstyle}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':reschedule_divstyle}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Re-Schedule</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseReschedule()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="reSchedulecallForm" (submit)="reScheduleCallData()">
+                    <div class="modal-body">
+                        <ion-input name="Call_No" type="hidden" value="{{CALL_LOG_ID_data}}"
+                            [formControl]="reSchedulecallForm.controls['CALL_LOG_ID']"></ion-input>
+                        <ion-input name="CALL_ESTIMATION_ID" type="hidden" value="{{CALL_ESTIMATION_ID_data}}"
+                            [formControl]="reSchedulecallForm.controls['CALL_ESTIMATION_ID']"></ion-input>
+                        <ion-input name="STATUS_NAME" type="hidden" value="{{STATUS_NAME_data}}"
+                            [formControl]="reSchedulecallForm.controls['STATUS_NAME']"></ion-input>
+                        <ion-row style="padding: 20px;">
+                            <p>Re-Schedule To INSPECTION IN PROGRESS</p>
+                        </ion-row>
+                        <ion-row style="padding: 20px;">
+                            <ion-textarea name="comments" placeholder="comments " style="border: 1px solid;"
+                                [formControl]="reSchedulecallForm.controls['COMMENTS']"></ion-textarea>
+
+                        </ion-row>
+                        <p *ngIf="reSchedulecallForm.controls.COMMENTS.errors && reSchedulecallForm.controls.COMMENTS.dirty"
+                            class='danger'>Enter the comments</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onCloseReschedule()">Cancel</button>
+                        <button type="submit" style="float: right; color: #fff !important;" class="btn btn-primary"
+                            [disabled]="!reSchedulecallForm.valid">Submit</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+</ion-content>

@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar style="background-color:#525b6d">
+        <ion-buttons left>
+                <button ion-button (click)="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+        </ion-buttons>
+    <ion-title style="text-transform: capitalize;text-align: center">Comments </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only *ngIf="myprofilecount === 1;">
+                <div *ngFor="let image of myprofile; index as i;" style="width: 40px;height: 40px;">
+                <ion-icon><img class="myprofile-picture" [src]="getImage(image.ID)"></ion-icon>
+                </div>
+            </button>
+              <button ion-button icon-only style="color: #ffffff;" *ngIf="myprofilecount === 0;">
+                  <ion-icon name="contact"></ion-icon>
+            </button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+
+<ion-grid>
+    <ion-row>
+        <ion-col col-12></ion-col>
+    </ion-row>
+    <ion-row class="logo-row" style="padding-bottom: 0px;">
+        <ion-col col-4 style="top: -40px !important;"></ion-col>
+        <ion-col col-4 style="top: -40px !important;">
+            <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+        </ion-col>
+        <ion-col col-4 style="top: -40px !important;"></ion-col>
+    </ion-row>
+</ion-grid>
+
+<ion-grid>
+    <ion-row>
+        <ion-col>
+            <ion-card class="dash_image" text-center (click)="openDetailModal(type = 'CMT')"  style=" background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                <ion-grid>
+                    <ion-row>
+                        <ion-col col-1>
+
+                        </ion-col>
+                        <ion-col col-11 style="margin-top: 5px;">
+                            <h2 class="h2design">
+                                My Comments
+                                <ion-badge item-end style="margin-left: 124px;">{{ CmtData.MyCmt.LABEL_COUNT || '0' }}</ion-badge></h2>
+                                <i class="fa fa-chevron-circle-right faicons"></i>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col>
+            <ion-card class="dash_image" text-center (click)="openDetailModal(type = 'CMTTOCMT')" style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                <ion-grid>
+                    <ion-row>
+                        <ion-col col-1>
+
+                        </ion-col>
+                        <ion-col col-11 style="margin-top: 5px;">
+                            <h2 class="h2design">
+                                My Comments to Comments 
+                                <ion-badge item-end style="margin-left:20px;">{{ CmtData.MyCmttoCmt.LABEL_COUNT || '0' }}</ion-badge></h2>
+                                <i class="fa fa-chevron-circle-right faicons"></i>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+</ion-content>

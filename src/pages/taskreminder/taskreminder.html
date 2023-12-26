@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title style="text-transform: capitalize;">Task Reminder</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <form [formGroup]="createtaskForm" (submit)="inserttaskreminder()">
+     
+      <ion-item>
+        <ion-label stacked>Reminder Date</ion-label>
+        <ion-datetime displayFormat="DDD, MMM D YYYY" pickerFormat="YYYY MMM DD" 
+            name="reminder_date" 
+            placeholder="DAY, MMM D YYYY"
+            [formControl]="createtaskForm.controls['reminder_date']">
+        </ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Reminder Time</ion-label>
+        <ion-datetime displayFormat="hh:mm A" pickerFormat="hh:mm A" 
+            name="reminder_hr" 
+            placeholder="hh:mm "
+            [formControl]="createtaskForm.controls['reminder_hr']">
+        </ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Add Comments</ion-label>
+        <ion-textarea  name="COMMENTS" placeholder="Enter any Comments here..." [formControl]="createtaskForm.controls['COMMENTS']"></ion-textarea>
+        <p *ngIf="createtaskForm.controls.COMMENTS.errors && createtaskForm.controls.COMMENTS.dirty" class='error'>Enter Your Comments.</p>
+      </ion-item>
+    
+      <ion-item>
+          <ion-label>Reminder list</ion-label>
+          <button ion-button icon-start clear item-end class="dash_image" type="button" (click)="showusercontrol()">
+            <ion-icon name="arrow-down"></ion-icon>
+            View
+          </button>
+      </ion-item>
+
+        <div class="wrapper" [ngStyle]="{'display':showuseraccess}">
+          <ion-item *ngFor="let item of reminderarry; index as i;" data-parent="#accordionExample"
+            style="border: unset !important;">
+            <div *ngIf="item.INSERT_TYPE != 'Deleted'">
+              <div class="card-body card-bodynew" style="margin-top: 5px;">
+                <table role="table" class="casemanagement">
+                  <thead>
+                    <tr role="row">
+                      <th role="columnheader">Reminder Date</th>
+                      <th role="columnheader">Reminder Time</th>
+                      <th role="columnheader">Comments</th>
+                      <th role="columnheader">Action</th>
+                    </tr>
+                  </thead>
+                  <ion-card>
+                    <tbody>
+                      <tr role="row">
+                        <td role="cell">{{item.REMINDER_DATE | date:'dd-MMM-yyyy' }}</td>
+                        <td role="cell">{{item.REMINDER_HR}} {{item.AMPM}}</td>
+                        <td role="cell">{{item.COMMENTS}}</td>
+                        <td role="cell">
+                          <span>
+                            <button ion-button type="button" (click)="DeleteUser(i,item.TASK_ID,item.REMINDER_DATE,item.REMINDER_HR,item.TASK_REMINDER_ID)" color="danger">
+                              <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </ion-card>
+                </table>
+              </div>
+            </div>
+          </ion-item>
+        </div>
+
+      <div class="example-center">
+        <button ion-button color="secondary" type="button" (click)="addreminder()">+ Add Reminder </button>
+        <button ion-button type="submit" color="Primary">Confirm</button>
+        <button ion-button color="dark" (click)=clearvalues();>Clear</button>
+      </div>
+
+    </form>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,115 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Lpo Call Details </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+
+  <div class="col-md-12">
+    <div class="accordion" id="accordionExample">
+      <div *ngIf="callcomplientsdetails_length == 1">
+      <div class="" *ngFor="let item of callcomplientsdetails; index as i;">
+        <ion-row>
+          <ion-col>
+            <ion-card class="dash_image" text-center (click)=showUndoBtn(i)
+              style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+              <ion-grid style="padding:0px;">
+                <div class="card-header" id="headingOne"
+                  style="background:linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                  <a style=" float: left;">
+
+                    <span style="float: left">{{i + 1}}.{{item.CALL_LOG_ID}} Complaint List</span>
+
+                  </a>
+                  <i class="fa fa-chevron-circle-down faicons" role="button" style="float: right;"></i>
+                </div>
+              </ion-grid>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <div [attr.id]="'undoBtn'+i" *ngIf="showBtn===i">
+          <div class="card-body card-bodynew">
+            <table role="table" class="searchinspection"  style="background-color: white">
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th role="columnheader">#</th>
+                  <th role="columnheader">Call No</th>
+                  <th role="columnheader">Complaint</th>
+                  <th role="columnheader">Observation</th>
+                </tr>
+              </thead>
+              <tbody role="rowgroup">
+                <tr role="row">
+                  <td role="cell">{{i+1}}</td>
+                  <td role="cell">{{item.CALL_LOG_ID}}</td>
+                  <td role="cell">{{item.COMPLAINT_DESCRIPTION}}</td>
+                  <td role="cell">{{item.NOTE}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="callcomplientsdetails_length == 0">
+      <span style="color: red">
+        No data found
+      </span>
+    </div>
+
+    <div class="" *ngFor="let item of callmaterialdetails; index as i;">
+        <ion-row>
+          <ion-col>
+            <ion-card class="dash_image" text-center (click)=showUndoBtn1(i)
+              style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+              <ion-grid style="padding:0px;">
+                <div class="card-header" id="headingOne"
+                  style="background:linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                  <a style=" float: left;">
+
+                    <span style="float: left">{{i + 1}}.{{item.CALL_LOG_ID}} Material List</span>
+
+                  </a>
+                  <i class="fa fa-chevron-circle-down faicons" role="button" style="float: right;"></i>
+                </div>
+              </ion-grid>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <div [attr.id]="'undoBtn1'+i" *ngIf="showBtn1===i">
+          <div class="card-body card-bodynew">
+            <table role="table" class="searchinspection_mat"  style="background-color: white">
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th role="columnheader">#</th>
+                  <th role="columnheader">CATEGORY CODE</th>
+                  <th role="columnheader">DESCRIPTION</th>
+                  <th role="columnheader">M SPECIFICATION</th>
+                  <th role="columnheader">QUANTITY</th>
+                </tr>
+              </thead>
+              <tbody role="rowgroup">
+                <tr role="row">
+                  <td role="cell">{{i+1}}</td>
+                  <td role="cell">{{item.CATEGORY_CODE}}</td>
+                  <td role="cell">{{item.DESCRIPTION}}</td>
+                  <td role="cell">{{item.M_SPECIFICATION}}</td>
+                  <td role="cell">{{item.QUANTITY}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

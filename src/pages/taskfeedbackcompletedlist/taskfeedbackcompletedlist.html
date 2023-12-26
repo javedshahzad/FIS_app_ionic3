@@ -1,0 +1,65 @@
+<ion-header>
+    <ion-navbar>
+        <ion-buttons left>
+            <button ion-button (click)="closeModal()"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </button>
+        </ion-buttons>
+        <ion-title style="text-transform: capitalize;text-align: center" style="font-size: 1.7rem; text-align: center;">
+            Feedback Tasks
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+
+    <!-- <ion-grid>
+        <ion-row>
+            <ion-col col-12></ion-col>
+        </ion-row>
+        <ion-row class="logo-row" style="padding-bottom: 0px;">
+            <ion-col col-4 style="top: -40px !important;"></ion-col>
+            <ion-col col-4 style="top: -40px !important;">
+                <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+            </ion-col>
+            <ion-col col-4 style="top: -40px !important;"></ion-col>
+        </ion-row>
+    </ion-grid> -->
+
+    <div>
+
+        <div class="row-fluid">
+            <div class="col-md-12">
+                <div class="navbar-form" role="search">
+                    <div class="input-group add-on">
+                        <ion-searchbar placeholder="Search value" name="search_txt"
+                            [(ngModel)]="searchData.search_value" (ionInput)="SearchcallManagement()"></ion-searchbar>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="accordion" id="accordionExample">
+            <div class="card" *ngFor="let item of Callprocurementvalue; index as i;">
+                <ion-row>
+                    <ion-col>
+                        <ion-card class="dash_image" text-center (click)=openupdatefeedback(item)
+                            style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                            <ion-grid>                                
+                                <div >
+                                    <h2>Task ID: {{ item.TASK_ID}}</h2>
+                                    <h3>{{item.TITLE}} - {{item.SEQ_TEXT}}</h3>
+                                    <p>{{item.CREATED_BY_NAME}}</p>
+                                    <p>{{item.ASSIGNED_TO}}</p>
+                                </div>                               
+                            </ion-grid>
+                        </ion-card>
+                    </ion-col>
+                </ion-row>
+            </div>
+        </div>
+    </div>
+</ion-content>

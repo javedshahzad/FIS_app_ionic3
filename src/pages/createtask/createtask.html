@@ -1,0 +1,178 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title style="text-transform: capitalize;"> + Create Task </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar no-border-top *ngIf='showAudioRecord == 1'>
+    <ion-segment [(ngModel)]="pet" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="pending" style="font-size: 13px;">
+        Record
+      </ion-segment-button>
+      <ion-segment-button value="confirm" style="font-size: 13px;">
+        Saved Recording
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <div *ngIf='showAudioRecord == 0'>
+
+    <ion-list *ngIf="showComplaintList ==0">
+      <form [formGroup]="createtaskForm" (submit)="inserttask()">
+        <ion-item *ngIf="parant_or_not === 1">
+          <span>Add Sub Task (Parent Task : {{taskmodal[0].TITLE}})</span>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Title</ion-label>
+          <ion-input type="text" name="title" [formControl]="createtaskForm.controls['title']"></ion-input>
+          <p *ngIf="createtaskForm.controls.title.errors && createtaskForm.controls.title.dirty" class='error'>Enter the
+            Title.</p>
+        </ion-item>
+
+        <!-- <ion-item>
+        <span>Expected Completion Date</span><br><br>
+        <span><ion-datepicker  name="due_date" (ionChanged)="datepickerchange($event)" ngDefaultControl [(ngModel)]="due_date"
+         [formControl]="createtaskForm.controls['due_date']"><ion-icon name="clipboard" style="float: right;font-size: 30px;margin-right: 12px;"></ion-icon>{{localDate}}
+        <p *ngIf="createtaskForm.controls.due_date.errors && createtaskForm.controls.due_date.dirty" class='error'>
+          Enter the Completion date.</p>
+        </ion-datepicker></span> 
+      </ion-item> -->
+        <ion-item>
+          <span>Expected Completion Date</span><br><br>
+          <span>
+            <span (click)="opencalendar()">{{localDate}}</span>
+            <span>
+              <ion-icon name="clipboard" (click)="opencalendar()"
+                style="float: right;font-size: 31px;margin-right: 10px;"></ion-icon>
+            </span>
+          </span><br>
+          <span *ngIf="calendarshow === 1">
+            <ion-calendar name="due_date" (onChange)="onChange($event)" [options]="options" [type]="string"
+              [format]="'YYYY-MM-DD'">
+            </ion-calendar>
+          </span>
+        </ion-item>
+
+        <ion-item>
+          <ion-label id="profile_image" color="primary" stacked>Select file</ion-label>
+          <ion-input type="file" multiple (change)="onSelectFile($event)"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Assigned To</ion-label>
+          <ionic-selectable [(ngModel)]="selected_userid" item-content
+            [formControl]="createtaskForm.controls['assigned_user']" [items]="userdetails" itemValueField="USER_INFO_ID"
+            itemTextField="USER_SURNAME" [canSearch]="true" (onChange)="userAssignedTo($event)"
+            [shouldStoreItemValue]="true">
+          </ionic-selectable>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Partners</ion-label>
+          <ionic-selectable [(ngModel)]="selected_partnerid" item-content
+            [formControl]="createtaskForm.controls['partner_user']" [items]="userdetails" itemValueField="USER_INFO_ID"
+            itemTextField="USER_SURNAME" [canSearch]="true" [isMultiple]="true" [canClear]="true"
+            (onChange)="onSelectPartner($event)" [shouldStoreItemValue]="true">
+          </ionic-selectable>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Complaint</ion-label>
+          <ionic-selectable item-content [formControl]="createtaskForm.controls['complaint']"
+            itemValueField="COMPLAINT_ID" itemTextField="COMPLAINT_DESCRIPTION" [items]="itemsToDisplay"
+            [canSearch]="true" [isMultiple]="true" [hasInfiniteScroll]="true" (onChange)="complaintChange($event)"
+            (onInfiniteScroll)="doInfinite($event)" (onSearch)="searchPorts($event)">
+          </ionic-selectable>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Unit</ion-label>
+          <ionic-selectable item-content [formControl]="createtaskForm.controls['unit']" itemValueField="UNIT_ID"
+            itemTextField="DESCRIPTION" [items]="unitList" [canSearch]="true" [isMultiple]="true"
+            [hasInfiniteScroll]="true" (onChange)="onSelectUnit($event)">
+          </ionic-selectable>
+        </ion-item>
+
+        <div class="example-center">
+          <button ion-button type="button" style="width: 70px;" color="Primary" (click)="uploadAudioForTask()">
+            <ion-icon name="mic" style="font-size: 30px; color: #fff;"></ion-icon>
+          </button>
+          <button ion-button type="submit" color="Primary" style="text-transform: initial;font-size: 16px;background-color: #17d117;width: 70px;">Confirm</button>
+          <button ion-button color="dark" (click)=clearvalues(); style="text-transform: initial;font-size: 16px;width: 70px;">Clear</button>
+        </div>
+
+      </form>
+    </ion-list>
+    <div *ngIf="showComplaintList == 1">
+      <ion-searchbar (focusin)="itemSelected()" (ionChange)="getItems($event)" placeholder="Search complaint"
+        style="padding: 0px;"></ion-searchbar>
+    </div>
+  </div>
+
+  <div *ngIf='showAudioRecord == 1'>
+    <div [ngSwitch]="pet">
+      <ion-list *ngSwitchCase="'pending'">
+  
+        <div class="stopwatch pt-3">
+          <h1 text-center class="color-white font-lg">
+            {{time}}
+          </h1>
+          <ion-grid>
+            <ion-row text-center class="mt-5">
+              <ion-col class="col-12">
+                <button class="circle-button circle-button-bg font-md digit" style="font-size: 30px !important;" ion-button>
+                  {{timer.minutes}}:{{timer.secondes}}
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+  
+        <div style="text-align: center; font-size: 16px; font-style: italic; font-weight: bold;">
+          <h3>{{status}}</h3>
+        </div>
+       
+      </ion-list>
+   
+      <ion-list *ngSwitchCase="'confirm'">      
+  
+        <div *ngFor="let audio of audioList; index as i;">
+          <ion-list style="margin: 0px 0 7px !important;" >
+            <ion-item-sliding>
+              <ion-item (click)="playAudio(audio.FILE_NAME,audio.FILE_PATH, i)" *ngIf="audio.IS_DELETED ==0">              
+                <p>{{audio.FILE_NAME}}  {{audio.AUDIO_DURATION}}</p>
+                <p style="color:red">{{audio.RECORDED_BY}}, {{audio.MODIFIED_ON | date:'dd-MM-yyyy hh:mm a'}}</p>
+              </ion-item>
+  
+              <ion-item *ngIf="audio.IS_DELETED ==1">              
+                <p>This audio is deleted</p>
+                <p style="color:red">{{audio.MODIFIED_BY}}, {{audio.MODIFIED_ON | date:'dd-MM-yyyy hh:mm a'}}</p>
+              </ion-item>
+  
+              <ion-item-options side="left" *ngIf="audio.IS_DELETED ==0">
+                <div>
+                  <button ion-button style="font-size: 10px;" (click)="deleteAudio(audio.ID, audio.COMMENTS_ID, audio.COMMENTS_CHILD_ID)">
+                    <img src="assets/imgs/delete.png" class="icon-btn" style="width: 35px;" /></button>
+                </div>
+              </ion-item-options>
+            </ion-item-sliding>
+          </ion-list>
+        </div>
+  
+      </ion-list>
+    </div>
+
+    <ion-footer text-center>
+      <div class="action" *ngIf="showfooter == 0">    
+        <button class="btn btn-danger btn-lg" *ngIf="state.stop" (click)="stopRecord()">{{'STOP'}}</button>
+        <button class="btn btn-primary btn-lg" *ngIf="state.play" (click)="startRecord()">{{btnPlay}}</button>
+      </div>
+    </ion-footer>
+    
+  </div>
+
+</ion-content>

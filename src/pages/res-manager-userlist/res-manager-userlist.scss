@@ -1,0 +1,49 @@
+page-res-manager-userlist {
+    .badge_task-md {
+        float: left;
+        z-index: 1;
+        margin-left: 36px;
+        position: absolute;
+        background-color: #7ed670;
+        font-size: 95%;
+    }
+    .badge_task-ios {
+        float: left;
+        z-index: 1;
+        margin-left: 36px;
+        position: absolute;
+        background-color: #7ed670;
+        font-size: 95%;
+    }
+    @media (max-width: 380px) {
+        .icon-img{
+            height: 65px !important; width: 100% !important;
+        }
+       
+    }
+    @media (min-width:381px) and (max-width: 425px) {
+        .icon-img{
+            height: 100px; width: 100%;
+        }
+    }
+    @media (min-width:426px) and (max-width: 768px) {
+        .icon-img{
+            height: 120px; width: 100%;
+        }
+    }
+    @media (min-width:769px) and (max-width: 1084px) {
+        .icon-img{
+            height: 180px; width: 100%;
+        }
+    }
+      .icon-img{
+        border: 2px solid #fff;
+        border-radius: 50%;
+        -webkit-box-shadow: 0 0 32px grey;
+        box-shadow: 0 0 32px grey;
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 50%;
+    }
+}

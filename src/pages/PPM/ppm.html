@@ -1,0 +1,58 @@
+<ion-header>
+    <ion-toolbar style="background-color:#525b6d">
+        <ion-buttons left>
+                <button ion-button (click)="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+        </ion-buttons>
+        <ion-title style="text-transform: capitalize;text-align: center">PPM</ion-title>
+        <ion-buttons end>
+            <button id="notification-button" ion-button icon-only clear (click)="notification()">
+                <ion-icon name="notifications">
+                    <ion-badge *ngIf="LPO_notification?.length > 0" id="notifications-badge" style="font-size: 47%;"
+                        color="danger">{{LPO_notification?.length || '0'}}</ion-badge>
+                </ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-buttons end>
+            <button ion-button icon-only *ngIf="myprofilecount === 1;">
+                <div *ngFor="let image of myprofile; index as i;" style="width: 40px;height: 40px;">
+                <ion-icon><img class="myprofile-picture" [src]="getImage(image.ID)"></ion-icon>
+                </div>
+            </button>
+              <button ion-button icon-only style="color: #ffffff;" *ngIf="myprofilecount === 0;">
+                  <ion-icon name="contact"></ion-icon>
+            </button>
+      </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+    <ion-grid>
+        <ion-row class="logo-row" style="padding-bottom: 0px;">
+            <ion-col col-4></ion-col>
+            <ion-col col-4>
+                <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+            </ion-col>
+            <ion-col col-4></ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid style="margin-top: -20px">
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center  *ngFor="let item of buildingList; index as i;"  (click)="building_btn(item.BUILDING_ID, item.BUILDING_NAME)" style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-10 style="margin-top: 5px;">
+                                <h2  style="text-align: left; margin-left: 2rem;">{{item.BUILDING_NAME}}   </h2>
+                            </ion-col>
+                            <ion-col col-2>
+                                <i class="fa fa-chevron-circle-right"></i>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

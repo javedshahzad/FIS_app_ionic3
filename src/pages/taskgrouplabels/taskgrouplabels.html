@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+    <ion-title text-center>{{today | date: 'dd-MM-yyyy'}} {{modaltype[0]}} Task </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-fab right bottom edge>
+        <button ion-fab mini (click)="createtask()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+    <div class="col-md-12">
+      <div class="accordion" id="service_and_demand_modal">
+        <div class="card">
+        <ion-grid style="padding-left: 10px; padding-right: 10px;">
+          <ion-row>
+            <ion-col col-4 *ngFor="let item of taskdetails.taskgrouplistcount; index as i;">
+              <ion-card text-center padding (click)="openTaskModal(item.LABEL_TYPE,item.CREATED_BY)">
+                <h2 class="name_btn">
+                    <ion-badge class="badge_task" color="primary" style="z-index: 1;position: absolute;top: 0;right: 0;margin-left: unset !important;">
+                        {{ item.NAME_COUNT  || '0' }}
+                    </ion-badge>
+                </h2>
+                <ion-avatar item-start>
+                  <span *ngIf="item.MYPROFILECOUNT > 0">
+                    <img style="width: 100px;" class="icon-btn"  class="myprofile-picture" [src]="getImage(item.PROFILE_IMG_ID)">
+                  </span>
+                  <span *ngIf="item.MYPROFILECOUNT == 0">
+                    <img style="width: 100px;" class="icon-btn"  class="myprofile-picture" src="assets/imgs/no-found-photo.png">
+                  </span>
+                </ion-avatar>
+              </ion-card>
+              <div>
+                <h6 style="font-size: 1.3rem !important;margin-left: 10px;">{{ item.CREATED_BY_NAME.length > 15 ? item.CREATED_BY_NAME.substring(0,15)+"..." : item.CREATED_BY_NAME }}</h6>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        </div>
+      </div>
+    </div>
+</ion-content>

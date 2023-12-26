@@ -1,0 +1,163 @@
+<ion-header>
+        <ion-toolbar>
+            <ion-buttons left> 
+                <button ion-button (click)="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+                </button>      
+        </ion-buttons>
+        <ion-title style="text-transform: capitalize;text-align: center">LPO</ion-title>
+        <ion-buttons end>
+            <button id="notification-button" ion-button icon-only clear (click)="notification()">
+                <ion-icon name="notifications">
+                    <ion-badge *ngIf="LPO_notification?.length > 0" id="notifications-badge" style="font-size: 47%;"
+                        color="danger">{{LPO_notification?.length}}</ion-badge>
+                </ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-buttons end>
+            <button ion-button icon-only *ngIf="myprofilecount === 1;">
+                <div *ngFor="let image of myprofile; index as i;" style="width: 40px;height: 40px;">
+                <ion-icon><img class="myprofile-picture" [src]="getImage(image.ID)"></ion-icon>
+                </div>
+            </button>
+              <button ion-button icon-only style="color: #ffffff;" *ngIf="myprofilecount === 0;">
+                  <ion-icon name="contact"></ion-icon>
+            </button>
+      </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+   
+   <ion-grid style="margin-bottom: 22px;margin-top: -40px;">
+        <ion-row>
+            <ion-col col-12></ion-col>
+        </ion-row>
+        <ion-row class="logo-row" style="padding-bottom: 0px;">
+            <ion-col col-4></ion-col>
+            <ion-col col-4>
+                <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+            </ion-col>
+            <ion-col col-4 style="top: -40px !important;"></ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <div style="margin-top: -45px;">
+
+        <div class="row-fluid">
+            <div class="col-md-12" style="margin-bottom:3%;">
+                <div class="navbar-form" role="search">
+                    <div class="input-group add-on">
+                        <form action="." method="get" (submit)="SearchcallManagement()">
+                            <ion-searchbar placeholder="Search value" name="search_txt"
+                                [(ngModel)]="searchData.search_value">
+                            </ion-searchbar>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ion-grid>
+
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="Waiting_For_Manager_Verification_btn()"style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                    <ion-row>
+                        <ion-col col-9 ><p style="float: left">Waiting For Manager Verification </p> </ion-col> 
+                        <ion-col col-2 style="float: left"><ion-badge>{{ Waiting_For_Manager_Verification_length || '0' }}</ion-badge></ion-col>   
+                        <ion-col col-1 style="float: left"><i class="fa fa-chevron-circle-right faright faright"></i> </ion-col>                        
+                    </ion-row>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+
+       <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="Waiting_For_Finance_Confirmation_btn()"style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">        
+                    <ion-row>
+                    <ion-col col-9 ><p style="float: left"> Waiting For Finance Confirmation</p> </ion-col> 
+                    <ion-col col-2 style="float: left"><ion-badge>{{ Waiting_For_Finance_Confirmation_length || '0' }}</ion-badge></ion-col>
+                    <ion-col col-1 style="float: left"><i class="fa fa-chevron-circle-right faright faright"></i> </ion-col>                          
+                    </ion-row>
+                </ion-card>
+            </ion-col>
+        </ion-row> 
+        
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="Waiting_For_General_Manager_Approval_btn()"style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">    
+                    <ion-row>
+                        <ion-col col-9 ><p style="margin-right: 74px">Waiting For General Manager Approval </p> </ion-col> 
+                        <ion-col col-2 style="float: left; float: left;"><ion-badge >{{ Waiting_For_General_Manager_Approval_length || '0' }}</ion-badge> </ion-col>
+                        <ion-col col-1 style="float: left"><i class="fa fa-chevron-circle-right faright faright"></i> </ion-col> 
+                    </ion-row>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="Waiting_For_COO_Approval_btn()"style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                    <ion-row>
+                        <ion-col col-9 ><p style="float: left"> Waiting For COO Approval</p> </ion-col> 
+                        <ion-col col-2 style="float: left"><ion-badge>{{ Waiting_For_COO_Approval_length || '0' }}</ion-badge></ion-col>
+                        <ion-col col-1 style="float: left"> <i class="fa fa-chevron-circle-right faright"  ></i>  </ion-col> 
+                  </ion-row> 
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="Waiting_For_CEO_Approval_btn()"style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                        <ion-row>
+                            <ion-col col-9 ><p style="float: left">Waiting For CEO Approval </p> </ion-col> 
+                            <ion-col col-2 style="float: left"><ion-badge>{{ Waiting_For_CEO_Approval_length || '0' }}</ion-badge></ion-col>
+                            <ion-col col-1 style="float: left">  <i class="fa fa-chevron-circle-right faright"  ></i></ion-col>                
+                        </ion-row>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="Rejected_LPO_btn()" style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                        <ion-row>
+                            <ion-col col-9 ><p style="float: left"> Rejected LPO's  </p> </ion-col> 
+                            <ion-col col-2 style="float: left"><ion-badge>{{ Rejected_LPO_length || '0' }}</ion-badge></ion-col>
+                            <ion-col col-1 style="float: left">  <i class="fa fa-chevron-circle-right faright"  ></i> </ion-col>                           
+                        </ion-row>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="Pending_for_lpo_cancellation_length_btn()"
+                style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                        <ion-row>
+                            <ion-col col-9 ><p style="float: left">  CEO Approved  </p> </ion-col> 
+                            <ion-col col-2 style="float: left"><ion-badge>{{ CEO_Approved_length || '0' }}</ion-badge></ion-col>
+                            <ion-col col-1 style="float: left">  <i class="fa fa-chevron-circle-right faright"  ></i>  </ion-col>  
+                        </ion-row>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="All_LPO_List_btn()" style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                        <ion-row>
+                            <ion-col col-9 ><p style="float: left">  All LPO List  </p> </ion-col> 
+                            <ion-col col-2 style="float: left"><ion-badge>{{ All_LPO_List_length || '0' }}</ion-badge></ion-col>
+                            <ion-col col-1 style="float: left"> <i class="fa fa-chevron-circle-right faright"  ></i>  </ion-col> 
+                        </ion-row>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+<style>
+    .row {
+        margin-left: 0px !important;
+        margin-right: -2px !important;
+    }
+</style>

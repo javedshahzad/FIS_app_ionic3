@@ -1,0 +1,13 @@
+{
+  "name": "CEO PORTAL",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://192.168.108.48:3600/api"
+    }
+  ]
+}

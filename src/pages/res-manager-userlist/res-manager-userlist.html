@@ -1,0 +1,70 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title style="text-align: center;">{{modaltype[2]}} {{today | date: 'dd-MM-yyyy'}}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar>
+        <ion-searchbar [(ngModel)]="searchData.search_value" (ionInput)="SearchUserDetail()">
+        </ion-searchbar>
+        <!-- <ion-title style="text-align: center;">Productivity Percentage : {{productivity_total_percentage}}%</ion-title> -->
+
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+
+    <ion-fab right bottom edge style="bottom: 0px !important;">
+        <button ion-fab mini (click)="createtask()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+
+    <div class="col-md-12" *ngIf="modaltype">
+        <div class="accordion" id="service_and_demand_modal">
+
+            <ion-grid style="padding-left: 10px; padding-right: 10px;">
+                <ion-row>
+                    <!-- <div *ngFor="let item of userdetails; index as i;"> -->
+                    <ion-col col-4 *ngFor="let item of tasksearchdetails.assignedUser; index as i;">
+                        <ion-card text-center padding>                            
+                            <h2 class="name_btn">
+                                <ion-badge class="badge_task"
+                                    style="float: left;z-index: 1;position: absolute;top: 0;right: 0;background-color: #7ed670; font-size: 13px;"
+                                    (click)="openUserTaskModal(type = 'USER',item.USER_INFO_ID,item.TASK_COUNT,item.USER_SURNAME,'')">
+                                    {{ item.percent || '0' }} % </ion-badge>
+                            </h2>
+                            <ion-avatar item-start>
+                                <span *ngIf="item.MYPROFILECOUNT > 0">
+                                    <img class="icon-img icon-btn"
+                                        [ngStyle]="item.STATUS == 'Online'?{'border': '2px solid #35e971'} : {'border': '2px solid #fa5151'}"
+                                        [src]="getImage(item.PROFILE_IMG_ID)">
+                                </span>
+                                <span *ngIf="item.MYPROFILECOUNT == 0">
+                                    <img class="icon-img icon-btn"
+                                        [ngStyle]="item.STATUS == 'Online'?{'border': '2px solid #35e971'} : {'border': '2px solid #fa5151'}"
+                                        src="assets/imgs/no-found-photo.png">
+                                </span>
+                            </ion-avatar>
+                        </ion-card>
+                        <h2 class="name_btn">
+                            <ion-badge class="badge_task"
+                                (click)="openCallAssign(3,item.RESOURCE_ID,item.CALL_ASSIGN_COUNT)"
+                                style="float: left;z-index: 1;position: relative;top: 0;right: 0;background-color: #fccf55; font-size: 13px; margin-top: -40px !important;margin-left: 12px !important;">
+                                {{ item.CALL_ASSIGN_COUNT || '0' }} </ion-badge>
+                            <ion-badge class="badge_task"
+                                style="float: right;z-index: 1;position: relative;top:  100%;right: 12px;background-color: #7ed670; font-size: 13px; margin-top: -40px !important;"
+                                (click)="openUserTaskModal(type = 'USER',item.USER_INFO_ID,item.TOTAL_TASK_COUNT,item.USER_SURNAME,'')">
+                                {{ item.TOTAL_TASK_COUNT || '0' }}</ion-badge>
+                        </h2>
+                        <div style="margin-bottom: -10px;">
+                            <h6 style="font-size: 1.3rem !important;text-align: center;">
+                                {{ item.USER_SURNAME }}</h6>
+                        </div>
+                    </ion-col>
+                    <!-- </div> -->
+                </ion-row>
+            </ion-grid>
+        </div>
+    </div>
+</ion-content>

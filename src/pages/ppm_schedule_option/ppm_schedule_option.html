@@ -1,0 +1,95 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            <h3 style="text-align:center !important">{{Scheduledata.BUILDING_NAME}} - PPM </h3>
+            <h6 style="text-align:center !important">Job Schedule Options</h6>     </ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+    <ion-grid>
+       
+        <ion-row class="logo-row" style="padding-bottom: 0px;">
+            <ion-col col-4 ></ion-col>
+            <ion-col col-4 >
+                <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+            </ion-col>
+            <ion-col col-4 ></ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid style="margin-top: -20px">
+          <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="Schedule_btn(1)"  style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-10 style="margin-top: 5px;">
+                                <h2>
+                                   1st Schedule (Jan - Mar) - ({{Schedule.SCHEDULE_1 || '0'}})</h2>
+                            </ion-col>
+                            <ion-col col-2>
+                                <i class="fa fa-chevron-circle-right"></i>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="Schedule_btn(2)"  style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-10 style="margin-top: 5px;">
+                                <h2>
+                                    2nd Schedule(Apr - Jun) - ({{Schedule.SCHEDULE_2 || '0'}})</h2>
+                            </ion-col>
+                            <ion-col col-2>
+                                <i class="fa fa-chevron-circle-right"></i>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="Schedule_btn(3)"  style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-10 style="margin-top: 5px;">
+                                <h2>
+                                  3rd Schedule(July - Sep) - ({{Schedule.SCHEDULE_3 || '0'}})</h2>
+                            </ion-col>
+                            <ion-col col-2>
+                                <i class="fa fa-chevron-circle-right"></i>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)="Schedule_btn(4)"  style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-10 style="margin-top: 5px;">
+                                <h2>
+                                    4th Schedule(Oct - Dec) - ({{Schedule.SCHEDULE_4 || '0'}})</h2>
+                            </ion-col>
+                            <ion-col col-2>
+                                <i class="fa fa-chevron-circle-right"></i>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

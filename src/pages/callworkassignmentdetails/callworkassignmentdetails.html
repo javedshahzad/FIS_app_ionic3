@@ -1,0 +1,460 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Call Work Assignment Details </ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+    <div class="col-md-12">
+        <div class="accordion" id="accordionExample">
+                <ion-grid>
+                    <ion-row class="header"style="border-bottom: 1px solid #e9ecef;background-color: #3ddcc8;">
+                        <ion-col>
+                            CREATED BY
+                        </ion-col>
+                        <ion-col>
+                            CREATED ON
+                        </ion-col>
+                    </ion-row>
+                    <ion-row style="border-bottom: 1px solid #e9ecef;">
+                        <ion-col>
+                            {{call_create_details.CREATED_BY_NAME}}
+                        </ion-col>
+                        <ion-col>
+                            {{call_create_details.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="header"style="border-bottom: 1px solid #e9ecef;background-color: #3ddcc8;">
+                        <ion-col>
+                            S.no
+                        </ion-col>
+                        <ion-col>
+                            Compliant
+                        </ion-col>
+                    </ion-row>
+                    <ion-row *ngFor="let item of callcomplientsdetails; index as i;" style="border-bottom: 1px solid #e9ecef;">
+                        <ion-col>
+                            {{i+1}}.
+                        </ion-col>
+                        <ion-col>
+                            {{item.COMPLAINT_DESCRIPTION}}
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            <div class="card-body card-bodynew">
+                <table role="table" class="searchinspection" *ngFor="let item of workasslist; index as i;" style="background-color: white">
+                    <thead role="rowgroup">
+                        <tr role="row">
+                            <th role="columnheader">#</th>
+                            <th role="columnheader">Edit</th>
+                            <th role="columnheader">Call No</th>
+                            <th role="columnheader">Requestor Name</th>
+                            <th role="columnheader">Mobile No</th>
+                            <th role="columnheader">Unit</th>
+                            <th role="columnheader">Complaint</th>
+                            <th role="columnheader">Technician</th>
+                            <th role="columnheader">Status</th>
+                            <th role="columnheader">Comments</th>
+                            <th role="columnheader">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody role="rowgroup">
+                        <tr role="row">
+                            <td role="cell">{{item.ROW_NO}}</td>
+                            <td role="cell">
+                                <button ion-button color="secondary" (click)="addeditget(item.CALLLOG_ID,item.STATUS_ID,item.ASSIGNED_TO_ID,item)">
+                                    <ion-icon name="open"></ion-icon>
+                                </button>
+                            </td>
+                            <td role="cell">{{item.CALLLOG_ID}}</td>
+                            <td role="cell">{{item.REQUESTOR_NAME}}</td>
+                            <td role="cell">{{item.MOBILE_NO}}</td>
+                            <td role="cell">{{item.UNIT}}</td>
+                            <td role="cell">{{item.COMPLAINT_NAME}}</td>
+                            <td role="cell">{{item.ASSIGNED_TO_NAME}}</td>
+                            <td role="cell">{{item.STATUS_NAME}}</td>
+                            <td role="cell">{{item.LATEST_UPDATE}}</td>
+                            <td role="cell">
+                                <!-- <button ion-button color="secondary">
+                                    <ion-icon name="list-box"></ion-icon>
+                                </button> -->
+                                <button ion-button color="secondary"
+                                    (click)="commentsget(item.CALLLOG_ID,item.STATUS_ID,item.TASKASSIGNMENT_ID)">
+                                    <ion-icon name="chatboxes">
+                                    </ion-icon>
+                                </button>
+                                <button ion-button color="secondary" (click)="get_assi_sts(item.CALLLOG_ID)">
+                                    <ion-icon name="repeat"></ion-icon>
+                                </button>
+                                <button ion-button color="secondary"
+                                    (click)="update_task_mat(item.CALLLOG_ID,item.CALLLOG_COMPLAINT_ID)">
+                                    <ion-icon name="close">
+                                    </ion-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="backdrop" [ngStyle]="{'display':comment}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':comment}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>WORK ASSIGNED COMMENTS</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseHandledcomment()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="calinspectioncommentsForm" (submit)="insertcomments()">
+
+                    <div class="modal-body">
+
+                        <ion-input name="ITEM_ID" type="hidden" value="{{ITEM_IDdata}}"
+                            [formControl]="calinspectioncommentsForm.controls['ITEM_ID']"></ion-input>
+
+                        <ion-input name="TASK_ID" type="hidden" value="{{TASKASSIGNMENT_IDdata}}"
+                            [formControl]="calinspectioncommentsForm.controls['TASK_ID']"></ion-input>
+
+                        <ion-row style="border-bottom:#e6e3e3 1px solid; margin: 5px;"
+                            *ngFor="let item of commentlist; index as i;">
+
+                            <ion-textarea name="comments_show" placeholder="comments_show " [(ngModel)]="comments_show"
+                                [readonly]="true" style="border: 1px solid;"
+                                [formControl]="calinspectioncommentsForm.controls['comments_show']"
+                                value="{{item.COMMENTS}}"></ion-textarea>
+                        </ion-row>
+                        <ion-row>
+                            <ion-textarea name="comments" placeholder="Comments " [(ngModel)]="comments"
+                                style="border: 1px solid;"
+                                [formControl]="calinspectioncommentsForm.controls['comments']"></ion-textarea>
+                            <p *ngIf="calinspectioncommentsForm.controls.comments.errors && calinspectioncommentsForm.controls.comments.dirty"
+                                class='error'>Enter the Comments</p>
+                        </ion-row>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onCloseHandledcomment()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+
+    <div class="backdrop" [ngStyle]="{'display':WorkOrder1}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':WorkOrder1}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>WORK ASSIGNMENT EDIT</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseHandle()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="callinventoryininsert" (submit)="insertinventory()">
+
+                    <div class="modal-body">
+                        <ion-input name="ITEM_ID" type="hidden" value="{{ITEM_IDdata}}"
+                            [formControl]="callinventoryininsert.controls['ITEM_ID']"></ion-input>
+
+                        <ion-input name="ASSIGNED_TO_ID" type="hidden" value="{{ASSIGNED_TO_IDdata}}"
+                            [formControl]="callinventoryininsert.controls['ASSIGNED_TO_ID']"></ion-input>
+
+                        <ion-input name="TASKASSIGNMENT_ID" type="hidden" value="{{itemdatavalue.TASKASSIGNMENT_ID}}"
+                            [formControl]="callinventoryininsert.controls['TASKASSIGNMENT_ID']"></ion-input>
+
+                        <ion-input name="CALLLOG_COMPLAINT_ID" type="hidden"
+                            value="{{itemdatavalue.CALLLOG_COMPLAINT_ID}}"
+                            [formControl]="callinventoryininsert.controls['CALLLOG_COMPLAINT_ID']"></ion-input>
+
+
+                        <ion-input name="STATUS_ID" type="hidden" value="{{STATUSdata}}"
+                            [formControl]="callinventoryininsert.controls['STATUS_ID']"></ion-input>
+
+                        <ion-item>
+                            <ion-label>Call No</ion-label>
+                            <ion-input type="text" name="Call_No" style="float: right;" [readonly]="true"
+                                [formControl]="callinventoryininsert.controls['Call_No']"
+                                value="{{itemdatavalue.CALLLOG_ID}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.Call_No.errors && callinventoryininsert.controls.Call_No.dirty"
+                                class='error'>Enter the Call No</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Requestor Name</ion-label>
+                            <ion-input type="text" name="Requestor_Name" style="float: right;" [readonly]="true"
+                                [formControl]="callinventoryininsert.controls['Requestor_Name']"
+                                value="{{itemdatavalue.REQUESTOR_NAME}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.Requestor_Name.errors && callinventoryininsert.controls.Requestor_Name.dirty"
+                                class='error'>Enter the Requestor Name</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Mobile no</ion-label>
+                            <ion-input type="text" name="Mobile_no" style="float: right;" [readonly]="true"
+                                [formControl]="callinventoryininsert.controls['Mobile_no']"
+                                value="{{itemdatavalue.MOBILE_NO}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.Mobile_no.errors && callinventoryininsert.controls.Mobile_no.dirty"
+                                class='error'>Enter the Mobile no</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Unit Code</ion-label>
+                            <ion-input type="text" name="Unit_Code" style="float: right;" [readonly]="true"
+                                [formControl]="callinventoryininsert.controls['Unit_Code']"
+                                value="{{itemdatavalue.UNIT}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.Unit_Code.errors && callinventoryininsert.controls.Unit_Code.dirty"
+                                class='error'>Enter the Unit Code</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Complaint</ion-label>
+                            <ion-input type="text" name="Complaint" style="float: right;" [readonly]="true"
+                                [formControl]="callinventoryininsert.controls['Complaint']"
+                                value="{{itemdatavalue.COMPLAINT_NAME}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.Complaint.errors && callinventoryininsert.controls.Complaint.dirty"
+                                class='error'>Enter the Complaint</p>
+                        </ion-item>
+
+                        <ion-row>
+                            <ion-textarea name="Remarks" placeholder="Remarks " style="border: 1px solid;"
+                                [formControl]="callinventoryininsert.controls['Remarks']"
+                                value="{{itemdatavalue.REMARKS}}"></ion-textarea>
+                            <p *ngIf="callinventoryininsert.controls.Remarks.errors && callinventoryininsert.controls.Remarks.dirty"
+                                class='error'>Enter the Remarks</p>
+                        </ion-row>
+
+                        <div class="case" *ngIf="itemdatavalue.ASSIGNED_TO_NAME != null ; else elsepart; ">
+                            <ion-item>
+                                <ion-label>Assigned to</ion-label>
+                                <!-- <ion-input type="text" name="Assigned_to" style="float: right;" [readonly]="true"
+                                    [formControl]="callinventoryininsert.controls['Assigned_to']"
+                                    value="{{itemdatavalue.ASSIGNED_TO_NAME}}"></ion-input> -->
+                                    <ionic-selectable item-content
+                                        [formControl]="callinventoryininsert.controls['Assigned_to']"
+                                        itemValueField="ASSIGNTO" itemTextField="ASSIGNED_TO_NAME"
+                                        [items]="ASSIGNED_TO_IDworklist" [canSearch]="true"
+                                        (onChange)="userChange($event)">
+                                    </ionic-selectable>
+                            </ion-item>
+                        </div>
+                        <ng-template #elsepart>
+                            <div class="case">
+                                <ion-item>
+                                    <ion-label>Assigned to</ion-label>
+                                    <ionic-selectable item-content
+                                        [formControl]="callinventoryininsert.controls['Assigned_to']"
+                                        itemValueField="ASSIGNTO" itemTextField="ASSIGNED_TO_NAME"
+                                        [items]="ASSIGNED_TO_IDworklist" [canSearch]="true"
+                                        (onChange)="userChange($event)">
+                                    </ionic-selectable>
+                                </ion-item>
+
+                                <!-- <ion-item>
+                                    <ion-label>Assigned to</ion-label>
+                                    <ion-select class="select1" interface="popover" name="Assigned_to"
+                                        [formControl]="callinventoryininsert.controls['Assigned_to']">
+                                        <ion-option value="0">--Select--</ion-option>
+                                        <ion-option value="{{ASSIGNED.RESOURCE_ID}}"
+                                            *ngFor="let ASSIGNED of ASSIGNED_TO_IDworklist"> {{ASSIGNED.EMPNAME}}
+                                        </ion-option>
+                                    </ion-select>
+                                    <p *ngIf="callinventoryininsert.controls.Assigned_to.errors && callinventoryininsert.controls.Assigned_to.dirty"
+                                        class='error'>Select a Assigned_to.</p>
+                                </ion-item> -->
+                            </div>
+                        </ng-template>
+                        <ion-item>
+                            <ion-label>Status</ion-label>
+                            <ionic-selectable item-content [formControl]="callinventoryininsert.controls['Status']"
+                                itemValueField="STATUS_ID" itemTextField="STATUS_NAME" [items]="statusworklist"
+                                [canSearch]="true" (onChange)="statusChange($event)">
+                            </ionic-selectable>
+                        </ion-item>
+
+                        <!-- <ion-label>Status</ion-label>
+                            <ion-select class="select1" interface="popover" name="Status"
+                                [formControl]="callinventoryininsert.controls['Status']">
+                                <ion-option value="0">--Select--</ion-option>
+                                <ion-option value="{{status.STATUS_ID}}" *ngFor="let status of statusworklist">
+                                    {{status.STATUS_NAME}}
+                                </ion-option>
+                            </ion-select>
+                            <p *ngIf="callinventoryininsert.controls.Status.errors && callinventoryininsert.controls.Status.dirty"
+                                class='error'>Select a Status.</p>
+                        </ion-item> -->
+
+                        <ion-row>
+                            <ion-textarea name="comments" placeholder="comments " style="border: 1px solid;"
+                                value="{{itemdatavalue.LATEST_UPDATE}}"
+                                [formControl]="callinventoryininsert.controls['comments']"></ion-textarea>
+                            <p *ngIf="callinventoryininsert.controls.comments.errors && callinventoryininsert.controls.comments.dirty"
+                                class='error'>Enter the comments</p>
+                        </ion-row>
+
+                        <br>
+                        <ion-row>
+                            <button type="button" class="btn btn-primary"
+                                (click)="Comments_History(itemdatavalue.CALLLOG_ID,itemdatavalue.STATUS_ID,itemdatavalue.TASKASSIGNMENT_ID)">Comments
+                                History</button>
+                        </ion-row><br>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onCloseHandle()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+
+
+    <div class="backdrop" [ngStyle]="{'display':comment1}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':comment1}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseHandledcomment1()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div *ngIf="commentlist" style="border: 2px solid #222322;">
+                        <div class="row header" style="border-bottom: 1px solid;">
+                            <div class="col">#</div>
+                            <hr>
+                            <div class="col">Comments</div>
+                            <hr>
+                            <div class="col">Date</div>
+                        </div>
+                    </div>
+                    <div class="row" *ngFor="let material of commentlist; index as i;"
+                        style="border-bottom: 1px solid;">
+                        <div class="col">{{i+1}}</div>
+                        <hr>
+                        <div class="col">{{material.COMMENTS}}</div>
+                        <hr>
+                        <div class="col">{{material.MODIFIED_ON |date:'dd/mm/yyyy'}}</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" (click)="onCloseHandledcomment1()">Cancel</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+
+    <div class="backdrop" [ngStyle]="{'display':image_dout_liststyle}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':image_dout_liststyle}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseimage_dout_list()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="createcallForm" (submit)="insertCallData()">
+                    <div class="modal-body">
+                        <ion-input name="Call_No" type="hidden" value="{{CALL_LOG_ID_data}}"
+                            [formControl]="createcallForm.controls['Call_No']"></ion-input>
+                        <ion-input name="TaskAssignment" type="hidden" value="{{TaskAssignment_data}}"
+                            [formControl]="createcallForm.controls['TaskAssignment']"></ion-input>
+
+                        <ion-item>
+                            <ion-label>Assigned to</ion-label>
+                            <ionic-selectable item-content [formControl]="createcallForm.controls['Assigned_to']"
+                                itemValueField="RESOURCE_ID" itemTextField="EMPNAME" [items]="ASSIGNED_TO_IDworklist"
+                                [canSearch]="true" (onChange)="userChange($event)">
+                            </ionic-selectable>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Status</ion-label>
+                            <ionic-selectable item-content [formControl]="createcallForm.controls['Status']"
+                                itemValueField="STATUS_ID" itemTextField="STATUS_NAME" [items]="statusworklist"
+                                [canSearch]="true" (onChange)="statusChange($event)">
+                            </ionic-selectable>
+                        </ion-item>
+
+                        <ion-row>
+                            <ion-textarea name="comments" placeholder="comments " style="border: 1px solid;"
+                                [formControl]="createcallForm.controls['comments']"></ion-textarea>
+                            <p *ngIf="createcallForm.controls.comments.errors && createcallForm.controls.comments.dirty"
+                                class='error'>Enter the comments</p>
+                        </ion-row>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onCloseimage_dout_list()">Cancel</button>
+                        <button type="submit" style="float: right; color: #fff !important;"
+                            class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+
+
+    <div class="backdrop" [ngStyle]="{'display':image}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':image}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseimage()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="fileuploadForm" (submit)="insertfileData()">
+                    <div class="modal-body">
+
+                        <ion-input name="Call_No" type="hidden" value="{{CALL_LOG_ID_data}}"
+                            [formControl]="fileuploadForm.controls['Call_No']"></ion-input>
+                        <ion-item>
+                            <ion-label>Job Card Number</ion-label>
+                            <ion-input type="Number" name="Job_Card_Number" style="float: right;"
+                                [formControl]="fileuploadForm.controls['Job_Card_Number']"></ion-input>
+                            <p *ngIf="fileuploadForm.controls.Job_Card_Number.errors && fileuploadForm.controls.Job_Card_Number.dirty"
+                                class='error'>Enter the Job Card Number</p>
+                        </ion-item>
+                        <ion-row>
+                            <ion-textarea name="comments" placeholder="comments " [(ngModel)]="comments"
+                                style="border: 1px solid;" [formControl]="fileuploadForm.controls['comments']">
+                            </ion-textarea>
+                            <p *ngIf="fileuploadForm.controls.comments.errors && fileuploadForm.controls.comments.dirty"
+                                class='error'>Enter the Comments</p>
+                        </ion-row>
+                        <ion-item>
+                                <ion-label id="profile_image" color="primary" stacked>Select</ion-label>
+                                <ion-input type="file" (change)="onSelectFile($event)"></ion-input>
+                            </ion-item>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onCloseimage()">Cancel</button>
+                        <button type="submit" style="float: right; color: #fff !important;"
+                            class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+</ion-content>
+<style>
+    .row {
+        margin-left: 0px !important;
+        margin-right: -2px !important;
+    }
+</style>

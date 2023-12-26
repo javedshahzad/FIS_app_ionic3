@@ -1,0 +1,110 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            <h3 style="text-align:center !important">{{Scheduledata.BUILDING_NAME}} - PPM </h3>
+            <h6 style="text-align:center !important">{{status_name}} Job Schedule {{Scheduledata.ScheduleNo}} Details
+            </h6>
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+    <div class="row-fluid" style="margin-top: 20px;">
+        <div class="col-md-12" style="margin-bottom:3%;">
+            <div class="navbar-form" role="search">
+                <div class="input-group add-on">
+                    <input class="form-control input-lg txt-search" placeholder="Search value" name="search_txt"
+                        [(ngModel)]="searchData.search_value" type="text" (input)='Search()'>
+                    <!-- <div class="input-group-btn">
+                                    <button class="btn btn-default sbut" (click)='Search()'><i class="fa fa-search"></i></button>
+                                </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="accordion" id="accordionExample">
+            <div class="" data-parent="#accordionExample">
+                <div class="card-body card-bodynew">
+                    <table role="table" class="searchinspection" style="background-color: white"
+                        *ngFor="let item of Schedule; index as i;">
+                        <thead role="rowgroup">
+                            <tr role="row">
+                                <th role="columnheader">#</th>
+                                <th role="columnheader">Schedule Id</th>
+                                <th role="columnheader">Code</th>
+                                <th role="columnheader">Schedule Date</th>
+                                <th role="columnheader">Asset Name</th>
+                                <th role="columnheader">Unit</th>
+                                <th role="columnheader">Specific Area Code</th>
+                                <th role="columnheader">Frequency</th>
+                                <th role="columnheader">Quantity</th>
+                                <th role="columnheader">Labour Count</th>
+                                <th role="columnheader">Image Count</th>
+                                <th role="columnheader">Check List</th>
+                            </tr>
+                        </thead>
+                        <tbody role="rowgroup">
+                            <tr role="row">
+                                <td role="cell">{{i+1}}</td>
+                                <td role="cell">{{item.ASSET_SCHEDULE_DAILY_ID}}</td>
+                                <td role="cell">{{item.CODE}}</td>
+                                <td role="cell">{{item.SCHEDULEDATE |date:'dd-MM-yyyy'}}</td>
+                                <td role="cell">{{item.ASSETDETAIL_NAME}}</td>
+                                <td role="cell">{{item.UNIT}}</td>
+                                <td role="cell">{{item.AREA_CODE}}</td>
+                                <td role="cell">{{item.FREQUENCY}}</td>
+                                <td role="cell">{{item.QUANTITY}}</td>
+                                <td role="cell">
+                                    <button ion-button
+                                        [color]="(item.STATUS ==1) ? 'secondary1' : (item.LABOURCOUNT >0) ? 'primary' : 'primary1'"
+                                        (click)="ppmLabourList(item)">
+                                        Labour
+                                        <ion-badge class="badge_task"> {{ item.LABOURCOUNT || '0' }}</ion-badge>
+                                    </button>
+                                </td>
+                                <td role="cell">
+                                    <button ion-button [color]="(item.STATUS ==1) ? 'secondary1' : 'primary'"
+                                        (click)="fileppm(item,0)">
+                                        Old&nbsp;&nbsp;
+                                        <ion-badge class="badge_task">
+                                            {{ item.IMAGECOUNT || '0' }}</ion-badge>
+                                    </button>
+                                    <button ion-button [color]="(item.STATUS ==1) ? 'secondary1' : 'warning'"
+                                        *ngIf="item.IMAGECOUNT >0" (click)="fileppm(item,1)">
+                                        New&nbsp;&nbsp;
+                                        <ion-badge class="badge_task">
+                                            {{ item.FIMAGECOUNT || '0' }}</ion-badge>
+
+                                    </button>
+                                </td>
+                                <td role="cell">
+                                    <div class="case" *ngIf="item.FIMAGECOUNT >0;">
+                                        <button ion-button [color]="(item.STATUS ==1) ? 'secondary1' : 'primary1'"
+                                            (click)="getPpmJobScheduleCheckList(item)">
+                                            <ion-icon name="checkmark-circle-outline"></ion-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</ion-content>
+<style>
+    .row {
+        margin-left: 0px !important;
+        margin-right: -2px !important;
+    }
+</style>

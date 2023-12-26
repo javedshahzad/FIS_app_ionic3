@@ -1,0 +1,363 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Billing Details </ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+    <div class="col-md-12">
+        <div class="accordion" id="accordionExample">
+            <div class="" data-parent="#accordionExample">
+                    <ion-grid>
+                            <ion-row class="header"style="border-bottom: 1px solid #e9ecef;background-color: #3ddcc8;">
+                                <ion-col>
+                                    CREATED BY
+                                </ion-col>
+                                <ion-col>
+                                    CREATED ON
+                                </ion-col>
+                            </ion-row>
+                            <ion-row style="border-bottom: 1px solid #e9ecef;">
+                                <ion-col>
+                                    {{call_create_details.CREATED_BY_NAME}}
+                                </ion-col>
+                                <ion-col>
+                                    {{call_create_details.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}
+                                </ion-col>
+                            </ion-row>
+                            <ion-row class="header"style="border-bottom: 1px solid #e9ecef;background-color: #3ddcc8;">
+                                <ion-col>
+                                    S.no
+                                </ion-col>
+                                <ion-col>
+                                    Compliant
+                                </ion-col>
+                            </ion-row>
+                            <ion-row *ngFor="let item of callcomplientsdetails; index as i;" style="border-bottom: 1px solid #e9ecef;">
+                                <ion-col>
+                                    {{i+1}}.
+                                </ion-col>
+                                <ion-col>
+                                    {{item.COMPLAINT_DESCRIPTION}}
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <ion-card class="dash_image" text-center (click)=showUndoBtn(i) style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                            <ion-grid style="padding:0px;">
+                                <div class="card-header" id="headingOne" style="background:linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                                    <a style="float: left"  role="button">
+                                        Billing
+                                    </a> 
+                                    <i class="fa fa-chevron-circle-down faicons" role="button"></i>
+                                </div>
+                              </ion-grid>
+                            </ion-card>
+                        </ion-col>
+                    </ion-row>
+                <div [attr.id]="'undoBtn'+i" *ngIf="showBtn===i">
+                    <div class="card-body card-bodynew">
+                        <table role="table" class="searchinspection" *ngFor="let item of callbillingdetails[0].CALL_BILLING_DETAILS; index as i;" style="background-color: white">
+                            <thead role="rowgroup">
+                                <tr role="row">
+                                    <th role="columnheader">#</th>
+                                    <th role="columnheader">Edit</th>
+                                    <th role="columnheader">Billing No</th>
+                                    <th role="columnheader">Call No</th>
+                                    <th role="columnheader">Customer No</th>
+                                    <th role="columnheader">Customer Name</th>
+                                    <th role="columnheader">Oracle Account No</th>
+                                    <th role="columnheader">Web Account No</th>
+                                    <th role="columnheader">GL Date</th>
+                                    <th role="columnheader">Amount</th>
+                                    <th role="columnheader">Description</th>
+                                    <th role="columnheader">Location</th>
+                                    <th role="columnheader">Building</th>
+                                    <th role="columnheader">Unit</th>
+                                    <th role="columnheader">Bill From</th>
+                                    <th role="columnheader">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody role="rowgroup">
+                                <tr role="row">
+                                    <td role="cell">{{item.ROW_NO}}</td>
+                                    <td role="cell">
+                                        <button ion-button (click)="addeditget(item)" color="secondary" style="font-size: small;">
+                                            <ion-icon ios="ios-open" md="md-open"></ion-icon>
+                                        </button>
+                                    </td>
+                                    <td role="cell">{{item.BILLING_ID}}</td>
+                                    <td role="cell">{{item.CALLLOG_ID}}</td>
+                                    <td role="cell">{{item.CUSTOMER_ID}}</td>
+                                    <td role="cell">{{item.CUSTOMER_NAME}}</td>
+                                    <td role="cell">{{item.CUSTOMER_ORACLE}}</td>
+                                    <td role="cell">{{item.REFERENCE}}</td>
+                                    <td role="cell">{{item.GL_DATE}}</td>
+                                    <td role="cell">{{item.AMOUNT}}</td>
+                                    <td role="cell">{{item.DESCRIPTION}}</td>
+                                    <td role="cell">{{item.LOCATIONCODE}}</td>
+                                    <td role="cell">{{item.BUILDINGNAME}}</td>
+                                    <td role="cell">{{item.UNITCODE}}</td>
+                                    <td role="cell">{{item.BILL_FROM}}</td>
+                                    <td role="cell">
+                                        <button ion-button (click)="export(item.AMOUNT,item.GL_DATE,item.TERM,item.PAYMENT_TERM_NAME)" color="secondary" style="font-size: small;">
+                                        <ion-icon name="log-out"></ion-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="backdrop" [ngStyle]="{'display':WorkOrder1}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':WorkOrder1}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>BILLING EDIT</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseHandle()"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="callinventoryininsert" (submit)="insertinventory()">
+
+                    <div class="modal-body">
+
+                        <ion-item>
+                            <ion-label>Call No</ion-label>
+                            <ion-select class="select1" interface="popover" name="Call_No"  [(ngModel)]="itemdatavalue.CALLLOG_ID"
+                                [formControl]="callinventoryininsert.controls['Call_No']">
+                                <ion-option value="0">--Select--</ion-option>
+                                <ion-option value="{{CALL_LOG.CALL_LOG_ID}}"
+                                    *ngFor="let CALL_LOG of CallLogAllCallslist" [selected]="true"> {{ASSIGNED.CALL_LOG_ID}}
+                                </ion-option>
+                            </ion-select>
+                            <p *ngIf="callinventoryininsert.controls.Call_No.errors && callinventoryininsert.controls.Call_No.dirty"
+                                class='error'>Select a Call No.</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Requestor Name</ion-label>
+                            <ion-input type="text" name="Requestor_Name" style="float: right;"  [readonly]="true"
+                                [formControl]="callinventoryininsert.controls['Requestor_Name']" value="{{itemdatavalue.CUSTOMER_NAME}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.Requestor_Name.errors && callinventoryininsert.controls.Requestor_Name.dirty"
+                                class='error'>Enter the Requestor Name</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Mobile no</ion-label>
+                            <ion-input type="text" name="Mobile_no" style="float: right;"  [readonly]="true"
+                                [formControl]="callinventoryininsert.controls['Mobile_no']" value="{{itemdatavalue.MOBILE_NO}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.Mobile_no.errors && callinventoryininsert.controls.Mobile_no.dirty"
+                                class='error'>Enter the Mobile no</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Date</ion-label>
+                            <ion-input type="date" name="Date" style="float: right;" 
+                                [formControl]="callinventoryininsert.controls['Date']" value="{{date |date:'dd-mm-yyyy'}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.Date.errors && callinventoryininsert.controls.Date.dirty"
+                                class='error'>Enter the Date</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>GL Date</ion-label>
+                            <ion-input type="date" name="GL_Date" style="float: right;"
+                                [formControl]="callinventoryininsert.controls['GL_Date']" value="{{date |date:'dd-mm-yyyy'}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.GL_Date.errors && callinventoryininsert.controls.GL_Date.dirty"
+                                class='error'>Enter the GL Date</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Payment Term</ion-label>
+                            <ion-select class="select1" interface="popover" name="Payment_Term"
+                                [formControl]="callinventoryininsert.controls['Payment_Term']">
+                                <ion-option value="0">--Select--</ion-option>
+                                <ion-option value="{{PAYMENT_TERM.PAYMENT_TERM_ID}}"
+                                *ngFor="let PAYMENT_TERM of AllPaymentTermlist"> {{PAYMENT_TERM.PAYMENT_TERM_NAME}}
+                            </ion-option>
+                            </ion-select>
+                            <p *ngIf="callinventoryininsert.controls.Payment_Term.errors && callinventoryininsert.controls.Payment_Term.dirty"
+                                class='error'>Select a Payment Term.</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Transaction Type</ion-label>
+                            <ion-select class="select1" interface="popover" name="Transaction_Type"
+                                [formControl]="callinventoryininsert.controls['Transaction_Type']">
+                                <ion-option value="0">--Select--</ion-option>
+                                <ion-option value="{{TRANSACTION_TYPE.TRANSACTION_TYPE_ID}}"
+                                    *ngFor="let TRANSACTION_TYPE of AllTransactionTypelist"> {{TRANSACTION_TYPE.NAME}}
+                                </ion-option>
+                            </ion-select>
+                            <p *ngIf="callinventoryininsert.controls.Transaction_Type.errors && callinventoryininsert.controls.Transaction_Type.dirty"
+                                class='error'>Select a Transaction Type.</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Due Date</ion-label>
+                            <ion-input type="date" name="Due_Date" style="float: right;"
+                                [formControl]="callinventoryininsert.controls['Due_Date']" value="{{date |date:'dd-mm-yyyy'}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.Due_Date.errors && callinventoryininsert.controls.Due_Date.dirty"
+                                class='error'>Enter the Due Date </p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Customer (Oracle)</ion-label>
+                            <ion-select class="select1" interface="popover" name="Customer_Oracle"
+                                [formControl]="callinventoryininsert.controls['Customer_Oracle']">
+                                <ion-option value="0">--Select--</ion-option>
+                                <ion-option value="{{CUSTOMER.CUSTOMER_ID}}"
+                                    *ngFor="let CUSTOMER of AllCustomerslist"> {{CUSTOMER.CUSTOMER_NAME}}
+                                </ion-option>
+                            </ion-select>
+                            <p *ngIf="callinventoryininsert.controls.Customer_Oracle.errors && callinventoryininsert.controls.Customer_Oracle.dirty"
+                                class='error'>Select a Customer Oracle.</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Amount</ion-label>
+                            <ion-input type="text" name="Amount" style="float: right;"  [readonly]="true"
+                                [formControl]="callinventoryininsert.controls['Amount']" value="{{itemdatavalue.AMOUNT}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.Amount.errors && callinventoryininsert.controls.Amount.dirty"
+                                class='error'>Enter the Amount</p>
+                        </ion-item>
+
+                        <ion-row>
+                            <ion-textarea name="Description" placeholder="Description "
+                                style="border: 1px solid;"
+                                [formControl]="callinventoryininsert.controls['Description']"  value="{{itemdatavalue.DESCRIPTION}}"></ion-textarea>
+                            <p *ngIf="callinventoryininsert.controls.Description.errors && callinventoryininsert.controls.Description.dirty"
+                                class='error'>Enter the Description</p>
+                        </ion-row>
+
+                        <ion-item>
+                            <ion-label>Location</ion-label>
+                            <ion-select class="select1" interface="popover" name="Location" [(ngModel)]="itemdatavalue.LOCATION_ID"
+                                [formControl]="callinventoryininsert.controls['Location']" (ionChange)="Getbuildingby_loc($event)" >
+                                <ion-option value="0">--Select--</ion-option>
+                                <ion-option value="{{LOCATION.LOCATION_ID}}"
+                                    *ngFor="let LOCATION of AllLocationlist" [selected]="true"> {{LOCATION.CODE}}
+                                </ion-option>
+                            </ion-select>
+                            <p *ngIf="callinventoryininsert.controls.Location.errors && callinventoryininsert.controls.Location.dirty"
+                                class='error'>Select a Location.</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Building</ion-label>
+                            <ion-select class="select1" interface="popover" name="Building" [(ngModel)]="itemdatavalue.BUILDING_ID"
+                                [formControl]="callinventoryininsert.controls['Building']" (ionChange)="GetUNIT_GET_ALL($event)">
+                                <ion-option value="0">--Select--</ion-option>
+                                <ion-option value="{{building.BUILDING_ID}}"
+                                    *ngFor="let building of buildingby_loclist" [selected]="true"> {{building.BUILDING_NAME}}
+                                </ion-option>
+                            </ion-select>
+                            <p *ngIf="callinventoryininsert.controls.Building.errors && callinventoryininsert.controls.Building.dirty"
+                                class='error'>Select a Building.</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Unit</ion-label>
+                            <ion-select class="select1" interface="popover" name="Unit"  [(ngModel)]="itemdatavalue.UNIT_ID"
+                                [formControl]="callinventoryininsert.controls['Unit']" (ionChange)="Get_reference($event)">
+                                <ion-option value="0">--Select--</ion-option>
+                                <ion-option value="{{UNIT_GET.UNIT_ID}}"
+                                    *ngFor="let UNIT_GET of UNIT_GET_ALLlist" [selected]="true"> {{UNIT_GET.UNIT}}
+                                </ion-option>
+                            </ion-select>
+                            <p *ngIf="callinventoryininsert.controls.Unit.errors && callinventoryininsert.controls.Unit.dirty"
+                                class='error'>Select a Unit.</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Customer</ion-label>
+                            <ion-input type="hidden" name="Customer" style="float: right;"  [readonly]="true"
+                                [formControl]="callinventoryininsert.controls['Customer']" value="{{itemdatavalue.CUSTOMER_ID}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.Customer.errors && callinventoryininsert.controls.Customer.dirty"
+                                class='error'>Enter the Customer</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Customer</ion-label>
+                            <ion-input type="text" style="float: right;"  [readonly]="true"
+                            value="{{itemdatavalue.CUSTOMER_NAME}}"></ion-input>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Reference</ion-label>
+                            <ion-input type="text" name="Reference" style="float: right;"
+                                [formControl]="callinventoryininsert.controls['Reference']" value="{{itemdatavalue.REFERENCE || REFERENCEdata}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.Reference.errors && callinventoryininsert.controls.Reference.dirty"
+                                class='error'>Enter the Reference</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>INTERFACE LINE 1</ion-label>
+                            <ion-input type="text" name="INTERFACE_LINE_1" style="float: right;"
+                                [formControl]="callinventoryininsert.controls['INTERFACE_LINE_1']" value="{{itemdatavalue.INTERFACE_LINE_1}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.INTERFACE_LINE_1.errors && callinventoryininsert.controls.INTERFACE_LINE_1.dirty"
+                                class='error'>Enter the INTERFACE LINE 1</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>INTERFACE LINE 2</ion-label>
+                            <ion-input type="text" name="INTERFACE_LINE_2" style="float: right;"
+                                [formControl]="callinventoryininsert.controls['INTERFACE_LINE_2']" value="{{itemdatavalue.INTERFACE_LINE_2}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.INTERFACE_LINE_2.errors && callinventoryininsert.controls.INTERFACE_LINE_2.dirty"
+                                class='error'>Enter the INTERFACE LINE 2</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>INTERFACE LINE 3</ion-label>
+                            <ion-input type="text" name="INTERFACE_LINE_3" style="float: right;"
+                                [formControl]="callinventoryininsert.controls['INTERFACE_LINE_3']" value="{{itemdatavalue.INTERFACE_LINE_3}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.INTERFACE_LINE_3.errors && callinventoryininsert.controls.INTERFACE_LINE_3.dirty"
+                                class='error'>Enter the INTERFACE LINE 3</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>INTERFACE LINE 4</ion-label>
+                            <ion-input type="text" name="INTERFACE_LINE_4" style="float: right;"
+                                [formControl]="callinventoryininsert.controls['INTERFACE_LINE_4']" value="{{itemdatavalue.INTERFACE_LINE_4}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.INTERFACE_LINE_4.errors && callinventoryininsert.controls.INTERFACE_LINE_4.dirty"
+                                class='error'>Enter the INTERFACE LINE 3</p>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Customer Site</ion-label>
+                            <ion-input type="text" name="Customer_Site" style="float: right;"
+                                [formControl]="callinventoryininsert.controls['Customer_Site']" value="{{itemdatavalue.CUSTOMER_SITE}}"></ion-input>
+                            <p *ngIf="callinventoryininsert.controls.Customer_Site.errors && callinventoryininsert.controls.Customer_Site.dirty"
+                                class='error'>Enter the Customer Site</p>
+                        </ion-item>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onCloseHandle()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal !-->
+</ion-content>
+<style>
+    .row {
+        margin-left: 0px !important;
+        margin-right: -2px !important;
+    }
+</style>

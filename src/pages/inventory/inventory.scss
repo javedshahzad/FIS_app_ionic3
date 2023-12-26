@@ -1,0 +1,69 @@
+page-inventory {
+    .toolbar-background-md{
+        border:none;
+        background-image: linear-gradient(to right, #6b78d1, #5d6ec0, #5064af, #435b9f, #37518e, #425491, #4c5895, #555b98, #766caf, #997ec5, #bc8fda, #e1a1ee) !important;
+    }
+    .toolbar-background-ios{
+        background-image: linear-gradient(to right, #6b78d1, #5d6ec0, #5064af, #435b9f, #37518e, #425491, #4c5895, #555b98, #766caf, #997ec5, #bc8fda, #e1a1ee) !important;
+    }
+    .sbut{      
+        background-color: #73bd43 !important;
+        color: #fff !important;
+        border-radius: 0px !important;      
+        height: 3.6rem;
+        font-size: 15px;
+    }
+    .txt-search{
+        height: 3.6rem;
+        font-size: 15px;
+    }
+    .list-item-container {
+        width: 100%;
+        overflow: hidden;
+        display: table;
+    }   
+    div{
+        vertical-align: middle;        
+    }
+    .mediaimg{
+        width:28%;
+        padding: 0;
+        margin-right: 10px
+    }
+    .img-thumbnail{
+        border: none;
+    }
+}
+@media only screen and (max-width: 420px){
+    page-inventory{
+  h6{
+      font-size: 1.4rem !important;
+  }
+}
+.myprofile {
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    position: relative;
+    background-color: #e8e8e8;
+}
+.myprofile .name {
+    color: #FFFFFF;
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+}
+.myprofile-picture {
+    border-radius: 50%;
+    background-color: #fff;
+    height: 37px;
+    width: 40px;
+}
+}

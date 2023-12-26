@@ -1,0 +1,48 @@
+page-openwebsite {
+    .toolbar-background-md{
+            border:none;
+            background-image: linear-gradient(to right, #2eeb12, #00bb83, #0083a1, #004b7f, #051937) !important;
+        }
+        .toolbar-background-ios{
+            background-image: linear-gradient(to right, #2eeb12, #00bb83, #0083a1, #004b7f, #051937) !important;
+        }
+        
+        .card_btn{
+            border-radius: 5px !important;
+        }
+        .name_btn{
+            font-size: 11px; 
+            font-weight: bolder;
+        }
+
+        #notification-button {            
+            position: relative;
+            width: 40px;
+            top:1px;
+            right: 1px;
+            overflow: visible!important;
+        }
+
+        #notifications-badge {
+            background-color: red;
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            border-radius: 100%;
+        }
+        .ion-badge {
+            padding: 1px 4px!important;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.4em;
+            font-size: 47%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+        }
+}
+
+

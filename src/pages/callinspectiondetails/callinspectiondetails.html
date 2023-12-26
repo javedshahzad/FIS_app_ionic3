@@ -1,0 +1,454 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Call Inspection Details </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+  <div class="col-md-12">
+    <div class="accordion" id="accordionExample">
+
+        <ion-grid>
+            <ion-row class="header"style="border-bottom: 1px solid #e9ecef;background-color: #3ddcc8;">
+                <ion-col>
+                    CREATED BY
+                </ion-col>
+                <ion-col>
+                    CREATED ON
+                </ion-col>
+            </ion-row>
+            <ion-row style="border-bottom: 1px solid #e9ecef;">
+                <ion-col>
+                    {{call_create_details.CREATED_BY_NAME}}
+                </ion-col>
+                <ion-col>
+                    {{call_create_details.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}
+                </ion-col>
+            </ion-row>
+            <ion-row class="header"style="border-bottom: 1px solid #e9ecef;background-color: #3ddcc8;">
+                <ion-col>
+                    S.no
+                </ion-col>
+                <ion-col>
+                    Compliant
+                </ion-col>
+            </ion-row>
+            <ion-row *ngFor="let item of callcomplientsdetails; index as i;" style="border-bottom: 1px solid #e9ecef;">
+                <ion-col>
+                    {{i+1}}.
+                </ion-col>
+                <ion-col>
+                    {{item.COMPLAINT_DESCRIPTION}}
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+      <div class="" *ngFor="let item of callinstepctiondetails[0].CALL_INSPECTION_DETAILS; index as i;" data-parent="#accordionExample">
+        <ion-row>
+            <ion-col>
+                <ion-card class="dash_image" text-center (click)=showUndoBtn(i) style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                    <ion-grid style="padding:0px;">
+                        <div class="card-header" id="headingOne" style="background:linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                          <a style="float: left"  role="button">
+                            {{1 + i}}.{{item.COMPLAINTS}}
+                          </a>
+                          <i class="fa fa-chevron-circle-down faicons" role="button"></i>
+                      </div>
+                    </ion-grid>
+                  </ion-card>
+              </ion-col>
+          </ion-row>
+        <div [attr.id]="'undoBtn'+i" *ngIf="showBtn===i">
+
+          <form [formGroup]="calinspectionForm" (submit)="insertCallinspectionData()">
+            <div class="w3ls-form">
+
+              <ion-input name="CALL_LOG_ID" type="hidden"
+                value="{{callinstepctiondetails[0].Inspection[0].CALL_LOG_ID}}"
+                [formControl]="calinspectionForm.controls['CALL_LOG_ID']"></ion-input>
+
+              <ion-input name="STATUS_ID" type="hidden"
+                value="{{callinstepctiondetails[0].Inspection[0].STATUS_ID}}"
+                [formControl]="calinspectionForm.controls['STATUS_ID']"></ion-input>
+
+                <ion-input name="CALL_INSPECTION_DETAILS_ID" type="hidden"
+                value="{{item.CALL_INSPECTION_DETAILS_ID}}"
+                [formControl]="calinspectionForm.controls['CALL_INSPECTION_DETAILS_ID']"></ion-input>
+
+                <ion-input name="CALL_INSPECTION_ID" type="hidden"
+                value="{{callinstepctiondetails[0].Inspection[0].CALL_INSPECTION_ID}}"
+                [formControl]="calinspectionForm.controls['CALL_INSPECTION_ID']"></ion-input>
+
+                <ion-input name="COMPLAINTS" type="hidden"
+                value="{{item.COMPLAINT_ID}}"
+                [formControl]="calinspectionForm.controls['COMPLAINTS']"></ion-input>
+
+
+              <ion-grid>
+                <ion-row style="border-bottom:#e6e3e3 1px solid; margin: 5px;">
+                  <ion-col size-sm="2" size="4">
+                    <label>Add or Edit Labour</label>
+                  </ion-col>
+                  <ion-col size-sm="10" size="8">
+                      <button ion-button color="secondary" type="button"
+                      (click)="showlabouradd(item.COMPLAINT_ID,callinstepctiondetails[0].Inspection[0].CALL_LOG_ID)">
+                      <ion-icon name="list-box"></ion-icon>
+                    </button>
+                  </ion-col>
+                </ion-row>
+                <ion-row style="border-bottom:#e6e3e3 1px solid; margin: 5px;">
+                  <ion-col size-sm="2" size="4">
+                    <label>Complaint</label>
+                  </ion-col>
+                  <ion-col size-sm="10" size="8">
+                    <span>{{item.COMPLAINTS}}</span>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row style="margin: 5px;">
+                  <label>Observation/Action</label>
+                </ion-row>
+                <ion-row style="border-bottom:#e6e3e3 1px solid; margin: 5px;">
+                  <ion-textarea name="comments" placeholder="Comments " [formControl]="calinspectionForm.controls['comments']"
+                   [(ngModel)]="item.REASION1" value="{{item.REASION1}}"></ion-textarea>
+                  <p *ngIf="calinspectionForm.controls.comments.errors && calinspectionForm.controls.comments.dirty"
+                    class='error'>Enter the Comments</p>
+                </ion-row>
+
+                <ion-row style="border-bottom:#e6e3e3 1px solid; margin: 5px;">
+                  <ion-col size-sm="2" size="4">
+                    <label>Material</label>
+                  </ion-col>
+                  <ion-col size-sm="10" size="8">
+                    <div class="case1"
+                      *ngIf="callinstepctiondetails[0].CALL_INSPECTION_DETAILS[0].IS_MATERIAL_REQUIRED == 0 ; else elsepart1; ">
+                      <input type="checkbox" [(ngModel)]="material_required" style="width: 20px;height: 19px;"
+                        (change)="showmaterialcheckbox(item.COMPLAINT_ID,callinstepctiondetails[0].Inspection[0].CALL_LOG_ID,$event)"
+                        [formControl]="calinspectionForm.controls['material_required']" />
+                    </div>
+                    <ng-template #elsepart1>
+                      <div class="case1">
+                        <input type="checkbox" [checked]="isChecked" [(ngModel)]="material_required"
+                          (change)="showmaterialcheckbox()" style="width: 20px;height: 19px;"
+                          [formControl]="calinspectionForm.controls['material_required']" />
+                          <button ion-button color="secondary" type="button"
+                              (click)="show(item.COMPLAINT_ID,callinstepctiondetails[0].Inspection[0].CALL_LOG_ID)">
+                          <ion-icon name="list-box"></ion-icon>
+                        </button>
+                      </div>
+                    </ng-template>
+                  </ion-col>
+                </ion-row>
+
+                <ion-row style="border-bottom:#e6e3e3 1px solid; margin: 5px;">
+                  <ion-col size-sm="2" size="4">
+                    <label>Third Party</label>
+                  </ion-col>
+                  <ion-col size-sm="10" size="8">
+                    <input type="checkbox" color="primary" name="thired_party" ng-model="checkboxModel.value2"
+                      ng-true-value="'1'" ng-false-value="'0'" style="width: 20px;height: 19px;"
+                      (change)="THIREDPARTY(item.COMPLAINT_ID,callinstepctiondetails[0].Inspection[0],item.CALL_INSPECTION_DETAILS_ID)"
+                      [formControl]="calinspectionForm.controls['thired_party']" />
+                  </ion-col>
+                </ion-row>
+
+                <ion-item>
+                  <button ion-button color="secondary" type="button" (click)="takePhoto()">
+                    <ion-icon name="camera"></ion-icon>&nbsp;&nbsp;Take Photo
+                  </button>
+                  <ion-col col-6 *ngFor="let photo of photos; let id = index">
+                    <div class="block">
+                      <ion-icon name="trash" class="deleteIcon" (click)="deletePhoto(id)"></ion-icon>
+                      <img [src]="photo" *ngIf="photo" />
+                    </div>
+                  </ion-col>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label id="profile_image" color="primary" stacked>Select</ion-label>
+                    <ion-input type="file" (change)="onSelectFile($event)"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <div style="margin-top:3%;color: #fff !important;">
+                      <button ion-button color="secondary" type="button"  style="font-size: 1.45em;height: 27px;"
+                        (click)="imagelist(callinstepctiondetails[0].Inspection[0].CALL_LOG_ID)">
+                        <ion-icon ios="ios-images" md="md-images"></ion-icon>
+                      </button>
+                    <button style="color: #fff; margin-left: 29px; font-size: 1.5rem;background-color: #c91f1f;height: 27px" class="bst2" ion-button
+                      (click)=resetForm();>Cancel</button>
+                    <button type="submit" style="float: right; color: #fff !important;font-size: 1.6rem;height: 27px" ion-button
+                      [disabled]="!calinspectionForm.valid" class="bst1">Save</button>
+                  </div>
+                </ion-item>
+              </ion-grid>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="backdrop" [ngStyle]="{'display':add_labour}"></div>
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':add_labour}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>LABOUR DETAILS</h4>
+          <button type="button" class="close" aria-label="Close" (click)="onCloseHandledlabour()"><span
+              aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <ion-grid>
+            <ion-row class="header"style="border-bottom: 1px solid #e9ecef;">
+              <ion-col>
+                  DESIGNATION
+              </ion-col>
+              <ion-col>
+                  LABOUR COUNT
+              </ion-col>
+              <ion-col>
+                  LABOUR TIME
+              </ion-col>
+              <ion-col>
+                  ACTION
+              </ion-col>
+            </ion-row>
+            <ion-row *ngFor="let labour of callinspectionlabour; index as i;" style="border-bottom: 1px solid #e9ecef;">
+                <ion-col style="text-align: center;">
+                    {{labour.DESIGNATION}}
+                </ion-col>
+                <ion-col style="text-align: center;">
+                    {{labour.LABOUR_COUNT}}
+                </ion-col>
+                <ion-col style="text-align: center;">
+                    {{labour.LABOUR_TIME}}
+                </ion-col>
+                <ion-col style="text-align: center;">
+                    <button ion-button color="secondary" type="button"
+                      (click)="removelabour(labour.CALL_ESTIMATION_LABOUR_ID,COMPLAINT_ID,CALL_LOG_ID)">
+                      <ion-icon name="open"></ion-icon>
+                    </button>
+                </ion-col>
+            </ion-row>
+          </ion-grid>
+        <hr>
+        <form [formGroup]="calinspectionlabourForm" (submit)="insertlabourData()">
+          <div class="modal-body">
+
+            <ion-input [(ngModel)]="CALL_ESTIMATION_ID" *ngFor="let call of callinstepctiondetails[0].Inspection "
+              type="hidden" value="{{call.CALL_ESTIMATION_ID}}"
+              [formControl]="calinspectionlabourForm.controls['CALL_ESTIMATION_ID']"></ion-input>
+
+            <ion-input [(ngModel)]="ASSIGNEDID" *ngFor="let call of callinstepctiondetails[0].Inspection " type="hidden"
+              value="{{call.ASSIGNEDID}}" [formControl]="calinspectionlabourForm.controls['ASSIGNEDID']"></ion-input>
+
+            <ion-input [(ngModel)]="COMPLAINT_ID" type="hidden" value="{{COMPLAINT_ID}}"
+              [formControl]="calinspectionlabourForm.controls['COMPLAINT_ID']"></ion-input>
+
+            <ion-input [(ngModel)]="CALL_LOG_ID" *ngFor="let call of callinstepctiondetails[0].Inspection" type="hidden"
+              value="{{call.CALL_LOG_ID}}" [formControl]="calinspectionlabourForm.controls['CALL_LOG_ID']"></ion-input>
+
+
+            <ion-item>
+              <ion-label>Labour Designation</ion-label>
+              <ion-select class="select1" [formControl]="calinspectionlabourForm.controls['designation']">
+                <ion-option value="0">Select</ion-option>
+                <ion-option value="{{designation.DESIGNATION_ID}}" *ngFor="let designation of designation">
+                  {{designation.DESIGNATION_CODE}}</ion-option>
+              </ion-select>
+              <p *ngIf="calinspectionlabourForm.controls.designation.errors && calinspectionlabourForm.controls.designation.dirty"
+                class='error'>---Select---</p>
+            </ion-item>
+
+            <ion-item>
+                  <ion-label position="floating">Number Of Person:</ion-label>
+                  <ion-input type="text" name="no_of_person" [(ngModel)]="no_of_person" style="float: right;" value="{{'1'}}"
+                  [formControl]="calinspectionlabourForm.controls['no_of_person']"></ion-input>
+                <p *ngIf="calinspectionlabourForm.controls.no_of_person.errors && calinspectionlabourForm.controls.no_of_person.dirty"
+                  class='error'>Enter the Number Of Person</p>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Time Frame:</ion-label>
+              <ion-input type="text" name="Time_Frame" [(ngModel)]="Time_Frame" style="float: right;" value="{{'1 hour'}}"
+                [formControl]="calinspectionlabourForm.controls['Time_Frame']"></ion-input>
+              <p *ngIf="calinspectionlabourForm.controls.Time_Frame.errors && calinspectionlabourForm.controls.Time_Frame.dirty"
+                class='error'>Enter the Time_Frame</p>
+            </ion-item>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="onCloseHandledlabour()">Cancel</button>
+            <button type="button" type="submit" class="btn btn-primary" color="primary">Save</button>
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal !-->
+
+
+  <div class="backdrop" [ngStyle]="{'display':material_list}"></div>
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':material_list}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="onCloseHandledmaterial()"><span
+              aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <ion-grid>
+            <ion-row class="header"style="border-bottom: 1px solid #e9ecef;">
+              <ion-col>
+                  Material
+              </ion-col>
+              <ion-col>
+                  Material Specification
+              </ion-col>
+              <ion-col>
+                  Quantity
+              </ion-col>
+              <ion-col>
+                  Total
+              </ion-col>
+              <ion-col>
+                  Action
+              </ion-col>
+            </ion-row>
+            <ion-row *ngFor="let material of callinspectionmaterial; index as i;" style="border-bottom: 1px solid #e9ecef;">
+                <ion-col>
+                    {{material.CATEGORY_CODE}}
+                </ion-col>
+                <ion-col>
+                    {{material.CATEGORY_NAME}}
+                </ion-col>
+                <ion-col>
+                    {{material.QUANTITY}}
+                </ion-col>
+                <ion-col>
+                    {{material.TOTAL}}
+                </ion-col>
+                <ion-col>
+                    <button ion-button color="secondary" type="button"
+                    (click)="remove(material.CALL_ESTIMATION_ITEMS_ID,COMPLAINT_ID,CALL_LOG_ID)">
+                    <ion-icon name="open"></ion-icon>
+                  </button>
+                </ion-col>
+              </ion-row>
+          </ion-grid>
+        <hr>
+        <form [formGroup]="calinspectionmaterialForm" (submit)="insertmaterial()">
+
+          <div class="modal-body">
+            <ion-input [(ngModel)]="CALL_ESTIMATION_ID" *ngFor="let call of callinstepctiondetails[0].Inspection "
+              type="hidden" value="{{call.CALL_ESTIMATION_ID}}"
+              [formControl]="calinspectionmaterialForm.controls['CALL_ESTIMATION_ID']"></ion-input>
+            <ion-input [(ngModel)]="ASSIGNEDID" *ngFor="let call of callinstepctiondetails[0].Inspection " type="hidden"
+              value="{{call.ASSIGNEDID}}" [formControl]="calinspectionmaterialForm.controls['ASSIGNEDID']"></ion-input>
+            <ion-input [(ngModel)]="BUILDING_ID" *ngFor="let call of callinstepctiondetails[0].Inspection "
+              type="hidden" value="{{call.BUILDING_ID}}"
+              [formControl]="calinspectionmaterialForm.controls['BUILDING_ID']"></ion-input>
+            <ion-input [(ngModel)]="LOCATION_ID" *ngFor="let call of callinstepctiondetails[0].Inspection "
+              type="hidden" value="{{call.LOCATION_ID}}"
+              [formControl]="calinspectionmaterialForm.controls['LOCATION_ID']"></ion-input>
+            <ion-input [(ngModel)]="UNIT_ID" *ngFor="let call of callinstepctiondetails[0].Inspection " type="hidden"
+              value="{{call.UNIT_ID}}" [formControl]="calinspectionmaterialForm.controls['UNIT_ID']"></ion-input>
+            <ion-input [(ngModel)]="COMPLAINT_ID" type="hidden" value="{{COMPLAINT_ID}}"
+              [formControl]="calinspectionmaterialForm.controls['COMPLAINT_ID']"></ion-input>
+
+            <ion-input [(ngModel)]="CALL_LOG_ID" *ngFor="let call of callinstepctiondetails[0].Inspection" type="hidden"
+              value="{{call.CALL_LOG_ID}}" [formControl]="calinspectionmaterialForm.controls['CALL_LOG_ID']">
+            </ion-input>
+
+              <ion-list>
+                <ion-item style="padding-left: unset;">
+                  <ionic-selectable text-center
+                    item-content
+                    placeholder="Material Category"
+                    [formControl]="calinspectionmaterialForm.controls['material']"
+                    itemValueField="MATERIAL_CATEGORY_ID"
+                    itemTextField="CATEGORY_NAME"
+                    [items]="material_category"
+                    [canSearch]="true"
+                    (onChange)="materialChange($event)">
+                  </ionic-selectable>
+                </ion-item>
+              </ion-list>
+
+            <ion-item style="padding-left: unset;">
+              <ion-select text-center class="select1" [formControl]="calinspectionmaterialForm.controls['MaterialSpecification']" placeholder="Material Specification">
+                <ion-option value="0">Select</ion-option>
+                <ion-option value="{{MATERIAL_CATEGORY.MATERIAL_CATEGORY_ID}}" *ngFor="let MATERIAL_CATEGORY of MATERIAL_CATEGORY_CODE">
+                  {{MATERIAL_CATEGORY.MATERIAL_CATEGORY_ID +'-'+ MATERIAL_CATEGORY.CATEGORY_CODE}}</ion-option>
+              </ion-select>
+              <p *ngIf="calinspectionmaterialForm.controls.MaterialSpecification.errors && calinspectionmaterialForm.controls.MaterialSpecification.dirty"
+                class='error'>Select a Material.</p>
+            </ion-item>
+
+            <ion-item>
+              <input type="number" name="Quantity" [(ngModel)]="Quantity" class="form-control" style="float: right;width: 100%;" placeholder="Quantity"
+                [formControl]="calinspectionmaterialForm.controls['Quantity']" />
+              <p *ngIf="calinspectionmaterialForm.controls.Quantity.errors && calinspectionmaterialForm.controls.Quantity.dirty"
+                class='error'>Enter the Quantity</p>
+            </ion-item>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="onCloseHandledmaterial()">Cancel</button>
+            <button type="button" type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal !-->
+
+  
+  <div class="backdrop" [ngStyle]="{'display':image_list}"></div>
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':image_list}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="onCloseHandimage_list()"><span
+              aria-hidden="true">&times;</span>
+          </button>
+        </div>
+          <div class="modal-body">
+              <h3 class="text-center">File List</h3>
+              <ion-card *ngIf=isImageMessageShow>
+                  <ion-card-content color=danger>
+                      No found
+                  </ion-card-content>
+              </ion-card>
+              <ion-card *ngFor="let item of imagelistdata; index as i;">
+                  <img [src]="getImagelist(item.CALL_FILES_ID,item)">
+                  <ion-card-content>
+                      <ion-card-title>
+                          {{item.FILE_NAME}}
+                      </ion-card-title>
+                      <p>
+                          {{item.FILE_TYPE}}
+                      </p>
+                  </ion-card-content>
+                  <button ion-button (click)="getfile(item.CALL_FILES_ID,item)" color="secondary">Open</button>
+              </ion-card>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-danger" (click)="onCloseHandimage_list()">Close</button>
+          </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal !-->
+</ion-content>
+<style>
+  .row {
+    margin-left: 0px !important;
+    margin-right: -2px !important;
+  }
+</style>

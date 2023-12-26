@@ -1,0 +1,194 @@
+<ion-header>
+        <ion-navbar>
+        <ion-buttons left>
+            <button ion-button menuToggle class="navbar_leftbtn">
+                <ion-icon name="menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <div *ngIf="show_profile_image == 0">
+          <ion-title class="navbar_title">My Profile</ion-title>
+        </div>        
+        <div *ngIf="show_profile_image_crop === 0">
+            <ion-toolbar>
+              <ion-title>My Profile</ion-title>
+              <ion-buttons start>
+                <button ion-button color="danger" (click)="reset()">
+                  Reset
+                </button>
+              </ion-buttons>
+              <ion-buttons end>          
+                <button ion-button icon-only color="secondary" (click)="save()">
+                  <ion-icon name="checkmark"></ion-icon>
+                </button>
+              </ion-buttons>
+            </ion-toolbar>
+          </div>
+    </ion-navbar>    
+</ion-header>
+
+<ion-content padding>
+
+    <div *ngIf="show_profile_image === 0">
+
+        <div class="case" *ngIf="myprofilecount === 1;">
+          <div class="myprofile" *ngFor="let image of myprofile; index as i;">
+    
+            <img class="myprofile-picture" src="{{profileImg}}" (click)="showimage(image.ID,image)">
+            <ion-fab top right edge style="position: absolute; top: auto;margin-right: 50px;margin-top: 60px;">
+              <button ion-fab mini (click)="openBrowser()">
+                <ion-icon name="camera"></ion-icon>
+              </button>
+            </ion-fab>
+          </div>
+        </div>
+        <div class="case" *ngIf="myprofilecount === 0;">
+          <div class="myprofile">
+            <img class="myprofile-picture" src="assets/imgs/no-found-photo.png">
+            <ion-fab top right edge style="position: absolute; top: auto;margin-right: 50px;margin-top: 60px;">
+              <button ion-fab mini (click)="openBrowser()">
+                <ion-icon name="camera"></ion-icon>
+              </button>
+            </ion-fab>
+          </div>
+        </div>
+        
+        <ion-item>
+          <ion-col col-6 *ngFor="let photo of photos; let id = index">
+            <div class="block">
+              <img [src]="photo" *ngIf="photo" />
+            </div>
+            <button ion-button color="secondary" type="button" (click)="deletePhoto(id)">
+              <ion-icon name="trash" class="deleteIcon"></ion-icon>
+            </button>
+            <button ion-button color="secondary" type="button" (click)="Uploadmyprofile(id)">
+              <ion-icon name="done-all"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-item>
+    
+        <ion-card class="dash_image">
+          <ion-card-content>
+            <ion-row style="margin-left: 6px;">
+              <ion-col col-4>
+                User Name
+              </ion-col>
+              <ion-col col-1>
+                :
+              </ion-col>
+              <ion-col col-7>
+                {{userdata.Surname}}
+              </ion-col>
+            </ion-row>
+          
+            <ion-row style="margin-left: 6px;">
+              <ion-col col-4>
+                E-mail
+              </ion-col>
+              <ion-col col-1>
+                :
+              </ion-col>
+              <ion-col col-7>
+                {{userdata.Email}}
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+    
+        <ion-card class="dash_image">
+          <ion-card-content>
+            <ion-card-header (click)=showPassUpdate() style="background-color: #fff !important;" role="button">
+              Password Change<span style="float: right;"> <ion-icon name="arrow-down" *ngIf="isPassUpdate"></ion-icon>
+                <ion-icon name="arrow-forward" *ngIf="!isPassUpdate"></ion-icon>
+              </span>        
+            </ion-card-header>
+            <div *ngIf="isPassUpdate">
+            <form [formGroup]="updatePasswordForm" (submit)="updatePassword()">
+            <ion-item>
+              <ion-label stacked>Password</ion-label>
+              <ion-input type="password" [(ngModel)]="PASS"  name="password" [formControl]="updatePasswordForm.controls['password']"></ion-input>
+              <p *ngIf="updatePasswordForm.controls.password.errors && updatePasswordForm.controls.password.dirty" class='error'>Enter the
+                Password.</p>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Confirm Password</ion-label>
+              <ion-input type="password" [(ngModel)]="CONF_PASS" name="confirmPassword" [formControl]="updatePasswordForm.controls['confirmPassword']"></ion-input>
+              <div class="danger-clr" *ngIf="PASS != CONF_PASS">
+                Passwords don't match.
+            </div>
+              <p *ngIf="updatePasswordForm.controls.confirmPassword.errors && updatePasswordForm.controls.confirmPassword.dirty" class='error danger-clr'>Enter the
+                Confirm Password.</p>
+            </ion-item>
+            <ion-item class="example-center">
+              <button ion-button type="submit" color="Primary" [disabled]="!updatePasswordForm.valid">Update</button>
+            </ion-item>
+            </form>
+          </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    
+      <div style="top: 40px;"  *ngIf="show_profile_image_crop === 0">
+    
+        <angular-cropper #angularCropper [cropperOptions]="cropperOptions" [imageUrl]="myImage" *ngIf="myImage">
+        </angular-cropper>
+    
+        <ion-row *ngIf="myImage" style="margin-top: 60px;">
+          <ion-col col-4>
+            <button ion-button outline icon-left color="primary" (click)="zoom(true)">
+              <ion-icon name="add"></ion-icon> Zoom
+            </button>
+          </ion-col>
+          <ion-col col-4>
+            <button ion-button outline icon-left color="primary" (click)="zoom(false)">
+              <ion-icon name="remove"></ion-icon> Zoom
+            </button>
+          </ion-col>
+          <ion-col col-4>
+            <button ion-button outline icon-left (click)="rotate()">
+              <ion-icon name="refresh"></ion-icon> 90 deg
+            </button>
+          </ion-col>
+    
+          <ion-col col-2>
+            <button ion-button clear (click)="scaleX()">
+              Flip X
+            </button>
+          </ion-col>
+          <ion-col col-2>
+            <button ion-button clear (click)="scaleY()">
+              Flip Y
+            </button>
+          </ion-col>
+    
+          <ion-col col-2>
+            <button ion-button clear icon-only (click)="move(0, -10)">
+              <ion-icon name="arrow-round-up"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col col-2>
+            <button ion-button clear icon-only (click)="move(0, 10)">
+              <ion-icon name="arrow-round-down"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col col-2>
+            <button ion-button clear icon-only (click)="move(-10, 0)">
+              <ion-icon name="arrow-round-back"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col col-2>
+            <button ion-button clear icon-only (click)="move(10, 0)">
+              <ion-icon name="arrow-round-forward"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+    
+        <!-- <ion-card *ngIf="croppedImage">
+          <ion-card-header>My Result</ion-card-header>
+          <ion-card-content>
+            <img [src]="croppedImage">
+          </ion-card-content>
+        </ion-card> -->
+    
+      </div>
+
+</ion-content>

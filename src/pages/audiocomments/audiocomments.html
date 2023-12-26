@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Voice Recording</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="pet" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="pending" style="font-size: 13px;">
+        Record
+      </ion-segment-button>
+      <ion-segment-button value="confirm" style="font-size: 13px;">
+        Saved Recording
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <div [ngSwitch]="pet">
+    <ion-list *ngSwitchCase="'pending'">
+
+      <div class="stopwatch pt-3">
+        <h1 text-center class="color-white font-lg">
+          {{time}}
+        </h1>
+        <ion-grid>
+          <ion-row text-center class="mt-5">
+            <ion-col class="col-12">
+              <button class="circle-button circle-button-bg font-md digit" style="font-size: 30px !important;" ion-button>
+                {{timer.minutes}}:{{timer.secondes}}
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <div style="text-align: center; font-size: 16px; font-style: italic; font-weight: bold;">
+        <h3>{{status}}</h3>
+      </div>
+     
+    </ion-list>
+ 
+    <ion-list *ngSwitchCase="'confirm'">      
+
+      <div *ngFor="let audio of audioList; index as i;">
+        <ion-list style="margin: 0px 0 7px !important;" >
+          <ion-item-sliding>
+            <ion-item (click)="playAudio(audio.FILE_NAME,audio.FILE_PATH, i)" *ngIf="audio.IS_DELETED ==0">              
+              <p>{{audio.FILE_NAME}}  {{audio.AUDIO_DURATION}}</p>
+              <p style="color:red">{{audio.RECORDED_BY}}, {{audio.MODIFIED_ON | date:'dd-MM-yyyy hh:mm a'}}</p>
+            </ion-item>
+
+            <ion-item *ngIf="audio.IS_DELETED ==1">              
+              <p>This audio is deleted</p>
+              <p style="color:red">{{audio.MODIFIED_BY}}, {{audio.MODIFIED_ON | date:'dd-MM-yyyy hh:mm a'}}</p>
+            </ion-item>
+
+            <ion-item-options side="left" *ngIf="audio.IS_DELETED ==0">
+              <div>
+                <button ion-button style="font-size: 10px;" (click)="deleteAudio(audio.ID, audio.COMMENTS_ID, audio.COMMENTS_CHILD_ID)">
+                  <img src="assets/imgs/delete.png" class="icon-btn" style="width: 35px;" /></button>
+              </div>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </div>
+
+    </ion-list>
+  </div>
+
+
+</ion-content>
+
+<ion-footer text-center>
+  <div class="action" *ngIf="showfooter == 0">    
+    <button class="btn btn-danger btn-lg" *ngIf="state.stop" (click)="stopRecord()">{{'STOP'}}</button>
+    <button class="btn btn-primary btn-lg" *ngIf="state.play" (click)="startRecord()">{{btnPlay}}</button>
+  </div>
+</ion-footer>

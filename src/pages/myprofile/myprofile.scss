@@ -1,0 +1,50 @@
+page-myprofile {
+    .bar-myprofile {
+        //background-color: #488aff;
+        background-image: linear-gradient(to right, #6b78d1, #5d6ec0, #5064af, #435b9f, #37518e, #425491, #4c5895, #555b98, #766caf, #997ec5, #bc8fda, #e1a1ee) !important;
+        height: 160px;
+    }
+	.myprofile {
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 0;
+        overflow: hidden;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        position: relative;
+        background-color: #e8e8e8;
+    }
+    .myprofile .name {
+        color: #FFFFFF;
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+    }
+    .myprofile-picture {
+        height: 5vw;
+        width: 5vw;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        box-shadow: 0 0 32px grey;
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 53%;
+        height: 140px;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+    }.image-upload > input
+    {
+        display: none;
+    }
+    
+    .image-upload img
+    {
+        width: 80px;
+        cursor: pointer;
+    }
+}

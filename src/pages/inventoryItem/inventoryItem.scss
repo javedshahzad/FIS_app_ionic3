@@ -1,0 +1,84 @@
+page-inventoryItem {
+    .toolbar-background-md{
+        border:none;
+        background-image: linear-gradient(to right, #6b78d1, #5d6ec0, #5064af, #435b9f, #37518e, #425491, #4c5895, #555b98, #766caf, #997ec5, #bc8fda, #e1a1ee) !important;
+    }
+    .toolbar-background-ios{
+        background-image: linear-gradient(to right, #6b78d1, #5d6ec0, #5064af, #435b9f, #37518e, #425491, #4c5895, #555b98, #766caf, #997ec5, #bc8fda, #e1a1ee) !important;
+    }
+   
+    body {
+        background-color: #ccc;
+        font-family: Ubuntu, "Helvetica Neue", Helvetica, sans-serif;
+        font-size: 16px;
+    }      
+    .list-item-container {
+        width: 100%;
+        overflow: hidden;
+        display: table;
+    }        
+    div{
+        vertical-align: middle;          
+    }
+    .mediaimg{
+          width:28%;
+          padding: 0;
+          margin-right: 10px
+    }
+    .img-thumbnail{
+          border: none;
+    }
+    td{
+        width: 10%;       
+    }
+    .sbtn{
+        padding: 0.775rem 2.75rem !important;
+        font-size: 1.3rem !important;
+    }
+    .thd{
+        line-height: 13px !important;
+        font-family: "Roboto", "Helvetica Neue", sans-serif !important;
+        font-size: 1.3rem !important;
+        color: #7d7d7d;
+        font-weight: 500;
+    }
+    .card-bodynew {     
+        line-height: 34px !important;
+        font-family: "Roboto", "Helvetica Neue", sans-serif !important;
+    }
+    .card-bodynew1 {     
+        line-height: 18px !important;
+        font-family: "Roboto", "Helvetica Neue", sans-serif !important;
+        color: #6b6b6b !important;
+    }
+    .tbd{
+        font-weight: 500 !important;
+        color: #505050 !important;
+    }
+    .txth4{
+        color: #4c4c4c;
+        font-size: 1.7rem;
+    }    
+}
+@media only screen and (max-width: 347px){
+    page-inventoryItem {
+   .sbtn{
+        padding: .375rem .75rem !important;
+    }
+}
+}
+
+.myprofile-picture {
+    height: 5vw;
+    width: 5vw;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 32px grey;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 53%;
+    height: 140px;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}

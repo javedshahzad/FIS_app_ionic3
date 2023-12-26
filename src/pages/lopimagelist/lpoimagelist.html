@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{module_name}} </ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+    <div>
+        <!--<ion-icon name="call" (click) = "opencallModal()" data-toggle="tooltip" title="Create Call"></ion-icon>-->
+    </div>
+    <div class="col-md-12">
+        <h3 class="text-center">{{module_name}} Images</h3>
+        <ion-card *ngIf="imagelistdatacount === 0">
+            <ion-card-content color=danger>
+                Not found
+            </ion-card-content>
+        </ion-card>
+        <ion-card *ngFor="let item of imagelistdata; index as i;">
+            <img [src]="getImagelist(item.ROW_NO,item)">
+
+            <ion-card-content>
+                <ion-card-title>
+                    {{item.FILE_NAME}}
+                </ion-card-title>
+                <p>
+                    {{item.FILE_TYPE}}
+                </p>
+                <button ion-button (click)="getfile(item.ROW_NO,item)" color="secondary">Open</button>
+            </ion-card-content>
+        </ion-card>
+    </div>
+</ion-content>

@@ -1,0 +1,180 @@
+<ion-content padding class="animated fadeIn login auth-page">
+  <div class="login-content" *ngIf="showlogin == 0">
+
+    <!-- Logo -->
+    <div padding-horizontal text-center class="animated fadeInDown">
+      <div class="logo"></div>
+      <img src="assets/imgs/logo_new.png">
+    </div>
+
+    <!-- Login form -->
+    <form class="list-form">
+      <ion-item
+        style="background:none; padding: 0px !important;  border-top: none; font-size: 14px; margin-top: 10px; border-bottom: 1px solid white;">
+        <ion-label floating>
+          <ion-icon name="mail" item-start class="text-primary"></ion-icon>
+          UserName
+        </ion-label>
+        <ion-input type="text" name="name" [(ngModel)]="userData.user_name"
+          style="color:black !important; border-bottom-color:white; box-shadow: none;"></ion-input>
+      </ion-item>
+
+      <!-- <ion-item
+        style="background:none; padding: 0px !important;  border-top: none; font-size: 14px; margin-top: 10px; border-bottom: 1px solid white;">
+        <ion-label floating>
+          <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+          Password
+        </ion-label>
+        <ion-input [type]="passwordType" name="password" [(ngModel)]="userData.user_password"
+          style="color:black !important; border-bottom-color:white; box-shadow: none;"></ion-input>
+          <ion-icon item-end [name]="passwordIcon" class="passwordIcon" (click)='hideShowPassword()'></ion-icon>
+      </ion-item> -->
+
+      <ion-item
+        style="background:none; padding: 0px !important;  border-top: none; font-size: 14px; margin-top: 10px; border-bottom: 1px solid white;">
+        <ion-label floating>
+          <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+          Password
+        </ion-label>
+        <ion-input [type]="passwordType" name="password" [(ngModel)]="userData.user_password"
+          style="color:black !important; border-bottom-color:white; box-shadow: none;"></ion-input>
+          <ion-icon item-end [name]="passwordIcon" class="passwordIcon" (click)='hideShowPassword()'></ion-icon>
+      </ion-item>
+
+      <ion-item
+        style="background:none; padding: 0px !important;  border-top: none; font-size: 14px; margin-top: 10px; border-bottom: 1px solid white;">
+        <ion-checkbox color="Royal" (ionChange)="updateRememberMe()" [checked]="rememberMeChecked"></ion-checkbox>
+        <ion-label>Remember Me</ion-label>
+      </ion-item>
+
+    </form>
+
+    <div style="margin-top: 40px;">
+      <button ion-button icon-start block color="blue" [value]="LogIn" (click)="login()" >
+        <ion-icon name="log-in"></ion-icon>
+        {{signIn}}
+      </button>
+    </div>
+  </div>
+
+
+  <div class="login-content" *ngIf="showlogin == 1">
+    <h2>Create User</h2>
+    <!-- Login form -->
+    <form class="list-form">
+      <ion-grid padding>
+
+        <ion-row>
+          <ion-item
+            style="background:none; padding: 0px !important;  border-top: none; font-size: 14px; border-bottom: 1px solid white;">
+            <ion-label floating>
+              <ion-icon name="person" item-start class="text-primary"></ion-icon>
+              First Name
+            </ion-label>
+            <ion-input type="text" name="firstname" [(ngModel)]="userSignUpData.firstname"
+              style="color:black !important; border-bottom-color:white; box-shadow: none;"></ion-input>
+          </ion-item>
+          <p class="error-message">{{fnerrormsg}}</p>
+        </ion-row>
+
+        <ion-row>
+          <ion-item
+            style="background:none; padding: 0px !important;  border-top: none; font-size: 14px; border-bottom: 1px solid white;">
+            <ion-label floating>
+              <ion-icon name="person" item-start class="text-primary"></ion-icon>
+              Last Name
+            </ion-label>
+            <ion-input type="text" name="lastname" [(ngModel)]="userSignUpData.lastname"
+              style="color:black !important; border-bottom-color:white; box-shadow: none;"></ion-input>
+          </ion-item>
+          <p class="error-message">{{lnerrormsg}}</p>
+        </ion-row>
+
+        <ion-row>
+          <ion-item
+            style="background:none; padding: 0px !important;  border-top: none; font-size: 14px; border-bottom: 1px solid white;">
+            <ion-label floating>
+              <ion-icon name="mail" item-start class="text-primary"></ion-icon>
+              Email ID
+            </ion-label>
+            <ion-input type="text" name="emailid" [(ngModel)]="userSignUpData.emailId"
+              style="color:black !important; border-bottom-color:white; box-shadow: none;"></ion-input>
+          </ion-item>
+          <p class="error-message">{{emailerrormsg}}</p>
+        </ion-row>
+
+        <ion-row>
+          <ion-item
+            style="background:none; padding: 0px !important;  border-top: none; font-size: 14px; border-bottom: 1px solid white;">
+            <ion-label floating>
+              <ion-icon name="globe" item-start class="text-primary"></ion-icon>
+              Country
+            </ion-label>
+            <ionic-selectable item-content name="select_country" [(ngModel)]="select_country" [items]="countries"
+              itemValueField="dial_code" itemTextField="name" [canSearch]="true" (onChange)="countryChange($event)">
+            </ionic-selectable>
+
+          </ion-item>
+        </ion-row>
+
+        <ion-row>
+          <ion-item col-2
+            style="background:none; padding: 0px !important;  border-top: none; font-size: 14px; border-bottom: 1px solid white;">
+            <ion-label floating>
+              <ion-icon name="pin" item-start class="text-primary"></ion-icon>
+              Code
+            </ion-label>
+            <ion-input type="text" name="countrycode" [(ngModel)]="userSignUpData.countrycode"
+              style="color:black !important; border-bottom-color:white; box-shadow: none;"></ion-input>
+          </ion-item>
+          <ion-item col-9 push-1
+            style="background:none; padding: 0px !important;  border-top: none; font-size: 14px; border-bottom: 1px solid white;">
+            <ion-label floating>
+              <ion-icon name="phone-portrait" item-start class="text-primary"></ion-icon>
+              Mobile
+            </ion-label>
+            <ion-input type="text" name="mobile_no" [(ngModel)]="userSignUpData.mobile_no"
+              style="color:black !important; border-bottom-color:white; box-shadow: none;"></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <ion-item
+            style="background:none; padding: 0px !important;  border-top: none; font-size: 14px; border-bottom: 1px solid white;">
+            <ion-label floating>
+              <ion-icon name="key" item-start class="text-primary"></ion-icon>
+              Password
+            </ion-label>
+            <ion-input type="Password" name="signup_password" [(ngModel)]="userSignUpData.signup_password"
+              style="color:black !important; border-bottom-color:white; box-shadow: none;"></ion-input>
+          </ion-item>
+          <p class="error-message">{{passworderrormsg}}</p>
+        </ion-row>
+        <ion-row>
+          <ion-item
+            style="background:none; padding: 0px !important;  border-top: none; font-size: 14px; border-bottom: 1px solid white;">
+            <ion-label floating>
+              <ion-icon name="key" item-start class="text-primary"></ion-icon>
+              Confirm-Password
+            </ion-label>
+            <ion-input type="Password" name="confirm_password" [(ngModel)]="userSignUpData.confirm_password"
+              style="color:black !important; border-bottom-color:white; box-shadow: none;"></ion-input>
+          </ion-item>
+          <p class="error-message">{{cnfpassworderrormsg}}</p>
+        </ion-row>
+      </ion-grid>
+    </form>
+
+    <div style="margin-top: 40px;">
+      <button ion-button icon-start block color="blue" [value]="SignUp" (click)="signup()">
+        <ion-icon name="log-in"></ion-icon>
+        {{signUp}}
+      </button>
+    </div>
+
+  </div>
+
+  <h6 *ngIf="showlogin == 0">I'm a new user, <span style="color:tomato" (click)="userSignUp()">Sign Up</span></h6>
+  <h6 *ngIf="showlogin == 1">Already have an account, <span style="color:tomato" (click)="newuserLogin()">Login
+      here</span></h6>
+
+</ion-content>

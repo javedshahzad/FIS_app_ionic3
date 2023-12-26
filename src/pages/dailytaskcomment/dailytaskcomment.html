@@ -1,0 +1,290 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{today | date: 'dd-MM-yyyy'}} {{this.label_title}} Update </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="show_comment_list === -1">
+
+          <ion-card text-center padding class="card_btn" style="display: block;border-radius: 10px;"
+            (click)="openModal('R')">
+            <ion-item>
+              <ion-thumbnail slot="start">
+                <img class="icon-btn" src="assets/imgs/result.png" />
+              </ion-thumbnail>
+              <h6>R - Result</h6>
+              <ion-badge class="badge_task"
+                style="top: 46px;right: 15px;position: absolute;background-color: #10dc60; font-size: 13px;">
+                {{taskcommentscount.Result.length || '0'}}</ion-badge>
+            </ion-item>
+          </ion-card>
+  
+          <ion-card text-center padding class="card_btn" style="display: block;border-radius: 10px;"
+            (click)="openModal('O')">
+            <ion-item>
+              <ion-thumbnail slot="start">
+                <img class="icon-btn" src="assets/imgs/objective.png" />
+              </ion-thumbnail>
+              <h6>O - Objective</h6>
+              <ion-badge class="badge_task"
+                style="top: 46px;right: 15px;position: absolute;background-color: #10dc60; font-size: 13px;">
+                {{taskcommentscount.Object.length || '0'}}</ion-badge>
+            </ion-item>
+          </ion-card>
+  
+          <ion-card text-center padding class="card_btn" style="display: block;border-radius: 10px;"
+            (click)="openModal('I')">
+            <ion-item>
+              <ion-thumbnail slot="start">
+                <img class="icon-btn" src="assets/imgs/ideas.png" />
+              </ion-thumbnail>
+              <h6>I - Ideas</h6>
+              <ion-badge class="badge_task"
+                style="top: 46px;right: 15px;position: absolute;background-color: #10dc60; font-size: 13px;">
+                {{taskcommentscount.Ideas.length || '0'}}</ion-badge>
+            </ion-item>
+          </ion-card>
+  </div>
+
+  <div *ngIf="show_comment_list === 1">
+    <ion-card class="agile-login">
+      <div class="wrapper">
+        <form [formGroup]="form" (submit)="inserttaskComments()">
+          <div class="w3ls-form">
+            <h3 style="padding-left: 26PX; padding-top: 10px;
+                    padding-bottom: 10px;">Add Comments &nbsp;&nbsp;<span>{{this.comments_type[0]}} Week</span></h3>
+
+            <div formArrayName="comments" margin-bottom>
+              <section [formGroupName]="i" *ngFor="let tech of form.controls.comments.controls; let i = index">
+                <ion-item-group>
+                  <ion-item>
+                    <ion-textarea rows="2" cols="20" formControlName="name" placeholder="Enter comments...." 
+                    spellcheck="true" autocomplete="true" autocorrect="true">
+                    </ion-textarea>
+                  </ion-item>
+                  <span float-right ion-button icon-left clear *ngIf="form.controls.comments.length > 10"
+                    (click)="removeInputField(i)">
+                    <ion-icon name="close"></ion-icon>
+                    Remove
+                  </span>
+                </ion-item-group>
+              </section>
+            </div>
+            <span ion-button float-left icon-left clear (click)="addNewInputField()">
+              <ion-icon name="add"></ion-icon>
+              Add
+            </span>
+            <button ion-button block type="submit" style=" margin-top: 10px;"color="primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </ion-card>
+
+    <!-- <ion-grid style="padding-left: 20px;padding-right: 20px;">
+      <h2 style="font-family: sans-serif;font-size: medium;">Comments List</h2>
+      <ion-row>
+        <div *ngFor="let item of taskcomments; index as i;" col-12>
+          <ion-col>
+            <ion-card text-center padding class="card_btn" style="display: block;border-radius: 10px;">
+              <h2 class="name_btn" (click)="openmodelcomments(item)"><span
+                  [innerHTML]='item.COMMENTS.length > 300 ? item.COMMENTS.substring(0,300)+"...Read more" : item.COMMENTS'
+                  style='white-space: pre-line;'></span></h2><br>
+              <span style="color: red;">{{item.USER_SURNAME}}{{item.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}</span><br>
+              <button ion-button style="border-radius: 5px;" (click)="editcomments(item)" color="success">
+                <ion-icon name="create"></ion-icon>
+              </button>
+              <button ion-button style="border-radius: 5px;" (click)="deletecomments(item)" color="danger">
+                <ion-icon name="trash"></ion-icon>
+              </button>
+              <span *ngIf="item.FILE_COUNT > 0">
+                <button ion-button (click)="attachcomments(item)" color="success">
+                  <span style="margin-right: -15px;">
+                    <img src="assets/imgs/attach.png" class="icon-btn" style="max-width: 48% !important" />
+                  </span>
+                </button>
+              </span>
+              <span *ngIf="item.FILE_COUNT === 0">
+                <button ion-button style="border-radius: 5px;" (click)="attachcomments(item)" color="primary">
+                  <ion-icon name="attach"></ion-icon>
+                </button>
+              </span>
+            </ion-card>
+          </ion-col>
+        </div>
+      </ion-row>
+    </ion-grid> -->
+    <!-- <ion-list class="agile-login">
+      <ion-list-header>
+        <h2>Comments List</h2>
+      </ion-list-header>
+      <div class="wrapper">
+        <div class="col-md-12 w3ls-form">
+          <div class="accordion" id="accordionExample">
+            <ion-item *ngFor="let item of taskcomments; index as i;" data-parent="#accordionExample"
+              style="border: unset !important;">
+              <div id="headingComment" style="background-color:white;">
+                <a role="button" style="white-space: normal;">
+                  {{1 + i}}. <span><span [innerHTML]="item.COMMENTS" style='white-space: pre-line;'></span><br>
+                  <span style="float: right; color: red">{{item.USER_SURNAME}}
+                    {{item.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}</span></span>
+                </a>
+              </div>
+            </ion-item><br>
+          </div>
+        </div>
+      </div>
+    </ion-list> -->
+  </div>
+
+  <div *ngIf="show_comment_list === 0">
+    <div class="card" *ngFor="let item of date; index as i;" data-parent="#accordionExample">
+      <ion-row>
+        <ion-col>
+          <ion-card class="dash_image" text-center (click)="showcallCommentUndoBtn(i,item.startweek,item.endweek)">
+            <ion-card-content>
+              <ion-item>
+                <ion-avatar item-start item-left class="list-time purple-border">
+                  <img src="assets/imgs/chat.png">
+                </ion-avatar>
+                <h2>{{item.startweek |date:'dd-MMM-yyyy'}} - {{item.endweek |date:'dd-MMM-yyyy'}}</h2>
+                <p>{{item.USER_SURNAME}}</p>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <div [attr.id]="'undocallMgntCmtBtn'+i" *ngIf="showCallMgntCmtBtn===i" style="padding: 10px;">
+        <div class="card" *ngFor="let cmt of CommentsList; index as i;">
+          <div class="card-body card-bodynew">
+            <p role="row" style="text-align: left;background-color: #fdfdfd;">
+              {{1 + i}}. <span><span [innerHTML]="cmt.COMMENTS" style='white-space: pre-line;'></span><br />
+                <span style="color: #FF0000;">{{cmt.USER_SURNAME}}
+                  {{cmt.CREATED_ON |date:'dd-MMM-yyyy,HH:mm a'}}</span></span>
+            </p>
+          </div>
+        </div><br>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="show_comment_list === 2">
+    <ion-card class="agile-login">
+      <div class="wrapper">
+        <form [formGroup]="taskcommentseditForm" (submit)="edittaskComments()">
+
+          <div class="w3ls-form">
+            <h3 style="padding-left: 26PX; padding-top: 10px;
+                    padding-bottom: 10px;">Edit Comments</h3>
+
+            <ion-input type="hidden" value="{{COMMENTS_ID}}"
+              [formControl]="taskcommentseditForm.controls['COMMENTS_ID']"></ion-input>
+            <div formArrayName="comments" margin-bottom>
+              <section [formGroupName]="i"
+                *ngFor="let tech of taskcommentseditForm.controls.comments.controls; let i = index">
+                <ion-item-group>
+                  <ion-item>
+                    <ion-textarea rows="2" cols="20" formControlName="name" placeholder="Enter comments....">
+                    </ion-textarea>
+                  </ion-item>
+                  <ion-input type="hidden" formControlName="child_id"></ion-input>
+
+                <span float-right ion-button icon-left clear
+                    (click)="removeeditField(i,tech)">
+                    <ion-icon name="close"></ion-icon>
+                    Remove
+                  </span>
+                </ion-item-group>
+              </section>
+            </div>
+            <span ion-button float-left icon-left clear (click)="addNeweditField()">
+              <ion-icon name="add"></ion-icon>
+              Add
+            </span>
+
+            <button ion-button block type="submit" style=" margin-top: 10px;" color="primary">Update</button>
+          </div>
+        </form>
+      </div>
+    </ion-card>
+  </div>
+
+  <div *ngIf="show_comment_list === 3">
+    <div class="agile-login">
+      <div class="wrapper">
+        <form [formGroup]="taskUploadsForm" (submit)="insertTaskFileUpload()">
+          <div class="modal-body">
+            <h3 style="padding-left: 26PX; padding-top: 10px;padding-bottom: 10px;    font-size: 15px;
+              font-weight: 500;">Add Attchament in weekly updates</h3>
+            <ion-item>
+              <ion-label id="profile_image" color="primary" stacked>Select</ion-label>
+              <ion-input type="file" (change)="onSelectFile($event)"></ion-input>
+            </ion-item>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" color="secondary" style="float: right;" class="btn btn-primary">Upload</button>
+          </div>
+          <ion-input [(ngModel)]="COMMENTS_ID" type="hidden" value="{{COMMENTS_ID}}"
+            [formControl]="taskUploadsForm.controls['COMMENTS_ID']">
+          </ion-input>
+        </form>
+      </div>
+    </div>
+    <div class="agile-login" style="margin-top: inherit;">
+      <div class="wrapper">
+        <div class="col-md-12 w3ls-form">
+          <div class="accordion" id="accordionExample">
+            <div class="card" *ngFor="let item of taskuploadsdetails; index as i;" data-parent="#accordionExample">
+              <div class="card-header" id="headingComment" style="background-color:white;">
+                <a role="button">
+                  {{1 + i}}. {{item.FILE_NAME}} ({{bytesToSize(item.FILE_SIZE)}})
+                </a>
+                <span style="float: right; padding-left: 20px;">
+                  <ion-icon color="secondary" style="display: inline-block;font-size: 2.5em;" ios="ios-download"
+                    md="md-download" (click)="getfile(item.ROW_NO,item)">
+                  </ion-icon>
+                </span>
+              </div>
+            </div><br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="show_comment_list === 4">
+    <div class="wrapper" style="margin-top: 30px;padding-left: 10px;">
+      <div class="col-md-12 w3ls-form">
+        <div class="accordion" id="accordionExample">
+          <ion-grid>
+            <ion-row style="border: solid 1px grey;border-bottom-style: none;">
+              <ion-col col-2
+                style="font-size: larger;font-weight: bold;border: solid 1px grey;border-bottom-style: none;border-top-style: none;">
+                S.no
+              </ion-col>
+              <ion-col col-10 style="font-size: larger;font-weight: bold;text-align: center;">
+                Comments
+              </ion-col>
+            </ion-row>
+            <ion-row *ngFor="let item of read_more_value; index as i;"
+              style="border: solid 1px grey;border-bottom-style: none;">
+              <ion-col col-2 style="border: solid 1px grey;border-bottom-style: none;border-top-style: none;">
+                {{i+1}}
+              </ion-col>
+              <ion-col col-10>
+                {{item.COMMENTS}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <!-- <span>
+            <span [innerHTML]="read_more_value" style='white-space: pre-line;'></span>
+          </span> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

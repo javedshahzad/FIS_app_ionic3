@@ -1,0 +1,136 @@
+<!--
+  Generated template for the ReceiptPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  
+  <ion-navbar>
+      <ion-title>+ Add Receipt Details</ion-title>
+      <ion-buttons end>
+        <button ion-button (click)="closeModal()">Close</button>
+      </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content >
+    <!-- padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+    background-size: cover; background-position: center;
+        background-attachment: fixed;" -->
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12></ion-col>
+    </ion-row>
+    <ion-row class="logo-row" style="padding-bottom: 0px;">
+      <ion-col col-4 style="top: -40px !important;"></ion-col>
+      <ion-col col-4 style="top: -40px !important;">
+        <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+      </ion-col>
+      <ion-col col-4 style="top: -40px !important;"></ion-col>
+    </ion-row>
+  </ion-grid>
+  <div class="agile-login" style="margin-top: -70px;">
+
+    <div class="wrapper">
+
+      <!-- <a href="" class="bst"> + Add Receipt Details</a> -->
+      <!-- <img src="./images/logo.png" style="margin-top:10%;"> -->
+      <form [formGroup]="receiptForm" (submit)="validReceiptData()">
+        <div class="w3ls-form">
+          <ion-item>
+          <input (change)="Security($event)" type="checkbox" [formControl]="receiptForm.controls['isSecChq']">  It's Security Cheque
+          </ion-item>
+          <ion-item>
+          <div class="box" [ngStyle]="{'display':cash_cheque}">
+            <label>Payment type</label>
+            <input type="radio" name="cash_chq" (change)="case($event)" value="1"
+              [formControl]="receiptForm.controls['cash_chq']">  Cash<br>
+            <input type="radio" name="cash_chq" (change)="Cheque($event)" value="2"
+              [formControl]="receiptForm.controls['cash_chq']">  Cheque<br>
+          </div>
+        </ion-item>
+        <label>Building</label>
+          <ion-item>
+            <ionic-selectable item-content [formControl]="receiptForm.controls['buidling']" itemValueField="BUILDING_ID"
+              itemTextField="BUILDING_NAME" [items]="buildingList" [canSearch]="true"
+              (onChange)="buldingChange($event)">
+            </ionic-selectable>
+          </ion-item>
+
+          <ion-item>
+            <input type="text" name="unitno" placeholder="Unit No" [formControl]="receiptForm.controls['unitno']" />
+            <p *ngIf="receiptForm.controls.unitno.errors && receiptForm.controls.unitno.dirty" class='error'>Enter the
+              unit number.</p>
+          </ion-item>
+
+
+          <ion-item>
+            <input type="number" step="0.01" name="amount" placeholder="Amount" [formControl]="receiptForm.controls['amount']" />
+            <p *ngIf="receiptForm.controls.amount.errors && receiptForm.controls.amount.dirty" class='error'>Enter the
+              amount</p>
+          </ion-item>
+
+
+          <ion-item>
+            <input type="text" name="receivedfrom" placeholder="received From"
+              [formControl]="receiptForm.controls['receivedfrom']" />
+            <p *ngIf="receiptForm.controls.receivedfrom.errors && receiptForm.controls.receivedfrom.dirty"
+              class='error'>
+              Enter the received from</p>
+          </ion-item>
+
+
+          <ion-item>
+            <input type="text" name="email" (change)="email_Change($event)" placeholder="Email" [formControl]="receiptForm.controls['email']" />
+            <p *ngIf="(receiptForm.controls.email.errors && receiptForm.controls.email.dirty)  || email_validation" class='error'>Please enter the
+              valid email.</p>
+          </ion-item>
+
+
+          <ion-item>
+
+              <label>Mobile No</label>
+              <input type="number" name="code" placeholder="code" [formControl]="receiptForm.controls['code']" style="width: 20%;" [(ngModel)]="code" readonly/>
+              <input type="number" (change)="moblie_no_Change($event)" name="mobile_number" placeholder="mobile_number" [(ngModel)]="mobile_number" [formControl]="receiptForm.controls['mobile_number']" style="width: 78%;" />
+              <p *ngIf="(receiptForm.controls.mobile_number.errors && receiptForm.controls.mobile_number.dirty) || moblie_no_error" class='error'>Please enter the correct number</p>
+          </ion-item>
+
+
+          <ion-item>
+            <input type="text-area" class="select1" name="remarks" placeholder="Remarks"
+              [formControl]="receiptForm.controls['remarks']" />
+            <p *ngIf="receiptForm.controls.remarks.errors && receiptForm.controls.remarks.dirty" class='error'>Enter the
+              remarks</p>
+          </ion-item>
+
+
+          <ion-item [ngStyle]="{'display':cheque_no}">
+            <input item-end type="text" name="chqno" placeholder="Cheque No" [formControl]="receiptForm.controls['chqno']" />
+            <p *ngIf="receiptForm.controls.chqno.errors && receiptForm.controls.chqno.dirty" class='error'>Enter the cheque no.</p>
+          </ion-item>
+          <ion-item>
+            <ion-label  item-start >Cheque date</ion-label>
+
+            <ion-datetime  item-end  class="select1"  placeholder="Data"  name="chequedate" [formControl]="receiptForm.controls['chequedate']" displayFormat="DD-MM-YYYY" pickerFormat="DD MM YYYY" ngDefaultControl [(ngModel)]="today">
+              {{today | date:'dd-MM-yy'}}
+            </ion-datetime >
+           
+            <p *ngIf="receiptForm.controls.chequedate.errors && receiptForm.controls.chequedate.dirty" class='error'> Enter the cheque date.</p>
+          </ion-item>
+
+        </div>
+        <div style="margin-top:3%;color: #fff !important;">
+          <!-- <button style="float: left; color: #fff;" class="bst2"><a href="" style="color: #fff !important;">Cancel</a></button>
+                  <button style="float: right;" class="bst1"><a href="" style="color: #fff !important;" (click)= "insertReceiptData()">Confirm</a></button> -->
+
+          <button type="button" style="float: left; color: #fff;" class="bst2" (click)=resetForm();>Clear</button>
+          <button type="submit" style="float: right; color: #fff !important;" [disabled]="!receiptForm.valid" class="bst1">Confirm</button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

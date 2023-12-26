@@ -1,0 +1,215 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle left style="color: #ffffff;">
+        <ion-icon slot="icon-only" name='menu'></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title text-center>
+      <span>Home</span>
+    </ion-title>
+    <ion-buttons end>
+      <button id="notification-button" ion-button icon-only clear (click)="notification()">
+        <ion-icon name="notifications">
+          <ion-badge *ngIf="notificationall.notificationCount?.length > 0" id="notifications-badge" color="danger"
+            style="font-size: 40%">{{notificationall.notificationCount?.length}}</ion-badge>
+        </ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button icon-only *ngIf="myprofilecount === 1;" (click)="profile()">
+        <div *ngFor="let image of myprofile; index as i;" style="width: 40px;height: 40px;">
+          <ion-icon><img class="myprofile-picture" [src]="getImage(image.ID)"></ion-icon>
+        </div>
+      </button>
+      <button ion-button icon-only style="color: #ffffff;" (click)="profile()" *ngIf="myprofilecount === 0;">
+        <ion-icon name="contact"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding style=" background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12></ion-col>
+    </ion-row>
+    <ion-row class="logo-row" style="padding-bottom: 0px;margin-top: -30px;">
+      <ion-col col-4></ion-col>
+      <ion-col col-4 style="margin-left:auto; margin-right:auto; display:block; top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          text-align: center;">
+        <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+      </ion-col>
+      <ion-col col-4></ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button ion-button block color="secondary" text-capitalize>Check In</button>
+        <button ion-button block color="secondary" text-capitalize>Break In</button>
+        
+      </ion-col>
+      <ion-col>
+        <button ion-button block color="danger" text-capitalize>Check Out</button>
+        <button ion-button block color="danger" text-capitalize>Break Out</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row class="rowborder p-8" *ngFor="let tasks of [1,2,3,5,6]; index as i;">
+      <ion-col>
+       <p class="heading-style">Unit/Title</p>
+       <p class="title-style">Created by</p>
+       <p class="title-style">PPM</p>
+       <p class="title-style">Call Out</p>
+       <p class="title-style">Amc</p>
+      </ion-col>
+      <ion-col>
+        <p class="heading-style">Status</p>
+        <p class="title-style">26-12-2023</p>
+        <p class="title-style">PPM text</p>
+        <p class="title-style">Call Out text</p>
+        <p class="title-style">Amc text</p>
+      </ion-col>
+      <ion-col col-12>
+        <div text-center class="flex">
+          <button ion-button block color="primary" text-capitalize class="btn-style">Status</button>
+          <button ion-button block color="secondary" text-capitalize class="btn-style">Upload Pic</button>
+          <button ion-button block color="danger" text-capitalize class="btn-style">Comment</button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ng-container hidden>
+  <ion-grid style="margin-top: -20px;">
+    <ion-row>
+      <ion-col col-6 [ngStyle]="{'display': useraccessdata.CALL_MANAGEMENT_ACCESS == 1 ? 'block':'none'}">
+        <ion-card class="dash_image" (click)="callmanagement()" text-center
+          style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
+          <ion-badge style="font-size: 85%;z-index: 1;position: absolute;right: 0;">{{ceoesculation_count || '0'}}
+          </ion-badge>
+          <img style="width: 85px; padding: 10px; height: 80px;" src="assets/imgs/call_manage.png" />
+          <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">Call Management</h2>
+        </ion-card>
+      </ion-col>
+
+      <ion-col col-6 [ngStyle]="{'display': useraccessdata.RESOURCE_ACCESS == 1 ? 'block':'none'}">
+        <ion-card class="dash_image" (click)="resourcemanager()" text-center
+          style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
+          <img style="width: 85px; padding: 10px; height: 80px;" src="assets/imgs/resources.png" />
+          <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">Resource Manager</h2>
+        </ion-card>
+      </ion-col>
+    <!-- </ion-row>
+
+    <ion-row> -->
+      <ion-col col-6 [ngStyle]="{'display': useraccessdata.ASSET_DETAILS_ACCESS == 1 ? 'block':'none'}">
+        <ion-card class="dash_image" (click)="SearchPage()" text-center
+          style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
+          <img style="width: 85px; padding: 10px; height: 80px;" src="assets/imgs/asset_manage1.png" />
+          <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">Asset Details</h2>
+        </ion-card>
+      </ion-col>
+
+      <ion-col col-6 [ngStyle]="{'display': useraccessdata.LPO_ACCESS == 1 ? 'block':'none'}">
+        <ion-card class="dash_image" (click)="lpo()" text-center
+          style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
+          <ion-badge style="font-size: 85%;z-index: 1;position: absolute;right: 0;">{{lpocount || '0'}}</ion-badge>
+          <img style="width: 85px; padding: 10px; height: 80px;" src="assets/imgs/lpo.png" />
+          <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">LPO</h2>
+        </ion-card>
+      </ion-col>
+
+    <!-- </ion-row>
+    <ion-row> -->
+      <ion-col col-6 [ngStyle]="{'display': useraccessdata.PPM_ACCESS == 1 ? 'block':'none'}">
+        <ion-card class="dash_image" (click)="ppm()" text-center
+          style="    background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
+          <img style="width: 85px; padding: 10px; height: 80px;" src="assets/imgs/ppm.png" />
+          <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">PPM</h2>
+        </ion-card>
+      </ion-col>
+
+      <ion-col col-6 [ngStyle]="{'display': useraccessdata.RECEIPT_LIST_ACCESS == 1 ? 'block':'none'}">
+        <ion-card class="dash_image" (click)="ReceiptPage()" text-center
+          style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
+          <img style="width: 85px; padding: 10px; height: 80px;" src="assets/imgs/signing-contract.png" />
+          <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">Receipts</h2>
+        </ion-card>
+      </ion-col>
+
+
+    <!-- </ion-row>
+    <ion-row> -->
+      <ion-col col-6 [ngStyle]="{'display': useraccessdata.INVENTORY_ACCESS == 1 ? 'block':'none'}">
+        <ion-card class="dash_image" text-center (click)="InventoryPage()"
+          style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
+          <img style="width: 85px; padding: 10px; height: 80px;" src="assets/imgs/inventory1.png" />
+          <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">inventory</h2>
+        </ion-card>
+      </ion-col>
+
+      <ion-col col-6 [ngStyle]="{'display': useraccessdata.ESCALATION_ACCESS == 1 ? 'block':'none'}">
+        <ion-card class="dash_image" text-center (click)="EscalationPage()"
+          style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
+          <img style="width: 85px; padding: 10px; height: 80px;" src="assets/imgs/esculation.png" />
+          <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">Escalation</h2>
+        </ion-card>
+      </ion-col>
+
+    <!-- </ion-row>
+    <ion-row> -->
+      <ion-col col-6 [ngStyle]="{'display': useraccessdata.TASK_ACCESS == 1 ? 'block':'none'}">
+        <ion-card class="dash_image" text-center (click)="task_mgnt();"
+          style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
+          <img style="width: 85px; padding: 10px; height: 80px;" src="assets/imgs/task_mgnt.png" />
+          <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">Task Management</h2>
+        </ion-card>
+      </ion-col>
+
+      <ion-col col-6 [ngStyle]="{'display': useraccessdata.COMMENTS_ACCESS == 1 ? 'block':'none'}">
+        <ion-card class="dash_image" text-center (click)="Comments_to_comments()"
+          style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
+          <img style="width: 85px; padding: 10px; height: 80px;" src="assets/imgs/comments_to_comments.png" />
+          <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">Comments</h2>
+        </ion-card>
+      </ion-col>
+
+    <!-- </ion-row>
+    <ion-row> -->
+      <ion-col col-6 [ngStyle]="{'display': useraccessdata.HOTO_ACCESS == 1 ? 'block':'none'}">
+        <ion-card class="dash_image" text-center (click)="hoto()"
+          style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
+          <img style="width: 85px; padding: 10px; height: 80px;" src="assets/imgs/handover-keys.png" />
+          <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">HOTO</h2>
+        </ion-card>
+      </ion-col>
+      <ion-col col-6 [ngStyle]="{'display': useraccessdata.NOTIFICATION_ACCESS == 1 ? 'block':'none'}">
+        <ion-card class="dash_image" text-center (click)="notification()"
+          style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
+          <img style="width: 85px; padding: 10px; height: 80px;" src="assets/imgs/notification.png" />
+          <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">Notification</h2>
+        </ion-card>
+      </ion-col>
+    <!-- </ion-row>
+    <ion-row> -->
+      <ion-col col-6 [ngStyle]="{'display': useraccessdata.PARKING_ACCESS == 1 ? 'block':'none'}">
+        <ion-card class="dash_image" text-center (click)="parking()"
+          style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
+          <img style="width: 85px; padding: 10px; height: 80px;" src="assets/imgs/parking1.png" />
+          <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">Parking</h2>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  </ng-container>
+</ion-content>

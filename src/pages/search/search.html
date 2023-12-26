@@ -1,0 +1,118 @@
+<ion-header>
+    <ion-toolbar style="background-color:#525b6d">
+        <ion-buttons left>
+            <button ion-button (click)="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+        </ion-buttons>
+        <ion-title style="text-transform: capitalize;text-align: center" style="font-size: 1.7rem; text-align: center;">
+            Asset Detail Search</ion-title>
+        <ion-buttons end>
+            <button id="notification-button" ion-button icon-only clear>
+                <ion-icon name="notifications">
+                </ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-buttons end>
+          <button ion-button icon-only *ngIf="myprofilecount === 1;">
+              <div *ngFor="let image of myprofile; index as i;" style="width: 40px;height: 40px;">
+              <ion-icon><img class="myprofile-picture" [src]="getImage(image.ID)"></ion-icon>
+              </div>
+          </button>
+            <button ion-button icon-only style="color: #ffffff;" *ngIf="myprofilecount === 0;">
+                <ion-icon name="contact"></ion-icon>
+          </button>
+    </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12></ion-col>
+        </ion-row>
+        <ion-row class="logo-row" style="padding-bottom: 0px;">
+            <ion-col col-4 style="top: -40px !important;"></ion-col>
+            <ion-col col-4 style="top: -40px !important;">
+                <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+            </ion-col>
+            <ion-col col-4 style="top: -40px !important;"></ion-col>
+        </ion-row>
+    </ion-grid> 
+
+<div class="row-fluid" style="margin-top: -45px;">
+  <div class="col-md-12" style="margin-bottom:3%;"> 
+    <div class="navbar-form" role="search">       
+        <div class="input-group add-on">
+          <input class="form-control input-lg txt-search" placeholder="Barcode No" name="search_txt" [(ngModel)]="searchData.search_value" type="text">
+          <div class="input-group-btn">
+            <button class="btn btn-default sbut" type="submit" (click)='SearchAssetDetail()' ><i class="fa fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="col-md-12">
+    <div class="accordion" id="accordionExample">
+      <div class="" *ngFor="let item of assetDetailsList; index as i;" >
+          <ion-row>
+              <ion-col>
+                  <ion-card class="dash_image" text-center  style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                      <ion-grid style="padding:0px;">
+                          <div class="card-header" id="headingOne" style="background:linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                              <ion-col col-10 style="margin-right: 50%;">
+                                  <button class="btn btn-link blc collapsed" type="button" data-toggle="collapse" [attr.data-target]= "'#' + i"
+                                  aria-expanded="false" [attr.aria-controls]="i">
+                                {{1 + i}}.  {{item.BARCODE_NO}}
+                              </button>
+                              </ion-col>
+                              <ion-col col-2>
+                                  <button class="btn btn-link collapsed blc" style="float:right;" type="button" data-toggle="collapse" [attr.data-target]= "'#' + i"
+                                  aria-expanded="false" [attr.aria-controls]="i" (click)="getAssetDetailPreventiveMaintancePage(item.ASSET_DETAIL_ID)">             
+                                  <i class="fa fa-chevron-circle-down faicons" role="button" style="margin-top: 0;"></i>
+                                </button>
+                                </ion-col>
+                          </div>
+                      </ion-grid>
+                  </ion-card>
+              </ion-col>
+          </ion-row>
+        <div [attr.id]="i" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+          <div class="card-body card-bodynew">
+            <table role="table" class="searchinventory" style="background-color: white">
+                <thead role="rowgroup">
+                  <tr role="row">
+                    <th role="columnheader">Barcode No.</th>
+                    <th role="columnheader">Asset Category</th>
+                    <th role="columnheader">Quantity</th>
+                    <th role="columnheader">Asset Name</th>
+                    <th role="columnheader">Location Name</th>
+                    <th role="columnheader">Building Name</th>
+                    <th role="columnheader">Floor Name</th>
+                    <th role="columnheader">Specific Area	</th>
+                    <th role="columnheader">Make And Model</th>
+                    <th role="columnheader">Warranty Exp Date</th>
+                  </tr>
+                </thead>
+                <tbody role="rowgroup">                
+                  <tr role="row">
+                    <td role="cell">{{item.BARCODE_NO}}</td>
+                    <td role="cell">{{item.ASSET_CATEGORY}}</td>
+                    <td role="cell">{{item.QUANTITY}}</td>
+                    <td role="cell">{{item.ASSET_NAME}}</td>
+                    <td role="cell">{{item.LOCATION_NAME}}</td>
+                    <td role="cell">{{item.BUILDING_NAME}}</td>
+                    <td role="cell">{{item.FLOOR}}</td>
+                    <td role="cell">{{item.SPECIFIC_AREA}}</td>
+                    <td role="cell">{{item.MAKE_AND_MODEL}}</td>
+                    <td role="cell">{{item.WARRANTY_EXP_DATE | date:'dd-MM-yyyy' }}</td>
+                  </tr>                
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div> <!---->
+  </div>
+</div>
+</ion-content>

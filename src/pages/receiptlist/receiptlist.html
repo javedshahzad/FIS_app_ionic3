@@ -1,0 +1,146 @@
+<!--
+  Generated template for the ReceiptPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Receipt Details</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12></ion-col>
+        </ion-row>
+        <ion-row class="logo-row" style="padding-bottom: 0px;">
+            <ion-col col-4 style="top: -40px !important;"></ion-col>
+            <ion-col col-4 style="top: -40px !important;">
+                <img src="assets/imgs/logo_new.png" style="width:150px; height:auto;" />
+            </ion-col>
+            <ion-col col-4 style="top: -40px !important;"></ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <div class="col-md-12" style="margin-top: -50px;">
+        <div class="accordion" id="accordionExample">
+            <div class="" *ngFor="let item of Receiptlist; index as i;">
+                <ion-row>
+                    <ion-col>
+                        <ion-card class="dash_image" text-center (click)=showUndoBtn(i) style="background: linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                            <ion-grid style="padding:0px;">
+                                <div class="card-header" id="headingOne" style="background:linear-gradient(90deg,#38e0c4,#7fb5ff) !important;">
+                                   <ion-col col-10>
+                                        <a role="button" style="float: left;">
+                                            {{1 + i}}. {{item.RECEIVEDFROM}} - {{item.AMOUNT}}
+                                        </a>
+                                   </ion-col>
+                                   <ion-col col-2>
+                                        <i class="fa fa-chevron-circle-down faicons" role="button"></i>
+                                    </ion-col>
+                                </div>
+                            </ion-grid>
+                        </ion-card>
+                    </ion-col>
+                </ion-row>
+                <div [attr.id]="'undoBtn'+i" *ngIf="showBtn===i">
+                    <div class="card-body card-bodynew">
+                        <table role="table" class="searchinspection" style="background-color: white">
+                            <thead role="rowgroup">
+                                <tr role="row">
+                                    <th role="columnheader">S.No</th>
+                                    <th role="columnheader">Receipt</th>
+                                    <th role="columnheader">Mode</th>
+                                    <th role="columnheader">Building</th>
+                                    <th role="columnheader">Unit No</th>
+                                    <th role="columnheader">Amount </th>
+                                    <th role="columnheader">Received From </th>
+                                    <th role="columnheader">Remarks</th>
+                                    <th role="columnheader">Email </th>
+                                    <th role="columnheader">Chq No</th>
+                                    <th role="columnheader">Chq Date</th>
+                                    <th role="columnheader">Created On</th>
+                                    <th role="columnheader">Status</th>
+                                    <th role="columnheader">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody role="rowgroup">
+                                <tr role="row">
+                                    <td role="cell">{{1 + i}}</td>
+                                    <td role="cell">{{item.RCPTNO}}</td>
+                                    <td role="cell">
+                                      <div *ngIf="item.CASH_CHQ == 1 else elsepart;" >CASH</div>
+                                      <ng-template #elsepart>
+                                          CHEQUE
+                                      </ng-template> 
+                                    </td>
+                                    <td role="cell">{{item.BUILDING_NAME}}</td>
+                                    <td role="cell">{{item.UNITNO}}</td>
+                                    <td role="cell">{{item.AMOUNT}}</td>
+                                    <td role="cell">{{item.RECEIVEDFROM}}</td>
+                                    <td role="cell">{{item.REMARKS}}</td>
+                                    <td role="cell">{{item.EMAIL}}</td>
+                                    <td role="cell">{{item.CHQNO}}</td>
+                                    <td role="cell">{{item.CHQDT |date:'dd-MM-yy'}}</td>
+                                    <td role="cell">{{item.CREATEDON |date:'dd-MMM-yyyy,HH:mm a'}}</td>
+                                    <td role="cell">
+                                        <div *ngIf="item.STATUS == 1">
+                                            SUBMITTED
+                                        </div>
+                                        <div *ngIf="item.STATUS == 2">
+                                            RECEIVED
+                                        </div>
+                                        <div *ngIf="item.STATUS == 3">
+                                            SUBMITTED
+                                        </div>
+                                    </td>
+                                    <td role="cell">
+                                        <button ion-button (click)="Acknowledge_btn(item)"  [ngStyle]="{'display':Acknowledge_show}" color="secondary">Acknowledge</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="backdrop" [ngStyle]="{'display':commentmodel}"></div>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':commentmodel}" style="margin-top: 60%;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-label="Close" (click)="onClosecommentmodel()"><span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]="createcommentsForm" (submit)="insertcommentsData()">
+                    <div class="modal-body">
+                        <ion-row style="padding: 20px;">
+                            <ion-textarea name="comments" placeholder="comments " style="border: 1px solid;" [formControl]="createcommentsForm.controls['comments']"></ion-textarea>
+                            <p *ngIf="createcommentsForm.controls.comments.errors && createcommentsForm.controls.comments.dirty" class='error'>Enter the comments</p>
+                        </ion-row>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="onClosecommentmodel()">Cancel</button>
+                        <button type="submit" style="float: right; color: #fff !important;" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal !-->
+
+</ion-content>

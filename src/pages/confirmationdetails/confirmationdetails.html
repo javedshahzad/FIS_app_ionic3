@@ -1,0 +1,122 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Register Details </ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="closeModal()">Close</button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content padding style="background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
+background-size: cover; background-position: center;
+    background-attachment: fixed;">
+    <div class="agile-login">
+
+        <div class="wrapper">
+
+            <form [formGroup]="createcallForm" (submit)="insertCallData()">
+                <div class="w3ls-form">
+
+                        <ion-input name="CALL_INSPECTION_ID" type="hidden" value="{{itemdatavalue.CALL_INSPECTION_ID}}"
+                        [formControl]="createcallForm.controls['CALL_INSPECTION_ID']"></ion-input>
+
+                        <ion-input name="INTERM_STATUS" type="hidden" value="{{itemdatavalue.INTERM_STATUS}}"
+                        [formControl]="createcallForm.controls['INTERM_STATUS']"></ion-input>
+
+                        <ion-input name="STATUS_NAME" type="hidden" value="{{itemdatavalue.STATUS_NAME}}"
+                        [formControl]="createcallForm.controls['STATUS_NAME']"></ion-input>
+
+                    <ion-item>
+                        <ion-label>Call No</ion-label>
+                        <ion-input type="text" name="Call_No" style="float: right;" [readonly]="true"
+                            [formControl]="createcallForm.controls['Call_No']" value="{{itemdatavalue.CALL_LOG_ID}}">
+                        </ion-input>
+                        <p *ngIf="createcallForm.controls.Call_No.errors && createcallForm.controls.Call_No.dirty"
+                            class='error'>Enter the Call No</p>
+                    </ion-item>
+
+                    <ion-item>
+                        <ion-label>Requestor Name</ion-label>
+                        <ion-input type="text" name="Requestor_Name" style="float: right;" [readonly]="true"
+                            [formControl]="createcallForm.controls['Requestor_Name']"
+                            value="{{itemdatavalue.REQUESTOR_NAME}}"></ion-input>
+                        <p *ngIf="createcallForm.controls.Requestor_Name.errors && createcallForm.controls.Requestor_Name.dirty"
+                            class='error'>Enter the Requestor Name</p>
+                    </ion-item>
+
+                    <ion-item>
+                        <ion-label>Mobile no</ion-label>
+                        <ion-input type="text" name="Mobile_no" style="float: right;" [readonly]="true"
+                            [formControl]="createcallForm.controls['Mobile_no']" value="{{itemdatavalue.MOBILE_NO}}">
+                        </ion-input>
+                        <p *ngIf="createcallForm.controls.Mobile_no.errors && createcallForm.controls.Mobile_no.dirty"
+                            class='error'>Enter the Mobile no</p>
+                    </ion-item>
+
+                    <ion-item>
+                        <ion-label>Unit Code</ion-label>
+                        <ion-input type="text" name="Unit_Code" style="float: right;" [readonly]="true"
+                            [formControl]="createcallForm.controls['Unit_Code']" value="{{itemdatavalue.UNIT}}">
+                        </ion-input>
+                        <p *ngIf="createcallForm.controls.Unit_Code.errors && createcallForm.controls.Unit_Code.dirty"
+                            class='error'>Enter the Unit Code</p>
+                    </ion-item>
+
+                    <!-- <ion-item>
+                        <ion-label>Assigned to</ion-label>
+                        <ion-select class="select1" interface="popover" name="Assigned_to"
+                            [formControl]="createcallForm.controls['Assigned_to']">
+                            <ion-option value="0">--Select--</ion-option>
+                            <ion-option value="{{ASSIGNED.RESOURCE_ID}}"
+                                *ngFor="let ASSIGNED of ASSIGNED_TO_IDworklist"> {{ASSIGNED.EMPNAME}}
+                            </ion-option>
+                        </ion-select>
+                        <p *ngIf="createcallForm.controls.Assigned_to.errors && createcallForm.controls.Assigned_to.dirty"
+                            class='error'>Select a Assigned_to.</p>
+                    </ion-item> -->
+
+                    <ion-item>
+                        <ion-label>Assigned to</ion-label>
+                        <ionic-selectable
+                      item-content
+                      [formControl]="createcallForm.controls['Assigned_to']"
+                      itemValueField="RESOURCE_ID"
+                      itemTextField="EMPNAME"
+                      [items]="ASSIGNED_TO_IDworklist"
+                      [canSearch]="true"
+                      (onChange)="userChange($event)">
+                    </ionic-selectable>
+                      </ion-item>
+
+                    <ion-row>
+                        <ion-textarea name="Note_For_Supervisor" placeholder="Note_For_Supervisor "
+                            style="border: 1px solid;" [formControl]="createcallForm.controls['Note_For_Supervisor']">
+                        </ion-textarea>
+                        <p *ngIf="createcallForm.controls.Note_For_Supervisor.errors && createcallForm.controls.Note_For_Supervisor.dirty"
+                            class='error'>Enter the comments</p>
+                    </ion-row><br><br>
+
+                    <ion-row>
+                        <ion-textarea name="comments" placeholder="comments " style="border: 1px solid;"
+                            [formControl]="createcallForm.controls['comments']"></ion-textarea>
+                        <p *ngIf="createcallForm.controls.comments.errors && createcallForm.controls.comments.dirty"
+                            class='error'>Enter the comments</p>
+                    </ion-row>
+                </div>
+                <div style="margin-top:3%;color: #fff !important;">
+                    <button style="float: left; color: #fff;" class="btn btn-danger" (click)=resetForm();>Cancel</button>
+                    <button type="submit" style="float: right; color: #fff !important;"
+                    class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ion-content>
+<style>
+    .row {
+        margin-left: 0px !important;
+        margin-right: -2px !important;
+    }
+</style>
