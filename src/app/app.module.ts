@@ -66,6 +66,7 @@ import { ResManagerUserlistPage } from '../pages/res-manager-userlist/res-manage
 import { userresorcelistPage } from '../pages/userresorcelist/userresorcelist';
 
 import { AngularCropperjsModule } from 'angular-cropperjs';
+import { GlobalProvider } from '../providers/global/global';
 
 @NgModule({
   declarations: [
@@ -102,7 +103,8 @@ import { AngularCropperjsModule } from 'angular-cropperjs';
     ParkingPage,
     PopoverTaskPage,
     ResManagerUserlistPage,
-    userresorcelistPage
+    userresorcelistPage,
+    
     // MapPage
   ],
   imports: [
@@ -114,7 +116,8 @@ import { AngularCropperjsModule } from 'angular-cropperjs';
     IonicSelectableModule,
     CalendarModule,
     SignaturePadModule,
-    AngularCropperjsModule
+    AngularCropperjsModule,
+    
 
   ],
   exports:[TextImage],
@@ -167,6 +170,7 @@ import { AngularCropperjsModule } from 'angular-cropperjs';
     FileOpener,
     SplashScreen,
     RestProvider,
+    GlobalProvider,
     Constant,
     FCM,
     Camera,

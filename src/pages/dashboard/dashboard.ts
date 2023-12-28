@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ToastController, LoadingController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, Events, ToastController, LoadingController, ViewController, ModalController, ModalOptions } from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
 import { CallmanagementPage } from '../callmanagement/callmanagement';
 import { InventoryPage } from '../inventory/inventory';
@@ -15,6 +15,7 @@ import { TaskManagementPage } from '../taskmanagement/taskmanagement';
 import { resourcemanagerPage } from '../resourcemanager/resourcemanager';
 import { HotoPage } from '../hoto/hoto';
 import { ParkingPage } from '../parking/parking';
+import { GlobalProvider } from '../../providers/global/global';
 
 @Component({
   selector: 'page-dashboard',
@@ -45,9 +46,11 @@ export class DashboardPage {
   
   constructor(public navCtrl: NavController, public navParams: NavParams, public authService: RestProvider, 
               public toastCtrl: ToastController,public events: Events,
-              public loadingCtrl: LoadingController, public view: ViewController
+              public loadingCtrl: LoadingController, public view: ViewController,
+              private globalProvider:GlobalProvider, private modal:ModalController
   ) {
-    //this.user = this.user ? JSON.parse(this.user) : {};
+    this.user = this.user ? JSON.parse(this.user) : {};
+    console.log(this.user)
   }
 
   callmanagement() {
@@ -55,13 +58,38 @@ export class DashboardPage {
       this.navCtrl.push(CallmanagementPage, {}, { animate: false });
     }
   }
-
+  OnBtnClickAction(action){
+    console.log(action);
+    let payLoad ={
+      user_info_id: this.user.resourseData.USER_INFO_ID,
+      user_name: this.user.resourseData.EMPNAME,
+      btn_type:action,
+      checkin_location:this.globalProvider.userlocation,
+      checkin_latitude:this.globalProvider.geoLatitude,
+      checkin_longitude:this.globalProvider.geoLongitude,
+      checkout_location:this.globalProvider.userlocation,
+      checkout_latitude:this.globalProvider.geoLatitude,
+      checkout_longitude:this.globalProvider.geoLongitude,
+      modified_by:this.user.resourseData.USER_INFO_ID
+    }
+    console.log("getInserUserAttendance payload=",payLoad)
+    this.authService.postData(payLoad, 'attendance/getInserUserAttendance').then((result: any) => {
+      console.log("getInserUserAttendance response = ",result)
+    }, (err) => {
+      console.log("getInserUserAttendance error = ",err);
+      //this.presentToast("Something went to wrong, please try again later");
+      this.presentToast(err);
+    });
+  }
   resourcemanager() {
     if (this.useraccessdata.RESOURCE_ACCESS == 1) {
       this.navCtrl.push(resourcemanagerPage, {}, { animate: false });
     }
   }
-
+  searchTasks(event){
+    var value = event.target.value;
+    console.log(value)
+  }
   InventoryPage() {
     if (this.useraccessdata.INVENTORY_ACCESS == 1) {
       this.navCtrl.push(InventoryPage, {}, { animate: false });
@@ -130,20 +158,40 @@ export class DashboardPage {
     }
   }
 
+  openModalImg() {
+    const myModalOptions: ModalOptions = {
+      enableBackdropDismiss: false
+    };
+
+    // let myModalData = [{
+    //   TASK_ID: 7,
+    //   //task_data_val: this.taskdetails.assignedtaskList.filter(item => item.TASK_ID === TASK_ID)
+    // }];
+
+    let myModal: any = this.modal.create('ViewPhotosPage', { data: "myModalData" }, myModalOptions);
+
+    myModal.present();
+
+    myModal.onDidDismiss((data) => {
+    });
+
+    myModal.onWillDismiss((data) => {
+    });
+  }
   ionViewDidLoad() {
     console.log('ionViewDidLoad DashboardPage');
-    // this.getNotificationList();
-    // this.myprofilecount = 0;
+    this.getNotificationList();
+    this.myprofilecount = 0;
   }
 
 
 
   ionViewWillEnter() {
-    // this.getUserAccessForm();
-    // //this.getNotificationList();
-    // //this. getmyprofiledetails();
-    // this.Callinspectiondata();
-    // this.getLpodetails();
+    this.getUserAccessForm();
+    //this.getNotificationList();
+    //this. getmyprofiledetails();
+    this.Callinspectiondata();
+    this.getLpodetails();
   }
  
 

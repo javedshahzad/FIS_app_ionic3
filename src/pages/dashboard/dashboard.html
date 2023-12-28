@@ -33,7 +33,7 @@
 <ion-content padding style=" background-image: url(assets/imgs/wallpaper.png);background-repeat: no-repeat;
 background-size: cover; background-position: center;
     background-attachment: fixed;">
-  <ion-grid>
+  <ion-grid hidden>
     <ion-row>
       <ion-col col-12></ion-col>
     </ion-row>
@@ -52,32 +52,51 @@ background-size: cover; background-position: center;
   <ion-grid>
     <ion-row>
       <ion-col>
-        <button ion-button block color="secondary" text-capitalize>Check In</button>
-        <button ion-button block color="secondary" text-capitalize>Break In</button>
-        
+        <button ion-button block color="secondary" text-capitalize (click)="OnBtnClickAction('BREAK IN')">Break In</button>
+        <button ion-button block color="danger" text-capitalize (click)="OnBtnClickAction('BREAK OUT')">Break Out</button>
       </ion-col>
       <ion-col>
-        <button ion-button block color="danger" text-capitalize>Check Out</button>
-        <button ion-button block color="danger" text-capitalize>Break Out</button>
+        <button ion-button block color="secondary" text-capitalize (click)="OnBtnClickAction('IN')">Check In</button>
+        <button ion-button block color="danger" text-capitalize (click)="OnBtnClickAction('OUT')">Check Out</button>
       </ion-col>
     </ion-row>
   </ion-grid>
-
   <ion-grid>
-    <ion-row class="rowborder p-8" *ngFor="let tasks of [1,2,3,5,6]; index as i;">
+    <ion-row>
       <ion-col>
-       <p class="heading-style">Unit/Title</p>
-       <p class="title-style">Created by</p>
-       <p class="title-style">PPM</p>
-       <p class="title-style">Call Out</p>
-       <p class="title-style">Amc</p>
+        <ion-searchbar (ionInput)="searchTasks($event)"></ion-searchbar>
       </ion-col>
-      <ion-col>
-        <p class="heading-style">Status</p>
-        <p class="title-style">26-12-2023</p>
-        <p class="title-style">PPM text</p>
-        <p class="title-style">Call Out text</p>
-        <p class="title-style">Amc text</p>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <!-- <ion-row>
+      <ion-col> <p class="heading-style" text-center>Active Tasks</p></ion-col>
+    </ion-row> -->
+    <ion-row class="rowborder p-8" *ngFor="let tasks of [1,2,3,5,6]; index as i;">
+      <ion-col col-12>
+        <p class="heading-style" text-center>Unit/Title</p>
+      </ion-col>
+      <ion-col col-6>
+       <p class="title-style">Status</p>
+      </ion-col>
+      <ion-col col-6>
+        <p class="title-style">PPM/Call Out/Amc</p>
+      </ion-col>
+      <ion-col col-12>
+        <p  class="title-style">Complaints</p>
+      </ion-col>
+      <ion-col col-6>
+        <button (click)="openModalImg()" ion-button icon-start block color="secondary" text-capitalize>
+          <ion-icon name="image"></ion-icon>
+          View Images
+        </button>
+       </ion-col>
+       <ion-col col-6>
+         <p class="title-style">Created by</p>
+         <p class="title-style">27-12-2023</p>
+       </ion-col>
+       <ion-col col-12>
+        <p  class="title-style">Partners</p>
       </ion-col>
       <ion-col col-12>
         <div text-center class="flex">
@@ -89,7 +108,7 @@ background-size: cover; background-position: center;
     </ion-row>
   </ion-grid>
 
-  <ng-container hidden>
+  <!-- <ng-container hidden>
   <ion-grid style="margin-top: -20px;">
     <ion-row>
       <ion-col col-6 [ngStyle]="{'display': useraccessdata.CALL_MANAGEMENT_ACCESS == 1 ? 'block':'none'}">
@@ -109,9 +128,6 @@ background-size: cover; background-position: center;
           <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">Resource Manager</h2>
         </ion-card>
       </ion-col>
-    <!-- </ion-row>
-
-    <ion-row> -->
       <ion-col col-6 [ngStyle]="{'display': useraccessdata.ASSET_DETAILS_ACCESS == 1 ? 'block':'none'}">
         <ion-card class="dash_image" (click)="SearchPage()" text-center
           style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
@@ -129,8 +145,6 @@ background-size: cover; background-position: center;
         </ion-card>
       </ion-col>
 
-    <!-- </ion-row>
-    <ion-row> -->
       <ion-col col-6 [ngStyle]="{'display': useraccessdata.PPM_ACCESS == 1 ? 'block':'none'}">
         <ion-card class="dash_image" (click)="ppm()" text-center
           style="    background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
@@ -148,8 +162,7 @@ background-size: cover; background-position: center;
       </ion-col>
 
 
-    <!-- </ion-row>
-    <ion-row> -->
+
       <ion-col col-6 [ngStyle]="{'display': useraccessdata.INVENTORY_ACCESS == 1 ? 'block':'none'}">
         <ion-card class="dash_image" text-center (click)="InventoryPage()"
           style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
@@ -166,8 +179,7 @@ background-size: cover; background-position: center;
         </ion-card>
       </ion-col>
 
-    <!-- </ion-row>
-    <ion-row> -->
+>
       <ion-col col-6 [ngStyle]="{'display': useraccessdata.TASK_ACCESS == 1 ? 'block':'none'}">
         <ion-card class="dash_image" text-center (click)="task_mgnt();"
           style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
@@ -184,8 +196,7 @@ background-size: cover; background-position: center;
         </ion-card>
       </ion-col>
 
-    <!-- </ion-row>
-    <ion-row> -->
+  
       <ion-col col-6 [ngStyle]="{'display': useraccessdata.HOTO_ACCESS == 1 ? 'block':'none'}">
         <ion-card class="dash_image" text-center (click)="hoto()"
           style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
@@ -200,8 +211,7 @@ background-size: cover; background-position: center;
           <h2 style="color:#ffffff; float: left; font-size: 1.2rem;">Notification</h2>
         </ion-card>
       </ion-col>
-    <!-- </ion-row>
-    <ion-row> -->
+
       <ion-col col-6 [ngStyle]="{'display': useraccessdata.PARKING_ACCESS == 1 ? 'block':'none'}">
         <ion-card class="dash_image" text-center (click)="parking()"
           style="background:linear-gradient(to right, #008cd1, #4c83b9, #5d84bd, #6373a6, #4d5aa1)!important; align-items: center; border-radius: 6px;">
@@ -211,5 +221,5 @@ background-size: cover; background-position: center;
       </ion-col>
     </ion-row>
   </ion-grid>
-  </ng-container>
+  </ng-container> -->
 </ion-content>

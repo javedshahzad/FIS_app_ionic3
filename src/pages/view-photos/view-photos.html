@@ -1,0 +1,25 @@
+<!--
+  Generated template for the ViewPhotosPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Photos </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card *ngFor="let tasks of [1,2,3,5,6]; index as i;">
+    <img class="image" src="assets/imgs/hoto.png"/>
+    <ion-card-content>
+      <p>
+        image title
+      </p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

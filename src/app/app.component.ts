@@ -385,7 +385,7 @@ export class ceoportal {
     if (this.RememberMe) {
       return DashboardPage;
     } else {
-      return DashboardPage; //LoginPage;
+      return LoginPage; //DashboardPage;
     }
   }
 }

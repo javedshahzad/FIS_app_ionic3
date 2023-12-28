@@ -31,6 +31,7 @@ hostname = 'http://flexion.fakhruddinproperties.com:8882'
    
     return new Promise((resolve, reject) =>{
       this.http.setRequestTimeout(180);
+      console.log(this.apiUrl+sufix)
       this.http.post(this.apiUrl+sufix, json,{}).then((resp) => {
       let responseData =JSON.parse(resp.data);
         resolve(responseData);
@@ -44,6 +45,7 @@ hostname = 'http://flexion.fakhruddinproperties.com:8882'
     
    // this.http.setHeader("*","Content-Type", "application/json"); 
   return new Promise((resolve, reject) =>{
+    console.log(this.apiUrl+sufix)
      this.http.get(this.apiUrl+sufix, json, {}).then((resp) => {
       let responseData =JSON.parse(resp.data);
       resolve(responseData);
@@ -59,6 +61,7 @@ public getDataWithTimeout(json,sufix) {
  // this.http.setHeader("*","Content-Type", "application/json"); 
   return new Promise((resolve, reject) =>{
      this.http.setRequestTimeout(180000);
+     console.log(this.apiUrl+sufix)
       this.http.get(this.apiUrl+sufix, json, {}).then((resp) => {
       let responseData =JSON.parse(resp.data);
       resolve(responseData);
@@ -70,6 +73,7 @@ public getDataWithTimeout(json,sufix) {
 } 
   public loginPostData(json?:object,sufix?:any) {   
     return new Promise((resolve, reject) =>{
+      console.log(this.apiUrl+sufix)
       this.http.post(this.apiUrl+sufix, json, {}).then((resp) => {
         let responseData =JSON.parse(resp.data);
         resolve(responseData);
@@ -83,6 +87,7 @@ public getDataWithTimeout(json,sufix) {
   public postFormData(json?:any,sufix?:any) {   
     //this.http.setHeader("*","Content-Type",'application/x-www-form-urlencoded'); 
       return new Promise((resolve, reject) =>{
+        console.log(this.apiUrl+sufix)
       this.http.post(this.apiUrl+sufix, json , {}).then(data => {
         resolve(data);
       },(err) => {

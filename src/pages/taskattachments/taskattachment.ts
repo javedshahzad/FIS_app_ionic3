@@ -144,7 +144,8 @@ export class TaskFileUploadsPage {
     this.presentLoadingDefault(true);
     this.authService.getData({}, 'task/TaskUploadedFileList/' + this.TASK_ID).then((result) => {
       this.taskuploadsdetails = result;
-   //   console.log(this.taskuploadsdetails);
+     console.log(this.taskuploadsdetails);
+     console.log(JSON.stringify(this.taskuploadsdetails));
       this.presentLoadingDefault(false);
       if (this.taskuploadsdetails.length > 0) {
         this.presentLoadingDefault(false);

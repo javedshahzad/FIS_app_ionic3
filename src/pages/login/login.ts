@@ -9,6 +9,8 @@ import { FCM } from '@ionic-native/fcm';
 import * as EmailValidator from 'email-validator';
 import { SelectSearchableComponent } from 'ionic-select-searchable';
 import { OpenWebsitePage } from '../openwebsite/openwebsite';
+import { GlobalProvider } from '../../providers/global/global';
+
 
 @Component({
   selector: 'page-login',
@@ -1018,15 +1020,11 @@ export class LoginPage {
     dial_code: "+1 340",
     code: "VI"
   }]
-
-
   constructor(public platform: Platform, public navCtrl: NavController, public navParams: NavParams,
     public events: Events, public network: Network, public authService: RestProvider,
     public loadingCtrl: LoadingController, public menu: MenuController,
     public toastCtrl: ToastController, public alertCtrl: AlertController, private fcm: FCM,
-    private modal: ModalController
-
-
+    private modal: ModalController, private globalProvider:GlobalProvider
   ) {
 
     // let offline = Observable.fromEvent(document, "offline");
@@ -1118,7 +1116,7 @@ export class LoginPage {
               this.btnLogIn = false;
               this.LogIn = 'LogIn';
               this.signIn = 'Sign In';
-
+              this.InsertUserLocationonAction();
             } else {
               this.presentToast("User is Inactive.");
               this.btnLogIn = false;
@@ -1156,8 +1154,27 @@ export class LoginPage {
     this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 
+  InsertUserLocationonAction(){
+    let payLoad ={
+      user_info_id: this.user.resourseData.USER_INFO_ID,
+      user_name: this.user.resourseData.EMPNAME,
+      action_type:"Login",
+      action_type_id:0,
+      location:this.globalProvider.userlocation,
+      latitude:this.globalProvider.geoLatitude,
+      longitude:this.globalProvider.geoLongitude,
+      comments:"to capture user current location"
+    }
+    console.log("InsertUserLocationonAction payload=",payLoad)
+    this.authService.postData(payLoad, 'Account/InsertUserLocationonAction').then((result: any) => {
+      console.log("InsertUserLocationonAction = ",result)
+    }, (err) => {
+      console.log("InsertUserLocationonAction error = ",err);
+      //this.presentToast("Something went to wrong, please try again later");
+      this.presentToast(err);
+    });
+  }
   TokenSetup() {
-
     this.fcm.getToken().then((token) => {
       localStorage.setItem('token', token);
       console.log('Login -> getToken->' + token);
